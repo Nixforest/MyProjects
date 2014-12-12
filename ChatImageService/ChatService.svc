@@ -1,0 +1,1 @@
+<% @ServiceHost Service="ChatService_v3_hostingIIS.ChatService" %>
