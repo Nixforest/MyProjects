@@ -1,0 +1,6 @@
+*.exe
+*.ilk
+*.pdb
+*.tlog
+OpenGL/GlutExample/DrawCube/Debug/
+Debug/
