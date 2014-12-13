@@ -1,0 +1,41 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstateMarket", "RealEstateMarket\RealEstateMarket.csproj", "{DCD673D0-8BC2-43B8-8A0D-AE8D2031D214}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstateDataContext", "RealEstateDataContext\RealEstateDataContext.csproj", "{9FD986AF-CDB3-4044-92CA-B2D100824896}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstateDataAccessObject", "RealEstateDataAccessObject\RealEstateDataAccessObject.csproj", "{0253D3EA-04A0-4495-89BD-06078088DC17}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstateBusinessLogicObject", "RealEstateBusinessLogicObject\RealEstateBusinessLogicObject.csproj", "{C9CFF725-09C8-4624-8C5C-72B58D724BC3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DCD673D0-8BC2-43B8-8A0D-AE8D2031D214}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCD673D0-8BC2-43B8-8A0D-AE8D2031D214}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCD673D0-8BC2-43B8-8A0D-AE8D2031D214}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCD673D0-8BC2-43B8-8A0D-AE8D2031D214}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FD986AF-CDB3-4044-92CA-B2D100824896}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FD986AF-CDB3-4044-92CA-B2D100824896}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FD986AF-CDB3-4044-92CA-B2D100824896}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FD986AF-CDB3-4044-92CA-B2D100824896}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0253D3EA-04A0-4495-89BD-06078088DC17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0253D3EA-04A0-4495-89BD-06078088DC17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0253D3EA-04A0-4495-89BD-06078088DC17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0253D3EA-04A0-4495-89BD-06078088DC17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9CFF725-09C8-4624-8C5C-72B58D724BC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9CFF725-09C8-4624-8C5C-72B58D724BC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9CFF725-09C8-4624-8C5C-72B58D724BC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9CFF725-09C8-4624-8C5C-72B58D724BC3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		VisualSVNWorkingCopyRoot = .
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,444 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 17, 28.875" name="RealEstateDataClasses">
+  <DataContextMoniker Name="/RealEstateDataClassesDataContext" />
+  <nestedChildShapes>
+    <classShape Id="d0e1e8be-8e54-416e-baa6-3815233b881d" absoluteBounds="3.5, 9.875, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/RealEstateDataClassesDataContext/ADDRESS" />
+      <nestedChildShapes>
+        <elementListCompartment Id="1cad9b91-04b0-48d7-8de2-a503d6a43c71" absoluteBounds="3.515, 10.335, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="46b9bf63-a51a-4a4b-8960-e9c668fb4329" absoluteBounds="0.75, 7, 2, 1.3862939453125005">
+      <DataClassMoniker Name="/RealEstateDataClassesDataContext/WARD" />
+      <nestedChildShapes>
+        <elementListCompartment Id="72ae464b-0078-4c64-b434-bb89c1abcd68" absoluteBounds="0.765, 7.46, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="dec6ac9d-f3f6-4fcb-a28b-a009d8cd0c23" absoluteBounds="0.75, 9.125, 2, 1.3862939453125005">
+      <DataClassMoniker Name="/RealEstateDataClassesDataContext/CITY" />
+      <nestedChildShapes>
+        <elementListCompartment Id="9609d49a-4c7c-4c4c-9338-77e22bd1d49c" absoluteBounds="0.765, 9.585, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="035d4052-7054-4375-83e2-f83983677857" absoluteBounds="6.25, 16.375, 2, 3.3093082682291666">
+      <DataClassMoniker Name="/RealEstateDataClassesDataContext/COMPANY" />
+      <nestedChildShapes>
+        <elementListCompartment Id="e5d581c8-ab95-415e-9819-53821934c626" absoluteBounds="6.265, 16.835, 1.9700000000000002, 2.7493082682291665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="fc5c86a9-c2b2-4cd2-9ff5-fa570d1f3388" absoluteBounds="9, 17.375, 2, 1.3862939453124987">
+      <DataClassMoniker Name="/RealEstateDataClassesDataContext/COMPANY_IMAGE" />
+      <nestedChildShapes>
+        <elementListCompartment Id="67c72bee-b16a-456f-b3dd-81aa6ad4eac0" absoluteBounds="9.015, 17.835, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="4171767e-5077-4cee-b371-810a12930c84" absoluteBounds="6.25, 7.875, 2, 1.9631982421875005">
+      <DataClassMoniker Name="/RealEstateDataClassesDataContext/CONTACT" />
+      <nestedChildShapes>
+        <elementListCompartment Id="4f7cea82-ab34-408f-8bd1-9a8b5a056de9" absoluteBounds="6.265, 8.335, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="21ecb2b0-d361-468c-a451-4490b7b4be07" absoluteBounds="9.25, 13.75, 2, 2.3478011067708344">
+      <DataClassMoniker Name="/RealEstateDataClassesDataContext/CUSTOMER" />
+      <nestedChildShapes>
+        <elementListCompartment Id="9218f0a4-e897-4e9c-a2c3-5470b6a38053" absoluteBounds="9.265, 14.21, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="73408035-36ea-4a88-bdfe-e16f4ff62dad" absoluteBounds="0.75, 15.25, 2, 1.3862939453124969">
+      <DataClassMoniker Name="/RealEstateDataClassesDataContext/DISTRICT" />
+      <nestedChildShapes>
+        <elementListCompartment Id="5018521d-cf95-4c65-a390-8bc0added337" absoluteBounds="0.765, 15.71, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="70a0aaa8-639d-4f7e-a4b7-181af65a1590" absoluteBounds="3.5, 13.25, 2, 1.3862939453124987">
+      <DataClassMoniker Name="/RealEstateDataClassesDataContext/DISTRICT_DETAIL" />
+      <nestedChildShapes>
+        <elementListCompartment Id="5b89fcf5-5e38-41ce-b6be-5062557a78da" absoluteBounds="3.515, 13.71, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="65a740b6-a4a8-4d3d-a987-1c7e445ce89a" absoluteBounds="3.75, 24.25, 2, 1.3862939453125023">
+      <DataClassMoniker Name="/RealEstateDataClassesDataContext/GROUP" />
+      <nestedChildShapes>
+        <elementListCompartment Id="e0a28c83-892c-403c-87f6-a0368b73d0df" absoluteBounds="3.765, 24.71, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="a85c2838-4c87-4ac8-9321-11c555b2cece" absoluteBounds="6.5, 27.25, 2, 1.3862939453125023">
+      <DataClassMoniker Name="/RealEstateDataClassesDataContext/GROUP_DETAIL" />
+      <nestedChildShapes>
+        <elementListCompartment Id="350b4e44-aa0a-4b42-a56b-b79aba151561" absoluteBounds="6.515, 27.71, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="d9adcab8-2d7a-4eee-852a-2edd9779d08b" absoluteBounds="9, 4.125, 2, 1.5785953776041666">
+      <DataClassMoniker Name="/RealEstateDataClassesDataContext/IMAGE" />
+      <nestedChildShapes>
+        <elementListCompartment Id="7b783de4-5959-496b-9d82-50b5367db89d" absoluteBounds="9.015, 4.585, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="a2bc9ea5-4a12-4187-9a1a-b1aa8607a72e" absoluteBounds="0.75, 17.375, 2, 1.3862939453124987">
+      <DataClassMoniker Name="/RealEstateDataClassesDataContext/NATION" />
+      <nestedChildShapes>
+        <elementListCompartment Id="e98f3fe5-f3b0-43b9-b891-e53941d12df0" absoluteBounds="0.765, 17.835, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="60e8fcf8-b5e3-4143-9451-ed17bc0191dd" absoluteBounds="11.75, 0.75, 2, 2.3478011067708335">
+      <DataClassMoniker Name="/RealEstateDataClassesDataContext/NEW" />
+      <nestedChildShapes>
+        <elementListCompartment Id="5e2c8e51-3881-418d-8310-e173efbf8ad5" absoluteBounds="11.765, 1.21, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="a311ccaa-a204-422d-8f21-0e07eaf2cf43" absoluteBounds="14.75, 5.875, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/RealEstateDataClassesDataContext/NEWS_SALE" />
+      <nestedChildShapes>
+        <elementListCompartment Id="4b1611b4-0c80-4a5c-bcf9-786b1ee35faf" absoluteBounds="14.765, 6.335, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="9899c64b-237a-4370-bd6a-1b3a5b156119" absoluteBounds="12, 4.25, 2, 1.3862939453125005">
+      <DataClassMoniker Name="/RealEstateDataClassesDataContext/NEWS_SALE_TYPE" />
+      <nestedChildShapes>
+        <elementListCompartment Id="4dabb538-9e7b-4b53-93c0-5f640ef9e459" absoluteBounds="12.015, 4.71, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="bb8f057c-b5ca-4dc6-bf48-9c181988a4c5" absoluteBounds="9, 1, 2, 1.3862939453124998">
+      <DataClassMoniker Name="/RealEstateDataClassesDataContext/NEWS_TYPE" />
+      <nestedChildShapes>
+        <elementListCompartment Id="46b21c47-2b9b-43b8-b342-ae25c23c4734" absoluteBounds="9.015, 1.46, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="cdc42c22-26d9-4edf-b076-d33e037dfdeb" absoluteBounds="6.25, 10.875, 2, 1.9631982421874987">
+      <DataClassMoniker Name="/RealEstateDataClassesDataContext/PROJECT" />
+      <nestedChildShapes>
+        <elementListCompartment Id="8b481316-c136-4e45-beb1-3f96d37f0786" absoluteBounds="6.265, 11.335, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="d999c609-3b13-441e-bbe9-b66bdf1d1c0d" absoluteBounds="3.5, 7.25, 2, 1.3862939453125005">
+      <DataClassMoniker Name="/RealEstateDataClassesDataContext/PROJECT_TYPE" />
+      <nestedChildShapes>
+        <elementListCompartment Id="62396be9-cd21-402c-95d0-acb2a6dec321" absoluteBounds="3.515, 7.71, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="372f7682-96b0-484d-b638-91cc6ef23f52" absoluteBounds="12.75, 12.875, 2, 1.3862939453124987">
+      <DataClassMoniker Name="/RealEstateDataClassesDataContext/PROPERTY_COMPANY" />
+      <nestedChildShapes>
+        <elementListCompartment Id="03e43b3a-793f-4a1d-9144-0fece61b2f54" absoluteBounds="12.765, 13.335, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="94fd82cc-41b2-427f-a1cb-463c00090619" absoluteBounds="12, 10, 2, 1.3862939453124987">
+      <DataClassMoniker Name="/RealEstateDataClassesDataContext/PROPERTY_CUSTOMER" />
+      <nestedChildShapes>
+        <elementListCompartment Id="fe5e259a-0bbe-4f89-891f-0ab02f884d60" absoluteBounds="12.015, 10.46, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="e79e1b91-113b-40ac-88c1-d332bb5b494b" absoluteBounds="9, 7.25, 2, 5.2323225911458326">
+      <DataClassMoniker Name="/RealEstateDataClassesDataContext/REAL_ESTATE" />
+      <nestedChildShapes>
+        <elementListCompartment Id="e4729181-f45e-4c98-bfc5-145e96acef73" absoluteBounds="9.015, 7.71, 1.9700000000000002, 4.672322591145833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="0552c632-e21d-441b-9b31-ac5231c9f685" absoluteBounds="11.75, 7.25, 2, 1.3862939453125005">
+      <DataClassMoniker Name="/RealEstateDataClassesDataContext/REAL_ESTATE_IMAGE" />
+      <nestedChildShapes>
+        <elementListCompartment Id="c752121a-47e2-47df-b833-3c71e20f93d7" absoluteBounds="11.765, 7.71, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="0ab884c5-7582-4536-94a2-5d0641c51312" absoluteBounds="6.25, 5, 2, 1.3862939453125005">
+      <DataClassMoniker Name="/RealEstateDataClassesDataContext/REAL_ESTATE_TYPE" />
+      <nestedChildShapes>
+        <elementListCompartment Id="d6cc000b-1e70-4d34-a1bc-16865e16d06f" absoluteBounds="6.265, 5.46, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="4dd843bd-4804-4927-a538-98be2baf088b" absoluteBounds="3.75, 27.25, 2, 1.3862939453125023">
+      <DataClassMoniker Name="/RealEstateDataClassesDataContext/RULE" />
+      <nestedChildShapes>
+        <elementListCompartment Id="b2e88801-5b9e-47ae-b956-b7e7ce4f880d" absoluteBounds="3.765, 27.71, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="a309af5f-657b-4c01-9e31-9480946ee3a5" absoluteBounds="0.75, 13.25, 2, 1.1939925130208344">
+      <DataClassMoniker Name="/RealEstateDataClassesDataContext/STREET" />
+      <nestedChildShapes>
+        <elementListCompartment Id="6b971d0a-fd54-42f1-88a2-adb7d8313082" absoluteBounds="0.765, 13.71, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="282781a1-8ae5-497c-a7d8-375cd0a575b8" absoluteBounds="6.25, 2.125, 2, 1.3862939453124996">
+      <DataClassMoniker Name="/RealEstateDataClassesDataContext/UNIT" />
+      <nestedChildShapes>
+        <elementListCompartment Id="5ea73a88-6f43-46df-8337-a5ec02898964" absoluteBounds="6.265, 2.585, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="57c085a6-bdbf-4020-ab23-af8335289981" absoluteBounds="6.25, 21.25, 2, 1.3862939453125023">
+      <DataClassMoniker Name="/RealEstateDataClassesDataContext/UNIT_PRICE" />
+      <nestedChildShapes>
+        <elementListCompartment Id="5fb5098c-7adb-4eca-bd60-ddab9685419e" absoluteBounds="6.265, 21.71, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="f98e54a0-d4ad-4c4b-986a-03f75b5e6161" absoluteBounds="6.5, 23.875, 2, 1.9631982421875023">
+      <DataClassMoniker Name="/RealEstateDataClassesDataContext/USER" />
+      <nestedChildShapes>
+        <elementListCompartment Id="db480c58-37c1-4905-8fe8-4d64942df906" absoluteBounds="6.515, 24.335, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="e7690419-c642-42df-a894-ab5abb2eeeb4" absoluteBounds="12, 15.25, 2, 1.3862939453124987">
+      <DataClassMoniker Name="/RealEstateDataClassesDataContext/UTILITY" />
+      <nestedChildShapes>
+        <elementListCompartment Id="13f68bf8-ab78-4f72-98f0-f4dde56cae11" absoluteBounds="12.015, 15.71, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="2e4f08e4-9329-4c13-a137-00353d98b6e1" absoluteBounds="14.75, 9.25, 2, 1.3862939453125005">
+      <DataClassMoniker Name="/RealEstateDataClassesDataContext/UTILITY_DETAIL" />
+      <nestedChildShapes>
+        <elementListCompartment Id="7f4adb45-217d-4cac-bd9e-2983884d60d9" absoluteBounds="14.765, 9.71, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(2.75 : 8.3862939453125); (3.125 : 8.7612939453125); (3.125 : 10.9527498372396); (3.19791666666667 : 10.9527498372396 : JumpStart); (3.36458333333333 : 10.9527498372396 : JumpEnd); (3.5 : 10.9527498372396)]" fixedFrom="NotFixed" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RealEstateDataClassesDataContext/WARD/WARD_ADDRESS" />
+      <nodes>
+        <classShapeMoniker Id="46b9bf63-a51a-4a4b-8960-e9c668fb4329" />
+        <classShapeMoniker Id="d0e1e8be-8e54-416e-baa6-3815233b881d" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 10.1931469726563); (3.04166666666667 : 10.1931469726563 : JumpStart); (3.20833333333333 : 10.1931469726563 : JumpEnd); (3.5 : 10.1931469726563)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RealEstateDataClassesDataContext/CITY/CITY_ADDRESS" />
+      <nodes>
+        <classShapeMoniker Id="dec6ac9d-f3f6-4fcb-a28b-a009d8cd0c23" />
+        <classShapeMoniker Id="d0e1e8be-8e54-416e-baa6-3815233b881d" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.46769230769231 : 12.0304996744792); (5.875 : 12.4378073667869); (5.875 : 18.0296541341146); (6.25 : 18.0296541341146)]" fixedFrom="NotFixed" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RealEstateDataClassesDataContext/ADDRESS/ADDRESS_COMPANY" />
+      <nodes>
+        <classShapeMoniker Id="d0e1e8be-8e54-416e-baa6-3815233b881d" />
+        <classShapeMoniker Id="035d4052-7054-4375-83e2-f83983677857" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(8.25 : 18.0681469726563); (8.32291666666667 : 18.0681469726563 : JumpStart); (8.48958333333333 : 18.0681469726563 : JumpEnd); (8.72916666666667 : 18.0681469726563 : JumpStart); (8.89583333333333 : 18.0681469726563 : JumpEnd); (9 : 18.0681469726563)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RealEstateDataClassesDataContext/COMPANY/COMPANY_COMPANY_IMAGE" />
+      <nodes>
+        <classShapeMoniker Id="035d4052-7054-4375-83e2-f83983677857" />
+        <classShapeMoniker Id="fc5c86a9-c2b2-4cd2-9ff5-fa570d1f3388" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.5 : 9.875); (5.875 : 9.5); (5.875 : 10.2131982421875); (6.00357443490112 : 10.0846238072864 : JumpStart); (6.12142556509888 : 9.96677267708862 : JumpEnd); (6.25 : 9.8381982421875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/RealEstateDataClassesDataContext/ADDRESS/ADDRESS_CONTACT" />
+      <nodes>
+        <classShapeMoniker Id="d0e1e8be-8e54-416e-baa6-3815233b881d" />
+        <classShapeMoniker Id="4171767e-5077-4cee-b371-810a12930c84" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.5 : 11.9351140590946); (6.0625 : 12.4976140590946); (6.0625 : 14.9239005533854); (7.16666666666667 : 14.9239005533854 : JumpStart); (7.33333333333333 : 14.9239005533854 : JumpEnd); (8.54166666666667 : 14.9239005533854 : JumpStart); (8.70833333333333 : 14.9239005533854 : JumpEnd); (8.72916666666667 : 14.9239005533854 : JumpStart); (8.89583333333333 : 14.9239005533854 : JumpEnd); (9.25 : 14.9239005533854)]" fixedFrom="NotFixed" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RealEstateDataClassesDataContext/ADDRESS/ADDRESS_CUSTOMER" />
+      <nodes>
+        <classShapeMoniker Id="d0e1e8be-8e54-416e-baa6-3815233b881d" />
+        <classShapeMoniker Id="21ecb2b0-d361-468c-a451-4490b7b4be07" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 15.3118490375601); (3.1875 : 14.8743490375601); (3.1875 : 11.5228767558594); (3.19791666666667 : 11.5228767558594 : JumpStart); (3.36458333333333 : 11.5228767558594 : JumpEnd); (3.5 : 11.5228767558594)]" fixedFrom="NotFixed" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RealEstateDataClassesDataContext/DISTRICT/DISTRICT_ADDRESS" />
+      <nodes>
+        <classShapeMoniker Id="73408035-36ea-4a88-bdfe-e16f4ff62dad" />
+        <classShapeMoniker Id="d0e1e8be-8e54-416e-baa6-3815233b881d" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 16.0053239914363); (3.19791666666667 : 16.0053239914363 : JumpStart); (3.36458333333333 : 16.0053239914363 : JumpEnd); (4.5 : 16.0053239914363); (4.5 : 14.6362939453125)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RealEstateDataClassesDataContext/DISTRICT/DISTRICT_DISTRICT_DETAIL" />
+      <nodes>
+        <classShapeMoniker Id="73408035-36ea-4a88-bdfe-e16f4ff62dad" />
+        <classShapeMoniker Id="70a0aaa8-639d-4f7e-a4b7-181af65a1590" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.75 : 25.6362939453125); (6.125 : 26.0112939453125); (6.125 : 27.9431469726563); (6.5 : 27.9431469726563)]" fixedFrom="NotFixed" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RealEstateDataClassesDataContext/GROUP/GROUP_GROUP_DETAIL" />
+      <nodes>
+        <classShapeMoniker Id="65a740b6-a4a8-4d3d-a987-1c7e445ce89a" />
+        <classShapeMoniker Id="a85c2838-4c87-4ac8-9321-11c555b2cece" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(9 : 5.70359537760417); (8.74642556509888 : 5.95716981250529 : JumpStart); (8.62857443490112 : 6.07502094270305 : JumpEnd); (8.625 : 6.07859537760417); (8.625 : 17); (8.75357443490112 : 17.1285744349011 : JumpStart); (8.87142556509888 : 17.2464255650989 : JumpEnd); (9 : 17.375)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/RealEstateDataClassesDataContext/IMAGE/IMAGE_COMPANY_IMAGE" />
+      <nodes>
+        <classShapeMoniker Id="d9adcab8-2d7a-4eee-852a-2edd9779d08b" />
+        <classShapeMoniker Id="fc5c86a9-c2b2-4cd2-9ff5-fa570d1f3388" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 17.40592401878); (3.28125 : 16.87467401878); (3.28125 : 10.5729484049479); (3.5 : 10.5729484049479)]" fixedFrom="NotFixed" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RealEstateDataClassesDataContext/NATION/NATION_ADDRESS" />
+      <nodes>
+        <classShapeMoniker Id="a2bc9ea5-4a12-4187-9a1a-b1aa8607a72e" />
+        <classShapeMoniker Id="d0e1e8be-8e54-416e-baa6-3815233b881d" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(11 : 4.15625); (11.84375 : 4.15625); (11.84375 : 3.09780110677083)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RealEstateDataClassesDataContext/IMAGE/IMAGE_NEW" />
+      <nodes>
+        <classShapeMoniker Id="d9adcab8-2d7a-4eee-852a-2edd9779d08b" />
+        <classShapeMoniker Id="60e8fcf8-b5e3-4143-9451-ed17bc0191dd" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(14 : 4.94314697265625); (15.75 : 4.94314697265625); (15.75 : 5.875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RealEstateDataClassesDataContext/NEWS_SALE_TYPE/NEWS_SALE_TYPE_NEWS_SALE" />
+      <nodes>
+        <classShapeMoniker Id="9899c64b-237a-4370-bd6a-1b3a5b156119" />
+        <classShapeMoniker Id="a311ccaa-a204-422d-8f21-0e07eaf2cf43" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(11 : 1.69314697265625); (11.75 : 1.69314697265625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RealEstateDataClassesDataContext/NEWS_TYPE/NEWS_TYPE_NEW" />
+      <nodes>
+        <classShapeMoniker Id="bb8f057c-b5ca-4dc6-bf48-9c181988a4c5" />
+        <classShapeMoniker Id="60e8fcf8-b5e3-4143-9451-ed17bc0191dd" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.5 : 11.3738045295473); (5.97916666666667 : 11.3738045295473 : JumpStart); (6.14583333333333 : 11.3738045295473 : JumpEnd); (6.25 : 11.3738045295473)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RealEstateDataClassesDataContext/ADDRESS/ADDRESS_PROJECT" />
+      <nodes>
+        <classShapeMoniker Id="d0e1e8be-8e54-416e-baa6-3815233b881d" />
+        <classShapeMoniker Id="cdc42c22-26d9-4edf-b076-d33e037dfdeb" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.5 : 8.5744429077524); (6.0625 : 9.1369429077524); (6.0625 : 12.1372533858674); (6.25 : 12.1372533858674)]" fixedFrom="NotFixed" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RealEstateDataClassesDataContext/PROJECT_TYPE/PROJECT_TYPE_PROJECT" />
+      <nodes>
+        <classShapeMoniker Id="d999c609-3b13-441e-bbe9-b66bdf1d1c0d" />
+        <classShapeMoniker Id="cdc42c22-26d9-4edf-b076-d33e037dfdeb" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(7.25 : 16.375); (7.25 : 13.28125); (8.54166666666667 : 13.28125 : JumpStart); (8.70833333333333 : 13.28125 : JumpEnd); (8.72916666666667 : 13.28125 : JumpStart); (8.89583333333333 : 13.28125 : JumpEnd); (11.5416666666667 : 13.28125 : JumpStart); (11.7083333333333 : 13.28125 : JumpEnd); (12.75 : 13.28125)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RealEstateDataClassesDataContext/COMPANY/COMPANY_PROPERTY_COMPANY" />
+      <nodes>
+        <classShapeMoniker Id="035d4052-7054-4375-83e2-f83983677857" />
+        <classShapeMoniker Id="372f7682-96b0-484d-b638-91cc6ef23f52" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(11.25 : 13.75); (11.625 : 13.375); (11.625 : 10.6931469726562); (12 : 10.6931469726562)]" fixedFrom="NotFixed" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RealEstateDataClassesDataContext/CUSTOMER/CUSTOMER_PROPERTY_CUSTOMER" />
+      <nodes>
+        <classShapeMoniker Id="21ecb2b0-d361-468c-a451-4490b7b4be07" />
+        <classShapeMoniker Id="94fd82cc-41b2-427f-a1cb-463c00090619" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(10 : 7.25); (10 : 6.5624995); (11.7135416666667 : 6.5624995 : JumpStart); (11.8802083333333 : 6.5624995 : JumpEnd); (14.75 : 6.5624995)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RealEstateDataClassesDataContext/REAL_ESTATE/REAL_ESTATE_NEWS_SALE" />
+      <nodes>
+        <classShapeMoniker Id="e79e1b91-113b-40ac-88c1-d332bb5b494b" />
+        <classShapeMoniker Id="a311ccaa-a204-422d-8f21-0e07eaf2cf43" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(11 : 9.31814697265625); (14.375 : 9.31814697265625); (14.375 : 12.875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RealEstateDataClassesDataContext/REAL_ESTATE/REAL_ESTATE_PROPERTY_COMPANY" />
+      <nodes>
+        <classShapeMoniker Id="e79e1b91-113b-40ac-88c1-d332bb5b494b" />
+        <classShapeMoniker Id="372f7682-96b0-484d-b638-91cc6ef23f52" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(11 : 10.2840734863281); (12 : 10.2840734863281)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RealEstateDataClassesDataContext/REAL_ESTATE/REAL_ESTATE_PROPERTY_CUSTOMER" />
+      <nodes>
+        <classShapeMoniker Id="e79e1b91-113b-40ac-88c1-d332bb5b494b" />
+        <classShapeMoniker Id="94fd82cc-41b2-427f-a1cb-463c00090619" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.5 : 10.3750025); (5.97916666666667 : 10.3750025 : JumpStart); (6.14583333333333 : 10.3750025 : JumpEnd); (8.54166666666667 : 10.3750025 : JumpStart); (8.70833333333333 : 10.3750025 : JumpEnd); (9 : 10.3750025)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RealEstateDataClassesDataContext/ADDRESS/ADDRESS_REAL_ESTATE" />
+      <nodes>
+        <classShapeMoniker Id="d0e1e8be-8e54-416e-baa6-3815233b881d" />
+        <classShapeMoniker Id="e79e1b91-113b-40ac-88c1-d332bb5b494b" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(8.25 : 8.85659912109375); (8.54166666666667 : 8.85659912109375 : JumpStart); (8.77083333333333 : 8.85659912109375 : JumpEnd); (9 : 8.85659912109375)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RealEstateDataClassesDataContext/CONTACT/CONTACT_REAL_ESTATE" />
+      <nodes>
+        <classShapeMoniker Id="4171767e-5077-4cee-b371-810a12930c84" />
+        <classShapeMoniker Id="e79e1b91-113b-40ac-88c1-d332bb5b494b" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(8.25 : 11.6786612955729); (8.54166666666667 : 11.6786612955729 : JumpStart); (8.70833333333333 : 11.6786612955729 : JumpEnd); (8.72916666666667 : 11.6786612955729 : JumpStart); (8.89583333333333 : 11.6786612955729 : JumpEnd); (9 : 11.6786612955729)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RealEstateDataClassesDataContext/PROJECT/PROJECT_REAL_ESTATE" />
+      <nodes>
+        <classShapeMoniker Id="cdc42c22-26d9-4edf-b076-d33e037dfdeb" />
+        <classShapeMoniker Id="e79e1b91-113b-40ac-88c1-d332bb5b494b" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(11 : 4.171875); (11.796875 : 4.171875); (11.796875 : 7.25)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RealEstateDataClassesDataContext/IMAGE/IMAGE_REAL_ESTATE_IMAGE" />
+      <nodes>
+        <classShapeMoniker Id="d9adcab8-2d7a-4eee-852a-2edd9779d08b" />
+        <classShapeMoniker Id="0552c632-e21d-441b-9b31-ac5231c9f685" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(11 : 7.94314697265625); (11.75 : 7.94314697265625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RealEstateDataClassesDataContext/REAL_ESTATE/REAL_ESTATE_REAL_ESTATE_IMAGE" />
+      <nodes>
+        <classShapeMoniker Id="e79e1b91-113b-40ac-88c1-d332bb5b494b" />
+        <classShapeMoniker Id="0552c632-e21d-441b-9b31-ac5231c9f685" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(8.25 : 6.3244429077524); (8.56607443490112 : 6.64051734265352 : JumpStart); (8.74642556509888 : 6.82086847285128 : JumpEnd); (8.8125 : 6.8869429077524); (8.8125 : 8.02204756054688); (9 : 8.02204756054688)]" fixedFrom="NotFixed" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RealEstateDataClassesDataContext/REAL_ESTATE_TYPE/REAL_ESTATE_TYPE_REAL_ESTATE" />
+      <nodes>
+        <classShapeMoniker Id="0ab884c5-7582-4536-94a2-5d0641c51312" />
+        <classShapeMoniker Id="e79e1b91-113b-40ac-88c1-d332bb5b494b" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.75 : 27.5340734863281); (6.04166666666667 : 27.5340734863281 : JumpStart); (6.20833333333333 : 27.5340734863281 : JumpEnd); (6.5 : 27.5340734863281)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RealEstateDataClassesDataContext/RULE/RULE_GROUP_DETAIL" />
+      <nodes>
+        <classShapeMoniker Id="4dd843bd-4804-4927-a538-98be2baf088b" />
+        <classShapeMoniker Id="a85c2838-4c87-4ac8-9321-11c555b2cece" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 13.2812264964944); (3.12857443490112 : 12.9026520615933 : JumpStart); (3.34017556509888 : 12.6910509313955 : JumpEnd); (3.34375 : 12.6874764964944); (3.34375 : 11.8079402151693); (3.5 : 11.8079402151693)]" fixedFrom="NotFixed" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RealEstateDataClassesDataContext/STREET/STREET_ADDRESS" />
+      <nodes>
+        <classShapeMoniker Id="a309af5f-657b-4c01-9e31-9480946ee3a5" />
+        <classShapeMoniker Id="d0e1e8be-8e54-416e-baa6-3815233b881d" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 13.8938620047576); (3.10416666666667 : 13.8938620047576 : JumpStart); (3.36458333333333 : 13.8938620047576 : JumpEnd); (3.5 : 13.8938620047576)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RealEstateDataClassesDataContext/STREET/STREET_DISTRICT_DETAIL" />
+      <nodes>
+        <classShapeMoniker Id="a309af5f-657b-4c01-9e31-9480946ee3a5" />
+        <classShapeMoniker Id="70a0aaa8-639d-4f7e-a4b7-181af65a1590" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(8.25 : 3.4494429077524); (8.6875 : 3.8869429077524); (8.6875 : 9.61580081054688); (9 : 9.61580081054688)]" fixedFrom="NotFixed" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RealEstateDataClassesDataContext/UNIT/UNIT_REAL_ESTATE" />
+      <nodes>
+        <classShapeMoniker Id="282781a1-8ae5-497c-a7d8-375cd0a575b8" />
+        <classShapeMoniker Id="e79e1b91-113b-40ac-88c1-d332bb5b494b" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(8.25 : 21.3118490375601); (8.34732443490112 : 21.214524602659 : JumpStart); (8.46517556509888 : 21.0966734724612 : JumpEnd); (8.8125 : 20.7493490375601); (8.8125 : 11.0268318977865); (9 : 11.0268318977865)]" fixedFrom="NotFixed" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RealEstateDataClassesDataContext/UNIT_PRICE/UNIT_PRICE_REAL_ESTATE" />
+      <nodes>
+        <classShapeMoniker Id="57c085a6-bdbf-4020-ab23-af8335289981" />
+        <classShapeMoniker Id="e79e1b91-113b-40ac-88c1-d332bb5b494b" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(8.40625 : 23.875); (8.40625 : 15.5421033300781); (8.54166666666667 : 15.5421033300781 : JumpStart); (8.70833333333333 : 15.5421033300781 : JumpEnd); (8.72916666666667 : 15.5421033300781 : JumpStart); (8.89583333333333 : 15.5421033300781 : JumpEnd); (9.25 : 15.5421033300781)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RealEstateDataClassesDataContext/USER/USER_CUSTOMER" />
+      <nodes>
+        <classShapeMoniker Id="f98e54a0-d4ad-4c4b-986a-03f75b5e6161" />
+        <classShapeMoniker Id="21ecb2b0-d361-468c-a451-4490b7b4be07" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.75 : 24.9118944726563); (6.5 : 24.9118944726563)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RealEstateDataClassesDataContext/GROUP/GROUP_USER" />
+      <nodes>
+        <classShapeMoniker Id="65a740b6-a4a8-4d3d-a987-1c7e445ce89a" />
+        <classShapeMoniker Id="f98e54a0-d4ad-4c4b-986a-03f75b5e6161" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(11 : 9.69032348632813); (14.2916666666667 : 9.69032348632813 : JumpStart); (14.4583333333333 : 9.69032348632813 : JumpEnd); (14.75 : 9.69032348632813)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RealEstateDataClassesDataContext/REAL_ESTATE/REAL_ESTATE_UTILITY_DETAIL" />
+      <nodes>
+        <classShapeMoniker Id="e79e1b91-113b-40ac-88c1-d332bb5b494b" />
+        <classShapeMoniker Id="2e4f08e4-9329-4c13-a137-00353d98b6e1" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(14 : 15.9431469726562); (15.78125 : 15.9431469726562); (15.78125 : 10.6362939453125)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/RealEstateDataClassesDataContext/UTILITY/UTILITY_UTILITY_DETAIL" />
+      <nodes>
+        <classShapeMoniker Id="e7690419-c642-42df-a894-ab5abb2eeeb4" />
+        <classShapeMoniker Id="2e4f08e4-9329-4c13-a137-00353d98b6e1" />
+      </nodes>
+    </associationConnector>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

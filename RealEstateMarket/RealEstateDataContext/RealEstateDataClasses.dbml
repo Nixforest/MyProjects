@@ -1,0 +1,349 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="RealEstate" Class="RealEstateDataClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=NIX-MACHINE\SQLEXPRESS;Initial Catalog=RealEstate;Integrated Security=True" SettingsObjectName="RealEstateDataContext.Properties.Settings" SettingsPropertyName="RealEstateConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.ADDRESS" Member="ADDRESSes">
+    <Type Name="ADDRESS">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="NationID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CityID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DistrictID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="WardID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="StreetID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Detail" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Association Name="ADDRESS_COMPANY" Member="COMPANies" ThisKey="ID" OtherKey="AddressID" Type="COMPANY" />
+      <Association Name="ADDRESS_CONTACT" Member="CONTACTs" ThisKey="ID" OtherKey="AddressID" Type="CONTACT" />
+      <Association Name="ADDRESS_CUSTOMER" Member="CUSTOMERs" ThisKey="ID" OtherKey="AddressID" Type="CUSTOMER" />
+      <Association Name="ADDRESS_PROJECT" Member="PROJECTs" ThisKey="ID" OtherKey="AddressID" Type="PROJECT" />
+      <Association Name="ADDRESS_REAL_ESTATE" Member="REAL_ESTATEs" ThisKey="ID" OtherKey="AddressID" Type="REAL_ESTATE" />
+      <Association Name="WARD_ADDRESS" Member="WARD" ThisKey="WardID" OtherKey="ID" Type="WARD" IsForeignKey="true" DeleteRule="CASCADE" />
+      <Association Name="CITY_ADDRESS" Member="CITY" ThisKey="CityID" OtherKey="ID" Type="CITY" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="DISTRICT_ADDRESS" Member="DISTRICT" ThisKey="DistrictID" OtherKey="ID" Type="DISTRICT" IsForeignKey="true" DeleteRule="CASCADE" />
+      <Association Name="NATION_ADDRESS" Member="NATION" ThisKey="NationID" OtherKey="ID" Type="NATION" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="STREET_ADDRESS" Member="STREET" ThisKey="StreetID" OtherKey="ID" Type="STREET" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.WARD" Member="WARDs">
+    <Type Name="WARD">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="DistrictID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="WARD_ADDRESS" Member="ADDRESSes" ThisKey="ID" OtherKey="WardID" Type="ADDRESS" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CITY" Member="CITies">
+    <Type Name="CITY">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="NationID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="CITY_ADDRESS" Member="ADDRESSes" ThisKey="ID" OtherKey="CityID" Type="ADDRESS" />
+    </Type>
+  </Table>
+  <Table Name="dbo.COMPANY" Member="COMPANies">
+    <Type Name="COMPANY">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="AddressID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Phone" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="HomePhone" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="Fax" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Website" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="EstablishDay" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="ShareCapital" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="FieldOfAction" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="BusinessRegistration" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Association Name="COMPANY_COMPANY_IMAGE" Member="COMPANY_IMAGEs" ThisKey="ID" OtherKey="CompanyID" Type="COMPANY_IMAGE" />
+      <Association Name="COMPANY_PROPERTY_COMPANY" Member="PROPERTY_COMPANies" ThisKey="ID" OtherKey="CompanyID" Type="PROPERTY_COMPANY" />
+      <Association Name="ADDRESS_COMPANY" Member="ADDRESS" ThisKey="AddressID" OtherKey="ID" Type="ADDRESS" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.COMPANY_IMAGE" Member="COMPANY_IMAGEs">
+    <Type Name="COMPANY_IMAGE">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CompanyID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ImageID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="COMPANY_COMPANY_IMAGE" Member="COMPANY" ThisKey="CompanyID" OtherKey="ID" Type="COMPANY" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="IMAGE_COMPANY_IMAGE" Member="IMAGE" ThisKey="ImageID" OtherKey="ID" Type="IMAGE" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CONTACT" Member="CONTACTs">
+    <Type Name="CONTACT">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="AddressID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Phone" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="HomePhone" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="Note" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Association Name="CONTACT_REAL_ESTATE" Member="REAL_ESTATEs" ThisKey="ID" OtherKey="ContactID" Type="REAL_ESTATE" />
+      <Association Name="ADDRESS_CONTACT" Member="ADDRESS" ThisKey="AddressID" OtherKey="ID" Type="ADDRESS" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CUSTOMER" Member="CUSTOMERs">
+    <Type Name="CUSTOMER">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="AddressID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IdentityCard" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="Phone" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="HomePhone" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="UserID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="CUSTOMER_PROPERTY_CUSTOMER" Member="PROPERTY_CUSTOMERs" ThisKey="ID" OtherKey="CustomerID" Type="PROPERTY_CUSTOMER" />
+      <Association Name="ADDRESS_CUSTOMER" Member="ADDRESS" ThisKey="AddressID" OtherKey="ID" Type="ADDRESS" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="USER_CUSTOMER" Member="USER" ThisKey="UserID" OtherKey="ID" Type="USER" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.DISTRICT" Member="DISTRICTs">
+    <Type Name="DISTRICT">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="CityID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="DISTRICT_ADDRESS" Member="ADDRESSes" ThisKey="ID" OtherKey="DistrictID" Type="ADDRESS" />
+      <Association Name="DISTRICT_DISTRICT_DETAIL" Member="DISTRICT_DETAILs" ThisKey="ID" OtherKey="DistrictID" Type="DISTRICT_DETAIL" />
+    </Type>
+  </Table>
+  <Table Name="dbo.DISTRICT_DETAIL" Member="DISTRICT_DETAILs">
+    <Type Name="DISTRICT_DETAIL">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="DistrictID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="StreetID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="DISTRICT_DISTRICT_DETAIL" Member="DISTRICT" ThisKey="DistrictID" OtherKey="ID" Type="DISTRICT" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="STREET_DISTRICT_DETAIL" Member="STREET" ThisKey="StreetID" OtherKey="ID" Type="STREET" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[GROUP]" Member="GROUPs">
+    <Type Name="GROUP">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Association Name="GROUP_GROUP_DETAIL" Member="GROUP_DETAILs" ThisKey="ID" OtherKey="GroupID" Type="GROUP_DETAIL" />
+      <Association Name="GROUP_USER" Member="USERs" ThisKey="ID" OtherKey="GroupID" Type="USER" />
+    </Type>
+  </Table>
+  <Table Name="dbo.GROUP_DETAIL" Member="GROUP_DETAILs">
+    <Type Name="GROUP_DETAIL">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="GroupID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RuleID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="GROUP_GROUP_DETAIL" Member="GROUP" ThisKey="GroupID" OtherKey="ID" Type="GROUP" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="RULE_GROUP_DETAIL" Member="RULE" ThisKey="RuleID" OtherKey="ID" Type="RULE" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.IMAGE" Member="IMAGEs">
+    <Type Name="IMAGE">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="Path" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Association Name="IMAGE_COMPANY_IMAGE" Member="COMPANY_IMAGEs" ThisKey="ID" OtherKey="ImageID" Type="COMPANY_IMAGE" />
+      <Association Name="IMAGE_NEW" Member="NEWs" ThisKey="ID" OtherKey="ImageID" Type="NEW" />
+      <Association Name="IMAGE_REAL_ESTATE_IMAGE" Member="REAL_ESTATE_IMAGEs" ThisKey="ID" OtherKey="ImageID" Type="REAL_ESTATE_IMAGE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.NATION" Member="NATIONs">
+    <Type Name="NATION">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="NationCode" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Association Name="NATION_ADDRESS" Member="ADDRESSes" ThisKey="ID" OtherKey="NationID" Type="ADDRESS" />
+    </Type>
+  </Table>
+  <Table Name="dbo.NEWS" Member="NEWs">
+    <Type Name="NEW">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Title" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Content" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Author" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Rate" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PublishTime" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="ImageID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="IMAGE_NEW" Member="IMAGE" ThisKey="ImageID" OtherKey="ID" Type="IMAGE" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="NEWS_TYPE_NEW" Member="NEWS_TYPE" ThisKey="TypeID" OtherKey="ID" Type="NEWS_TYPE" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.NEWS_SALE" Member="NEWS_SALEs">
+    <Type Name="NEWS_SALE">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Title" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Content" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="RealEstateID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Rate" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdateTime" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Association Name="NEWS_SALE_TYPE_NEWS_SALE" Member="NEWS_SALE_TYPE" ThisKey="TypeID" OtherKey="ID" Type="NEWS_SALE_TYPE" IsForeignKey="true" />
+      <Association Name="REAL_ESTATE_NEWS_SALE" Member="REAL_ESTATE" ThisKey="RealEstateID" OtherKey="ID" Type="REAL_ESTATE" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.NEWS_SALE_TYPE" Member="NEWS_SALE_TYPEs">
+    <Type Name="NEWS_SALE_TYPE">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Association Name="NEWS_SALE_TYPE_NEWS_SALE" Member="NEWS_SALEs" ThisKey="ID" OtherKey="TypeID" Type="NEWS_SALE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.NEWS_TYPE" Member="NEWS_TYPEs">
+    <Type Name="NEWS_TYPE">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Association Name="NEWS_TYPE_NEW" Member="NEWs" ThisKey="ID" OtherKey="TypeID" Type="NEW" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PROJECT" Member="PROJECTs">
+    <Type Name="PROJECT">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="BeginDay" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="AddressID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Association Name="PROJECT_REAL_ESTATE" Member="REAL_ESTATEs" ThisKey="ID" OtherKey="ProjectID" Type="REAL_ESTATE" />
+      <Association Name="ADDRESS_PROJECT" Member="ADDRESS" ThisKey="AddressID" OtherKey="ID" Type="ADDRESS" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="PROJECT_TYPE_PROJECT" Member="PROJECT_TYPE" ThisKey="TypeID" OtherKey="ID" Type="PROJECT_TYPE" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PROJECT_TYPE" Member="PROJECT_TYPEs">
+    <Type Name="PROJECT_TYPE">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Association Name="PROJECT_TYPE_PROJECT" Member="PROJECTs" ThisKey="ID" OtherKey="TypeID" Type="PROJECT" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PROPERTY_COMPANY" Member="PROPERTY_COMPANies">
+    <Type Name="PROPERTY_COMPANY">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CompanyID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RealEstateID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="COMPANY_PROPERTY_COMPANY" Member="COMPANY" ThisKey="CompanyID" OtherKey="ID" Type="COMPANY" IsForeignKey="true" />
+      <Association Name="REAL_ESTATE_PROPERTY_COMPANY" Member="REAL_ESTATE" ThisKey="RealEstateID" OtherKey="ID" Type="REAL_ESTATE" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PROPERTY_CUSTOMER" Member="PROPERTY_CUSTOMERs">
+    <Type Name="PROPERTY_CUSTOMER">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CustomerID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RealEstateID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="CUSTOMER_PROPERTY_CUSTOMER" Member="CUSTOMER" ThisKey="CustomerID" OtherKey="ID" Type="CUSTOMER" IsForeignKey="true" />
+      <Association Name="REAL_ESTATE_PROPERTY_CUSTOMER" Member="REAL_ESTATE" ThisKey="RealEstateID" OtherKey="ID" Type="REAL_ESTATE" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.REAL_ESTATE" Member="REAL_ESTATEs">
+    <Type Name="REAL_ESTATE">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AddressID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LivingRoom" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BedRoom" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BathRoom" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Storey" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TotalUseArea" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="CampusFront" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="CampusBehind" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="CampusLength" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="BuildFront" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="BuildBehind" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="BuildLength" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="Legal" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="Direction" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="FrontStreet" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Location" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Price" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="UnitID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UnitPriceID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProjectID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ContactID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="REAL_ESTATE_NEWS_SALE" Member="NEWS_SALEs" ThisKey="ID" OtherKey="RealEstateID" Type="NEWS_SALE" />
+      <Association Name="REAL_ESTATE_PROPERTY_COMPANY" Member="PROPERTY_COMPANies" ThisKey="ID" OtherKey="RealEstateID" Type="PROPERTY_COMPANY" />
+      <Association Name="REAL_ESTATE_PROPERTY_CUSTOMER" Member="PROPERTY_CUSTOMERs" ThisKey="ID" OtherKey="RealEstateID" Type="PROPERTY_CUSTOMER" />
+      <Association Name="REAL_ESTATE_REAL_ESTATE_IMAGE" Member="REAL_ESTATE_IMAGEs" ThisKey="ID" OtherKey="RealEstateID" Type="REAL_ESTATE_IMAGE" />
+      <Association Name="REAL_ESTATE_UTILITY_DETAIL" Member="UTILITY_DETAILs" ThisKey="ID" OtherKey="RealEstateID" Type="UTILITY_DETAIL" />
+      <Association Name="ADDRESS_REAL_ESTATE" Member="ADDRESS" ThisKey="AddressID" OtherKey="ID" Type="ADDRESS" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="CONTACT_REAL_ESTATE" Member="CONTACT" ThisKey="ContactID" OtherKey="ID" Type="CONTACT" IsForeignKey="true" DeleteRule="CASCADE" />
+      <Association Name="PROJECT_REAL_ESTATE" Member="PROJECT" ThisKey="ProjectID" OtherKey="ID" Type="PROJECT" IsForeignKey="true" />
+      <Association Name="REAL_ESTATE_TYPE_REAL_ESTATE" Member="REAL_ESTATE_TYPE" ThisKey="TypeID" OtherKey="ID" Type="REAL_ESTATE_TYPE" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="UNIT_REAL_ESTATE" Member="UNIT" ThisKey="UnitID" OtherKey="ID" Type="UNIT" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="UNIT_PRICE_REAL_ESTATE" Member="UNIT_PRICE" ThisKey="UnitPriceID" OtherKey="ID" Type="UNIT_PRICE" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.REAL_ESTATE_IMAGE" Member="REAL_ESTATE_IMAGEs">
+    <Type Name="REAL_ESTATE_IMAGE">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="RealEstateID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ImageID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="IMAGE_REAL_ESTATE_IMAGE" Member="IMAGE" ThisKey="ImageID" OtherKey="ID" Type="IMAGE" IsForeignKey="true" />
+      <Association Name="REAL_ESTATE_REAL_ESTATE_IMAGE" Member="REAL_ESTATE" ThisKey="RealEstateID" OtherKey="ID" Type="REAL_ESTATE" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.REAL_ESTATE_TYPE" Member="REAL_ESTATE_TYPEs">
+    <Type Name="REAL_ESTATE_TYPE">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Association Name="REAL_ESTATE_TYPE_REAL_ESTATE" Member="REAL_ESTATEs" ThisKey="ID" OtherKey="TypeID" Type="REAL_ESTATE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[RULE]" Member="RULEs">
+    <Type Name="RULE">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Association Name="RULE_GROUP_DETAIL" Member="GROUP_DETAILs" ThisKey="ID" OtherKey="RuleID" Type="GROUP_DETAIL" />
+    </Type>
+  </Table>
+  <Table Name="dbo.STREET" Member="STREETs">
+    <Type Name="STREET">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Association Name="STREET_ADDRESS" Member="ADDRESSes" ThisKey="ID" OtherKey="StreetID" Type="ADDRESS" />
+      <Association Name="STREET_DISTRICT_DETAIL" Member="DISTRICT_DETAILs" ThisKey="ID" OtherKey="StreetID" Type="DISTRICT_DETAIL" />
+    </Type>
+  </Table>
+  <Table Name="dbo.UNIT" Member="UNITs">
+    <Type Name="UNIT">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="UNIT_REAL_ESTATE" Member="REAL_ESTATEs" ThisKey="ID" OtherKey="UnitID" Type="REAL_ESTATE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.UNIT_PRICE" Member="UNIT_PRICEs">
+    <Type Name="UNIT_PRICE">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Association Name="UNIT_PRICE_REAL_ESTATE" Member="REAL_ESTATEs" ThisKey="ID" OtherKey="UnitPriceID" Type="REAL_ESTATE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[USER]" Member="USERs">
+    <Type Name="USER">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Username" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Password" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Phone" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="GroupID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="USER_CUSTOMER" Member="CUSTOMERs" ThisKey="ID" OtherKey="UserID" Type="CUSTOMER" />
+      <Association Name="GROUP_USER" Member="GROUP" ThisKey="GroupID" OtherKey="ID" Type="GROUP" IsForeignKey="true" DeleteRule="CASCADE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.UTILITY" Member="UTILITies">
+    <Type Name="UTILITY">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Association Name="UTILITY_UTILITY_DETAIL" Member="UTILITY_DETAILs" ThisKey="ID" OtherKey="UtilityID" Type="UTILITY_DETAIL" />
+    </Type>
+  </Table>
+  <Table Name="dbo.UTILITY_DETAIL" Member="UTILITY_DETAILs">
+    <Type Name="UTILITY_DETAIL">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="RealEstateID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UtilityID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="REAL_ESTATE_UTILITY_DETAIL" Member="REAL_ESTATE" ThisKey="RealEstateID" OtherKey="ID" Type="REAL_ESTATE" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="UTILITY_UTILITY_DETAIL" Member="UTILITY" ThisKey="UtilityID" OtherKey="ID" Type="UTILITY" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+</Database>
