@@ -1,0 +1,274 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="SaiGonDental" Class="Database_ConnectionDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=.\SQLEXPRESS;Initial Catalog=SaiGonDental;Integrated Security=True" SettingsObjectName="PhongKhamManagement.Properties.Settings" SettingsPropertyName="SaiGonDentalConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.ACADEMIC" Member="ACADEMICs">
+    <Type Name="ACADEMIC">
+      <Column Name="Id" Type="System.Int16" DbType="SmallInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(70) NOT NULL" CanBeNull="false" />
+      <Column Name="Detail" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Association Name="ACADEMIC_EMPLOYEE" Member="EMPLOYEEs" ThisKey="Id" OtherKey="AcademicId" Type="EMPLOYEE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.WARD" Member="WARDs">
+    <Type Name="WARD">
+      <Column Name="Id" Type="System.Int16" DbType="SmallInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(70) NOT NULL" CanBeNull="false" />
+      <Column Name="DistrictId" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Association Name="WARD_BRANCH" Member="BRANCHes" ThisKey="Id" OtherKey="WardId" Type="BRANCH" />
+      <Association Name="WARD_CUSTOMER" Member="CUSTOMERs" ThisKey="Id" OtherKey="WardId" Type="CUSTOMER" />
+      <Association Name="WARD_EMPLOYEE" Member="EMPLOYEEs" ThisKey="Id" OtherKey="WardId" Type="EMPLOYEE" />
+      <Association Name="DISTRICT_WARD" Member="DISTRICT" ThisKey="DistrictId" OtherKey="Id" Type="DISTRICT" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.BRANCH" Member="BRANCHes">
+    <Type Name="BRANCH">
+      <Column Name="Id" Type="System.Int16" DbType="SmallInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(70) NOT NULL" CanBeNull="false" />
+      <Column Name="CityId" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="DistrictId" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="WardId" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="StreetId" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="AddressDetail" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Association Name="BRANCH_CUSTOMER" Member="CUSTOMERs" ThisKey="Id" OtherKey="BranchId" Type="CUSTOMER" />
+      <Association Name="BRANCH_EMPLOYEE" Member="EMPLOYEEs" ThisKey="Id" OtherKey="BranchId" Type="EMPLOYEE" />
+      <Association Name="WARD_BRANCH" Member="WARD" ThisKey="WardId" OtherKey="Id" Type="WARD" IsForeignKey="true" />
+      <Association Name="CITY_BRANCH" Member="CITY" ThisKey="CityId" OtherKey="Id" Type="CITY" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="DISTRICT_BRANCH" Member="DISTRICT" ThisKey="DistrictId" OtherKey="Id" Type="DISTRICT" IsForeignKey="true" />
+      <Association Name="STREET_BRANCH" Member="STREET" ThisKey="StreetId" OtherKey="Id" Type="STREET" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CITY" Member="CITies">
+    <Type Name="CITY">
+      <Column Name="Id" Type="System.Int16" DbType="SmallInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(70) NOT NULL" CanBeNull="false" />
+      <Association Name="CITY_BRANCH" Member="BRANCHes" ThisKey="Id" OtherKey="CityId" Type="BRANCH" />
+      <Association Name="CITY_CUSTOMER" Member="CUSTOMERs" ThisKey="Id" OtherKey="CityId" Type="CUSTOMER" />
+      <Association Name="CITY_DISTRICT" Member="DISTRICTs" ThisKey="Id" OtherKey="CityId" Type="DISTRICT" />
+      <Association Name="CITY_EMPLOYEE" Member="EMPLOYEEs" ThisKey="Id" OtherKey="CityId" Type="EMPLOYEE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CUSTOMER" Member="CUSTOMERs">
+    <Type Name="CUSTOMER">
+      <Column Name="Id" Type="System.String" DbType="Char(12) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(70) NOT NULL" CanBeNull="false" />
+      <Column Name="Birthday" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
+      <Column Name="Gender" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="CityId" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="DistrictId" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="WardId" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="StreetId" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="AddressDetail" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Phone" Type="System.String" DbType="VarChar(70)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(70)" CanBeNull="true" />
+      <Column Name="JobId" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="BranchId" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Association Name="CUSTOMER_DISEASEBEFORE_DETAIL" Member="DISEASEBEFORE_DETAILs" ThisKey="Id" OtherKey="CustomerId" Type="DISEASEBEFORE_DETAIL" />
+      <Association Name="CUSTOMER_KNOWREASON_DETAIL" Member="KNOWREASON_DETAILs" ThisKey="Id" OtherKey="CustomerId" Type="KNOWREASON_DETAIL" />
+      <Association Name="CUSTOMER_TREATMENTDETAIL" Member="TREATMENTDETAILs" ThisKey="Id" OtherKey="CustomerId" Type="TREATMENTDETAIL" />
+      <Association Name="CUSTOMER_TREATMENTPROFILE" Member="TREATMENTPROFILEs" ThisKey="Id" OtherKey="CustomerId" Type="TREATMENTPROFILE" />
+      <Association Name="BRANCH_CUSTOMER" Member="BRANCH" ThisKey="BranchId" OtherKey="Id" Type="BRANCH" IsForeignKey="true" />
+      <Association Name="CITY_CUSTOMER" Member="CITY" ThisKey="CityId" OtherKey="Id" Type="CITY" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="WARD_CUSTOMER" Member="WARD" ThisKey="WardId" OtherKey="Id" Type="WARD" IsForeignKey="true" />
+      <Association Name="DISTRICT_CUSTOMER" Member="DISTRICT" ThisKey="DistrictId" OtherKey="Id" Type="DISTRICT" IsForeignKey="true" />
+      <Association Name="JOB_CUSTOMER" Member="JOB" ThisKey="JobId" OtherKey="Id" Type="JOB" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="STREET_CUSTOMER" Member="STREET" ThisKey="StreetId" OtherKey="Id" Type="STREET" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.DEPARTMENT" Member="DEPARTMENTs">
+    <Type Name="DEPARTMENT">
+      <Column Name="Id" Type="System.Int16" DbType="SmallInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(70) NOT NULL" CanBeNull="false" />
+      <Column Name="Detail" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Association Name="DEPARTMENT_EMPLOYEE" Member="EMPLOYEEs" ThisKey="Id" OtherKey="DepartmentId" Type="EMPLOYEE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.DISEASEBEFORE" Member="DISEASEBEFOREs">
+    <Type Name="DISEASEBEFORE">
+      <Column Name="Id" Type="System.Int16" DbType="SmallInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(70) NOT NULL" CanBeNull="false" />
+      <Column Name="Detail" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Association Name="DISEASEBEFORE_DISEASEBEFORE_DETAIL" Member="DISEASEBEFORE_DETAILs" ThisKey="Id" OtherKey="DiseaseBeforeId" Type="DISEASEBEFORE_DETAIL" />
+    </Type>
+  </Table>
+  <Table Name="dbo.DISEASEBEFORE_DETAIL" Member="DISEASEBEFORE_DETAILs">
+    <Type Name="DISEASEBEFORE_DETAIL">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CustomerId" Type="System.String" DbType="Char(12) NOT NULL" CanBeNull="false" />
+      <Column Name="DiseaseBeforeId" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Association Name="CUSTOMER_DISEASEBEFORE_DETAIL" Member="CUSTOMER" ThisKey="CustomerId" OtherKey="Id" Type="CUSTOMER" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="DISEASEBEFORE_DISEASEBEFORE_DETAIL" Member="DISEASEBEFORE" ThisKey="DiseaseBeforeId" OtherKey="Id" Type="DISEASEBEFORE" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.DISTRICT" Member="DISTRICTs">
+    <Type Name="DISTRICT">
+      <Column Name="Id" Type="System.Int16" DbType="SmallInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(70) NOT NULL" CanBeNull="false" />
+      <Column Name="CityId" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Association Name="DISTRICT_WARD" Member="WARDs" ThisKey="Id" OtherKey="DistrictId" Type="WARD" />
+      <Association Name="DISTRICT_BRANCH" Member="BRANCHes" ThisKey="Id" OtherKey="DistrictId" Type="BRANCH" />
+      <Association Name="DISTRICT_CUSTOMER" Member="CUSTOMERs" ThisKey="Id" OtherKey="DistrictId" Type="CUSTOMER" />
+      <Association Name="DISTRICT_DISTRICT_DETAIL" Member="DISTRICT_DETAILs" ThisKey="Id" OtherKey="DistrictId" Type="DISTRICT_DETAIL" />
+      <Association Name="DISTRICT_EMPLOYEE" Member="EMPLOYEEs" ThisKey="Id" OtherKey="DistrictId" Type="EMPLOYEE" />
+      <Association Name="CITY_DISTRICT" Member="CITY" ThisKey="CityId" OtherKey="Id" Type="CITY" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.DISTRICT_DETAIL" Member="DISTRICT_DETAILs">
+    <Type Name="DISTRICT_DETAIL">
+      <Column Name="Id" Type="System.Int16" DbType="SmallInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="DistrictId" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="StreetId" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Association Name="DISTRICT_DISTRICT_DETAIL" Member="DISTRICT" ThisKey="DistrictId" OtherKey="Id" Type="DISTRICT" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="STREET_DISTRICT_DETAIL" Member="STREET" ThisKey="StreetId" OtherKey="Id" Type="STREET" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.EMPLOYEE" Member="EMPLOYEEs">
+    <Type Name="EMPLOYEE">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(70) NOT NULL" CanBeNull="false" />
+      <Column Name="Birthday" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
+      <Column Name="Gender" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="CityId" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="DistrictId" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="WardId" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="StreetId" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="AddressDetail" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Phone" Type="System.String" DbType="VarChar(70)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(70)" CanBeNull="true" />
+      <Column Name="DepartmentId" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="AcademicId" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="BranchId" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Association Name="EMPLOYEE_TREATMENTDETAIL" Member="TREATMENTDETAILs" ThisKey="Id" OtherKey="ReceptionistId" Type="TREATMENTDETAIL" />
+      <Association Name="EMPLOYEE_TREATMENTDETAIL1" Member="TREATMENTDETAILs1" ThisKey="Id" OtherKey="DoctorId" Type="TREATMENTDETAIL" />
+      <Association Name="EMPLOYEE_USER" Member="USERs" ThisKey="Id" OtherKey="EmployeeId" Type="USER" />
+      <Association Name="ACADEMIC_EMPLOYEE" Member="ACADEMIC" ThisKey="AcademicId" OtherKey="Id" Type="ACADEMIC" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="BRANCH_EMPLOYEE" Member="BRANCH" ThisKey="BranchId" OtherKey="Id" Type="BRANCH" IsForeignKey="true" />
+      <Association Name="CITY_EMPLOYEE" Member="CITY" ThisKey="CityId" OtherKey="Id" Type="CITY" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="DEPARTMENT_EMPLOYEE" Member="DEPARTMENT" ThisKey="DepartmentId" OtherKey="Id" Type="DEPARTMENT" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="DISTRICT_EMPLOYEE" Member="DISTRICT" ThisKey="DistrictId" OtherKey="Id" Type="DISTRICT" IsForeignKey="true" />
+      <Association Name="WARD_EMPLOYEE" Member="WARD" ThisKey="WardId" OtherKey="Id" Type="WARD" IsForeignKey="true" />
+      <Association Name="STREET_EMPLOYEE" Member="STREET" ThisKey="StreetId" OtherKey="Id" Type="STREET" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[GROUP]" Member="GROUPs">
+    <Type Name="GROUP">
+      <Column Name="Id" Type="System.Int16" DbType="SmallInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(70) NOT NULL" CanBeNull="false" />
+      <Column Name="Detail" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Association Name="GROUP_GROUP_DETAIL" Member="GROUP_DETAILs" ThisKey="Id" OtherKey="GroupId" Type="GROUP_DETAIL" />
+      <Association Name="GROUP_USER" Member="USERs" ThisKey="Id" OtherKey="GroupId" Type="USER" />
+    </Type>
+  </Table>
+  <Table Name="dbo.GROUP_DETAIL" Member="GROUP_DETAILs">
+    <Type Name="GROUP_DETAIL">
+      <Column Name="Id" Type="System.Int16" DbType="SmallInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="GroupId" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Column Name="RuleId" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Association Name="GROUP_GROUP_DETAIL" Member="GROUP" ThisKey="GroupId" OtherKey="Id" Type="GROUP" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="RULE_GROUP_DETAIL" Member="RULE" ThisKey="RuleId" OtherKey="Id" Type="RULE" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.JOB" Member="JOBs">
+    <Type Name="JOB">
+      <Column Name="Id" Type="System.Int16" DbType="SmallInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(70) NOT NULL" CanBeNull="false" />
+      <Column Name="Detail" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Association Name="JOB_CUSTOMER" Member="CUSTOMERs" ThisKey="Id" OtherKey="JobId" Type="CUSTOMER" />
+    </Type>
+  </Table>
+  <Table Name="dbo.KNOWREASON" Member="KNOWREASONs">
+    <Type Name="KNOWREASON">
+      <Column Name="Id" Type="System.Int16" DbType="SmallInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(70) NOT NULL" CanBeNull="false" />
+      <Column Name="Detail" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Association Name="KNOWREASON_KNOWREASON_DETAIL" Member="KNOWREASON_DETAILs" ThisKey="Id" OtherKey="KnowReasonId" Type="KNOWREASON_DETAIL" />
+    </Type>
+  </Table>
+  <Table Name="dbo.KNOWREASON_DETAIL" Member="KNOWREASON_DETAILs">
+    <Type Name="KNOWREASON_DETAIL">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CustomerId" Type="System.String" DbType="Char(12) NOT NULL" CanBeNull="false" />
+      <Column Name="KnowReasonId" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Association Name="CUSTOMER_KNOWREASON_DETAIL" Member="CUSTOMER" ThisKey="CustomerId" OtherKey="Id" Type="CUSTOMER" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="KNOWREASON_KNOWREASON_DETAIL" Member="KNOWREASON" ThisKey="KnowReasonId" OtherKey="Id" Type="KNOWREASON" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[RULE]" Member="RULEs">
+    <Type Name="RULE">
+      <Column Name="Id" Type="System.Int16" DbType="SmallInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(70) NOT NULL" CanBeNull="false" />
+      <Column Name="Detail" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Association Name="RULE_GROUP_DETAIL" Member="GROUP_DETAILs" ThisKey="Id" OtherKey="RuleId" Type="GROUP_DETAIL" />
+    </Type>
+  </Table>
+  <Table Name="dbo.STREET" Member="STREETs">
+    <Type Name="STREET">
+      <Column Name="Id" Type="System.Int16" DbType="SmallInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(70) NOT NULL" CanBeNull="false" />
+      <Association Name="STREET_BRANCH" Member="BRANCHes" ThisKey="Id" OtherKey="StreetId" Type="BRANCH" />
+      <Association Name="STREET_CUSTOMER" Member="CUSTOMERs" ThisKey="Id" OtherKey="StreetId" Type="CUSTOMER" />
+      <Association Name="STREET_DISTRICT_DETAIL" Member="DISTRICT_DETAILs" ThisKey="Id" OtherKey="StreetId" Type="DISTRICT_DETAIL" />
+      <Association Name="STREET_EMPLOYEE" Member="EMPLOYEEs" ThisKey="Id" OtherKey="StreetId" Type="EMPLOYEE" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TREATMENTDETAIL" Member="TREATMENTDETAILs">
+    <Type Name="TREATMENTDETAIL">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Date" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
+      <Column Name="Teeth" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Treatment" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Cost" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="Payment" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="ExamTime" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="CustomerId" Type="System.String" DbType="Char(12) NOT NULL" CanBeNull="false" />
+      <Column Name="ReceptionistId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DoctorId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AppointmentDate" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
+      <Association Name="CUSTOMER_TREATMENTDETAIL" Member="CUSTOMER" ThisKey="CustomerId" OtherKey="Id" Type="CUSTOMER" IsForeignKey="true" />
+      <Association Name="EMPLOYEE_TREATMENTDETAIL" Member="EMPLOYEE" ThisKey="ReceptionistId" OtherKey="Id" Type="EMPLOYEE" IsForeignKey="true" />
+      <Association Name="EMPLOYEE_TREATMENTDETAIL1" Member="EMPLOYEE1" ThisKey="DoctorId" OtherKey="Id" Type="EMPLOYEE" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TREATMENTPLAN" Member="TREATMENTPLANs">
+    <Type Name="TREATMENTPLAN">
+      <Column Name="Id" Type="System.Int16" DbType="SmallInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(70) NOT NULL" CanBeNull="false" />
+      <Column Name="Detail" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Association Name="TREATMENTPLAN_TREATMENTPLAN_DETAIL" Member="TREATMENTPLAN_DETAILs" ThisKey="Id" OtherKey="PlanId" Type="TREATMENTPLAN_DETAIL" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TREATMENTPLAN_DETAIL" Member="TREATMENTPLAN_DETAILs">
+    <Type Name="TREATMENTPLAN_DETAIL">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProfileId" Type="System.String" DbType="Char(12) NOT NULL" CanBeNull="false" />
+      <Column Name="PlanId" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Association Name="TREATMENTPLAN_TREATMENTPLAN_DETAIL" Member="TREATMENTPLAN" ThisKey="PlanId" OtherKey="Id" Type="TREATMENTPLAN" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="TREATMENTPROFILE_TREATMENTPLAN_DETAIL" Member="TREATMENTPROFILE" ThisKey="ProfileId" OtherKey="Id" Type="TREATMENTPROFILE" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TREATMENTPROFILE" Member="TREATMENTPROFILEs">
+    <Type Name="TREATMENTPROFILE">
+      <Column Name="Id" Type="System.String" DbType="Char(12) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Date" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
+      <Column Name="Reason" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Request" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Teeth" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="IsPanorex" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="IsPhin" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="CustomerId" Type="System.String" DbType="Char(12) NOT NULL" CanBeNull="false" />
+      <Association Name="TREATMENTPROFILE_TREATMENTPLAN_DETAIL" Member="TREATMENTPLAN_DETAILs" ThisKey="Id" OtherKey="ProfileId" Type="TREATMENTPLAN_DETAIL" />
+      <Association Name="CUSTOMER_TREATMENTPROFILE" Member="CUSTOMER" ThisKey="CustomerId" OtherKey="Id" Type="CUSTOMER" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.[USER]" Member="USERs">
+    <Type Name="USER">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Username" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Password" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Phone" Type="System.String" DbType="VarChar(70)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(70)" CanBeNull="true" />
+      <Column Name="EmployeeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="GroupId" Type="System.Int16" DbType="SmallInt NOT NULL" CanBeNull="false" />
+      <Association Name="EMPLOYEE_USER" Member="EMPLOYEE" ThisKey="EmployeeId" OtherKey="Id" Type="EMPLOYEE" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="GROUP_USER" Member="GROUP" ThisKey="GroupId" OtherKey="Id" Type="GROUP" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+</Database>
