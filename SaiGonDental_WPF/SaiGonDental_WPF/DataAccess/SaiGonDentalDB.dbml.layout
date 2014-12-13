@@ -1,0 +1,389 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 22.75, 21.375" name="SaiGonDentalDB">
+  <DataContextMoniker Name="/SaiGonDentalDBDataContext" />
+  <nestedChildShapes>
+    <classShape Id="6d7759c2-8236-4f8a-8143-e89494bb30a8" absoluteBounds="12, 6.375, 2, 1.3862939453125005">
+      <DataClassMoniker Name="/SaiGonDentalDBDataContext/ACADEMIC" />
+      <nestedChildShapes>
+        <elementListCompartment Id="14d823a4-b704-4932-8be9-5d4a2366a27b" absoluteBounds="12.015, 6.835, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="e42456ac-43b6-4419-b3e2-547eba43decb" absoluteBounds="6.25, 10.5, 2, 1.3862939453124987">
+      <DataClassMoniker Name="/SaiGonDentalDBDataContext/WARD" />
+      <nestedChildShapes>
+        <elementListCompartment Id="da7c856e-2f04-48c9-91de-d4a470ccdf56" absoluteBounds="6.265, 10.96, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="d2e58f3c-f9ad-4311-87b7-543205d72221" absoluteBounds="9, 10.125, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/SaiGonDentalDBDataContext/BRANCH" />
+      <nestedChildShapes>
+        <elementListCompartment Id="3a0832c3-daf3-4a1a-8aec-ab2716709b81" absoluteBounds="9.015, 10.585, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="e0cbba75-4d2f-4108-bba8-1f8b47e15651" absoluteBounds="0.75, 10.625, 2, 1.1939925130208344">
+      <DataClassMoniker Name="/SaiGonDentalDBDataContext/CITY" />
+      <nestedChildShapes>
+        <elementListCompartment Id="c3e1c7cf-6e35-466d-af0b-3599cec3b79e" absoluteBounds="0.765, 11.085, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="9b8ebb5a-8678-4dde-8e0c-e912add1e4ce" absoluteBounds="11.75, 9.5, 2, 3.3093082682291666">
+      <DataClassMoniker Name="/SaiGonDentalDBDataContext/CUSTOMER" />
+      <nestedChildShapes>
+        <elementListCompartment Id="ccb53089-849b-40be-8c44-b351b35b86d1" absoluteBounds="11.765, 9.96, 1.9700000000000002, 2.7493082682291665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="bd8987d3-0997-4f4f-b35f-831bcb72cb1e" absoluteBounds="12, 17.5, 2, 1.3862939453125023">
+      <DataClassMoniker Name="/SaiGonDentalDBDataContext/DEPARTMENT" />
+      <nestedChildShapes>
+        <elementListCompartment Id="9f72e902-8f5f-43ff-b0c2-a861e001ec2a" absoluteBounds="12.015, 17.96, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="be2c0905-6e06-40ff-8430-f5295c55c4c9" absoluteBounds="14.75, 3.5, 2, 1.3862939453125005">
+      <DataClassMoniker Name="/SaiGonDentalDBDataContext/DISEASEBEFORE" />
+      <nestedChildShapes>
+        <elementListCompartment Id="fac2f12d-12cd-4ec7-b46f-22c837a8442d" absoluteBounds="14.765, 3.96, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="0bed0279-2a54-4c31-a48a-e67a61e4bfc9" absoluteBounds="17.5, 10.5, 2, 1.3862939453124987">
+      <DataClassMoniker Name="/SaiGonDentalDBDataContext/DISEASEBEFORE_DETAIL" />
+      <nestedChildShapes>
+        <elementListCompartment Id="93315738-1864-4122-9985-336a68eb108c" absoluteBounds="17.515, 10.96, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="2f4d57a2-5892-46ab-98f7-dd3d035f3474" absoluteBounds="3.5, 10.5, 2, 1.3862939453124987">
+      <DataClassMoniker Name="/SaiGonDentalDBDataContext/DISTRICT" />
+      <nestedChildShapes>
+        <elementListCompartment Id="7cdf24b6-0092-4a71-bbb3-0dcf1b74d1c2" absoluteBounds="3.515, 10.96, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="3b6eb1f5-f4c1-4ab3-98cd-deea7392220f" absoluteBounds="6.25, 7.5, 2, 1.3862939453124996">
+      <DataClassMoniker Name="/SaiGonDentalDBDataContext/DISTRICT_DETAIL" />
+      <nestedChildShapes>
+        <elementListCompartment Id="e5b2ed05-ecd0-4448-a83d-7210a4c4c980" absoluteBounds="6.265, 7.96, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="1310c0c4-af1a-493a-8e22-d0dafaf98d93" absoluteBounds="14.75, 9.375, 2, 3.5016097005208344">
+      <DataClassMoniker Name="/SaiGonDentalDBDataContext/EMPLOYEE" />
+      <nestedChildShapes>
+        <elementListCompartment Id="e0dbe8e4-7afa-49e5-8df0-6520718e3c47" absoluteBounds="14.765, 9.835, 1.9700000000000002, 2.941609700520833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="b2cfc32e-8846-4a95-a221-7429857ccd52" absoluteBounds="17.75, 4.5, 2, 1.3862939453125005">
+      <DataClassMoniker Name="/SaiGonDentalDBDataContext/GROUP" />
+      <nestedChildShapes>
+        <elementListCompartment Id="c3d33b25-0648-4b11-b579-13c67d32c62a" absoluteBounds="17.765, 4.96, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="c6203d05-608b-44c7-8ccb-c62c663e27de" absoluteBounds="20.5, 3.5, 2, 1.3862939453125005">
+      <DataClassMoniker Name="/SaiGonDentalDBDataContext/GROUP_DETAIL" />
+      <nestedChildShapes>
+        <elementListCompartment Id="2c403915-5482-468e-bc8d-9e7baabd3007" absoluteBounds="20.515, 3.96, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="ef8c8580-0db0-4f17-b0e2-9ae7f728bbd8" absoluteBounds="9, 7.5, 2, 1.3862939453124996">
+      <DataClassMoniker Name="/SaiGonDentalDBDataContext/JOB" />
+      <nestedChildShapes>
+        <elementListCompartment Id="e73e91b5-a750-4b8d-9475-17e95e3600b7" absoluteBounds="9.015, 7.96, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="b7d85e61-a8ee-402c-b9bc-c718868ad079" absoluteBounds="14.75, 6.5, 2, 1.3862939453125005">
+      <DataClassMoniker Name="/SaiGonDentalDBDataContext/KNOWREASON" />
+      <nestedChildShapes>
+        <elementListCompartment Id="9da0bdc9-a918-4f30-95f2-1a83bf164ebc" absoluteBounds="14.765, 6.96, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="4703c1ca-17dd-4f6c-bc5e-40ad734684c5" absoluteBounds="17.5, 7.5, 2, 1.3862939453124996">
+      <DataClassMoniker Name="/SaiGonDentalDBDataContext/KNOWREASON_DETAIL" />
+      <nestedChildShapes>
+        <elementListCompartment Id="ca7c113b-2701-4170-b826-4bf347c86a6b" absoluteBounds="17.515, 7.96, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="4d15ca96-1eba-4011-801d-3b9f37e2a9b9" absoluteBounds="17.75, 1.5, 2, 1.3862939453125003">
+      <DataClassMoniker Name="/SaiGonDentalDBDataContext/RULE" />
+      <nestedChildShapes>
+        <elementListCompartment Id="d64f2fdd-2d1f-4953-b3c6-1bddfebbdc8e" absoluteBounds="17.765, 1.96, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="82212c65-4594-4f6a-ba6c-ac2340460bc4" absoluteBounds="6.25, 13.625, 2, 1.1939925130208344">
+      <DataClassMoniker Name="/SaiGonDentalDBDataContext/STREET" />
+      <nestedChildShapes>
+        <elementListCompartment Id="62c56c71-d127-4536-945b-4ad1af75e602" absoluteBounds="6.265, 14.085, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="95cd9f83-3ab0-408c-9054-6c693638de02" absoluteBounds="20.5, 9.75, 2, 2.9247054036458344">
+      <DataClassMoniker Name="/SaiGonDentalDBDataContext/TREATMENTDETAIL" />
+      <nestedChildShapes>
+        <elementListCompartment Id="a3e6677d-2db9-40b0-8c6d-af188b55e32b" absoluteBounds="20.515, 10.21, 1.9700000000000002, 2.364705403645833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="01a3a933-e819-476e-b01c-b0cebb6d09ff" absoluteBounds="14.5, 19.75, 2, 1.3862939453125023">
+      <DataClassMoniker Name="/SaiGonDentalDBDataContext/TREATMENTPLAN" />
+      <nestedChildShapes>
+        <elementListCompartment Id="08c6630f-e766-4894-8c4d-c1100a1e8663" absoluteBounds="14.515, 20.21, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="a962ad9d-676e-494e-9935-56a8012e909d" absoluteBounds="17.25, 14.75, 2, 1.3862939453124987">
+      <DataClassMoniker Name="/SaiGonDentalDBDataContext/TREATMENTPLAN_DETAIL" />
+      <nestedChildShapes>
+        <elementListCompartment Id="87a4fd29-9129-4a35-8f29-79856b32782a" absoluteBounds="17.265, 15.21, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="f6c287df-d26b-416b-9f62-422cfe386c61" absoluteBounds="14.5, 14.25, 2, 2.3478011067708344">
+      <DataClassMoniker Name="/SaiGonDentalDBDataContext/TREATMENTPROFILE" />
+      <nestedChildShapes>
+        <elementListCompartment Id="d441e3f6-5f1b-458b-adc6-2208a9c6090d" absoluteBounds="14.515, 14.71, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="6b7cbfd8-9c3b-4c9a-8bc1-add98f6f46dd" absoluteBounds="20.5, 6.125, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/SaiGonDentalDBDataContext/USER" />
+      <nestedChildShapes>
+        <elementListCompartment Id="6b61c202-e8df-4127-82cc-315e04e9ef75" absoluteBounds="20.515, 6.585, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(8.25 : 11.1931469726562); (9 : 11.1931469726562)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SaiGonDentalDBDataContext/WARD/WARD_BRANCH" />
+      <nodes>
+        <classShapeMoniker Id="e42456ac-43b6-4419-b3e2-547eba43decb" />
+        <classShapeMoniker Id="d2e58f3c-f9ad-4311-87b7-543205d72221" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(1.75 : 11.8189925130208); (1.75 : 12.1146468098958); (2.19791916666667 : 12.1146468098958 : JumpStart); (2.36458583333333 : 12.1146468098958 : JumpEnd); (4.41666666666667 : 12.1146468098958 : JumpStart); (4.58333333333333 : 12.1146468098958 : JumpEnd); (4.94791916666667 : 12.1146468098958 : JumpStart); (5.11458583333333 : 12.1146468098958 : JumpEnd); (5.64501953125 : 12.1146468098958 : JumpStart); (5.81168619791667 : 12.1146468098958 : JumpEnd); (5.94791666666667 : 12.1146468098958 : JumpStart); (6.11458333333333 : 12.1146468098958 : JumpEnd); (7.16666666666667 : 12.1146468098958 : JumpStart); (7.33333333333333 : 12.1146468098958 : JumpEnd); (8.39501953125 : 12.1146468098958 : JumpStart); (8.56168619791667 : 12.1146468098958 : JumpEnd); (9 : 12.1146468098958)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SaiGonDentalDBDataContext/CITY/CITY_BRANCH" />
+      <nodes>
+        <classShapeMoniker Id="e0cbba75-4d2f-4108-bba8-1f8b47e15651" />
+        <classShapeMoniker Id="d2e58f3c-f9ad-4311-87b7-543205d72221" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(11 : 11.2027498372396); (11.75 : 11.2027498372396)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SaiGonDentalDBDataContext/BRANCH/BRANCH_CUSTOMER" />
+      <nodes>
+        <classShapeMoniker Id="d2e58f3c-f9ad-4311-87b7-543205d72221" />
+        <classShapeMoniker Id="9b8ebb5a-8678-4dde-8e0c-e912add1e4ce" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.2812525 : 11.8189925130208); (2.2812525 : 12.5761539713542); (4.94791916666667 : 12.5761539713542 : JumpStart); (5.11458583333333 : 12.5761539713542 : JumpEnd); (5.79166666666667 : 12.5761539713542 : JumpStart); (6.11458333333333 : 12.5761539713542 : JumpEnd); (8.54166666666667 : 12.5761539713542 : JumpStart); (8.70833333333333 : 12.5761539713542 : JumpEnd); (9.91666666666667 : 12.5761539713542 : JumpStart); (10.0833333333333 : 12.5761539713542 : JumpEnd); (11.75 : 12.5761539713542)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SaiGonDentalDBDataContext/CITY/CITY_CUSTOMER" />
+      <nodes>
+        <classShapeMoniker Id="e0cbba75-4d2f-4108-bba8-1f8b47e15651" />
+        <classShapeMoniker Id="9b8ebb5a-8678-4dde-8e0c-e912add1e4ce" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(7.25 : 11.8862939453125); (7.25 : 12.4283243229167); (8.54166666666667 : 12.4283243229167 : JumpStart); (8.70833333333333 : 12.4283243229167 : JumpEnd); (9.91666666666667 : 12.4283243229167 : JumpStart); (10.0833333333333 : 12.4283243229167 : JumpEnd); (11.75 : 12.4283243229167)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SaiGonDentalDBDataContext/WARD/WARD_CUSTOMER" />
+      <nodes>
+        <classShapeMoniker Id="e42456ac-43b6-4419-b3e2-547eba43decb" />
+        <classShapeMoniker Id="9b8ebb5a-8678-4dde-8e0c-e912add1e4ce" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(12.75 : 12.8093082682292); (12.75 : 13.1266097005208); (13.4635451666667 : 13.1266097005208 : JumpStart); (13.6302118333333 : 13.1266097005208 : JumpEnd); (14.384358974359 : 13.1266097005208 : JumpStart); (14.6171784871795 : 13.1266097005208 : JumpEnd); (16.5416641666667 : 13.1266097005208 : JumpStart); (16.7395833333333 : 13.1266097005208 : JumpEnd); (17.125 : 13.1266097005208); (17.125 : 11.1931469726562); (17.5 : 11.1931469726562)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SaiGonDentalDBDataContext/CUSTOMER/CUSTOMER_DISEASEBEFORE_DETAIL" />
+      <nodes>
+        <classShapeMoniker Id="9b8ebb5a-8678-4dde-8e0c-e912add1e4ce" />
+        <classShapeMoniker Id="0bed0279-2a54-4c31-a48a-e67a61e4bfc9" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(16.75 : 4.8244429077524); (17.1875 : 5.2619429077524); (17.1875 : 10.8153214863281); (17.5 : 10.8153214863281)]" fixedFrom="NotFixed" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SaiGonDentalDBDataContext/DISEASEBEFORE/DISEASEBEFORE_DISEASEBEFORE_DETAIL" />
+      <nodes>
+        <classShapeMoniker Id="be2c0905-6e06-40ff-8430-f5295c55c4c9" />
+        <classShapeMoniker Id="0bed0279-2a54-4c31-a48a-e67a61e4bfc9" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.5 : 11.1931469726562); (5.94791666666667 : 11.1931469726562 : JumpStart); (6.11458333333333 : 11.1931469726562 : JumpEnd); (6.25 : 11.1931469726562)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SaiGonDentalDBDataContext/DISTRICT/DISTRICT_WARD" />
+      <nodes>
+        <classShapeMoniker Id="2f4d57a2-5892-46ab-98f7-dd3d035f3474" />
+        <classShapeMoniker Id="e42456ac-43b6-4419-b3e2-547eba43decb" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(4.5 : 11.8862939453125); (4.5 : 12.2288257421875); (4.94791916666667 : 12.2288257421875 : JumpStart); (5.11458583333333 : 12.2288257421875 : JumpEnd); (5.94791666666667 : 12.2288257421875 : JumpStart); (6.11458333333333 : 12.2288257421875 : JumpEnd); (7.16666666666667 : 12.2288257421875 : JumpStart); (7.33333333333333 : 12.2288257421875 : JumpEnd); (9 : 12.2288257421875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SaiGonDentalDBDataContext/DISTRICT/DISTRICT_BRANCH" />
+      <nodes>
+        <classShapeMoniker Id="2f4d57a2-5892-46ab-98f7-dd3d035f3474" />
+        <classShapeMoniker Id="d2e58f3c-f9ad-4311-87b7-543205d72221" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.0312525 : 11.8862939453125); (5.0312525 : 12.7239836197917); (5.79166666666667 : 12.7239836197917 : JumpStart); (6.11458333333333 : 12.7239836197917 : JumpEnd); (8.54166666666667 : 12.7239836197917 : JumpStart); (8.70833333333333 : 12.7239836197917 : JumpEnd); (9.91666666666667 : 12.7239836197917 : JumpStart); (10.0833333333333 : 12.7239836197917 : JumpEnd); (11.75 : 12.7239836197917)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SaiGonDentalDBDataContext/DISTRICT/DISTRICT_CUSTOMER" />
+      <nodes>
+        <classShapeMoniker Id="2f4d57a2-5892-46ab-98f7-dd3d035f3474" />
+        <classShapeMoniker Id="9b8ebb5a-8678-4dde-8e0c-e912add1e4ce" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 11.2219962565104); (3.5 : 11.2219962565104)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SaiGonDentalDBDataContext/CITY/CITY_DISTRICT" />
+      <nodes>
+        <classShapeMoniker Id="e0cbba75-4d2f-4108-bba8-1f8b47e15651" />
+        <classShapeMoniker Id="2f4d57a2-5892-46ab-98f7-dd3d035f3474" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(4.5 : 10.5); (4.5 : 8.19314697265625); (6.25 : 8.19314697265625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SaiGonDentalDBDataContext/DISTRICT/DISTRICT_DISTRICT_DETAIL" />
+      <nodes>
+        <classShapeMoniker Id="2f4d57a2-5892-46ab-98f7-dd3d035f3474" />
+        <classShapeMoniker Id="3b6eb1f5-f4c1-4ab3-98cd-deea7392220f" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(13.90625 : 7.7612939453125); (13.90625 : 9.40625); (14.75 : 9.40625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SaiGonDentalDBDataContext/ACADEMIC/ACADEMIC_EMPLOYEE" />
+      <nodes>
+        <classShapeMoniker Id="6d7759c2-8236-4f8a-8143-e89494bb30a8" />
+        <classShapeMoniker Id="1310c0c4-af1a-493a-8e22-d0dafaf98d93" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(10 : 10.125); (10 : 9.421875); (14.75 : 9.421875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SaiGonDentalDBDataContext/BRANCH/BRANCH_EMPLOYEE" />
+      <nodes>
+        <classShapeMoniker Id="d2e58f3c-f9ad-4311-87b7-543205d72221" />
+        <classShapeMoniker Id="1310c0c4-af1a-493a-8e22-d0dafaf98d93" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(1.75 : 10.625); (1.75 : 9.390625); (4.41666666666667 : 9.390625 : JumpStart); (4.58333333333333 : 9.390625 : JumpEnd); (5.94791666666667 : 9.390625 : JumpStart); (6.11458333333333 : 9.390625 : JumpEnd); (11.7604166666667 : 9.390625 : JumpStart); (11.9583358333333 : 9.390625 : JumpEnd); (14.75 : 9.390625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SaiGonDentalDBDataContext/CITY/CITY_EMPLOYEE" />
+      <nodes>
+        <classShapeMoniker Id="e0cbba75-4d2f-4108-bba8-1f8b47e15651" />
+        <classShapeMoniker Id="1310c0c4-af1a-493a-8e22-d0dafaf98d93" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(14 : 18.1931469726563); (16.65625 : 18.1931469726563); (16.65625 : 12.8766097005208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SaiGonDentalDBDataContext/DEPARTMENT/DEPARTMENT_EMPLOYEE" />
+      <nodes>
+        <classShapeMoniker Id="bd8987d3-0997-4f4f-b35f-831bcb72cb1e" />
+        <classShapeMoniker Id="1310c0c4-af1a-493a-8e22-d0dafaf98d93" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.5 : 11.8862939453125); (5.875 : 12.2612939453125); (5.875 : 13.3766097005208); (9.91666666666667 : 13.3766097005208 : JumpStart); (10.0833333333333 : 13.3766097005208 : JumpEnd); (12.1354141666667 : 13.3766097005208 : JumpStart); (12.3020808333333 : 13.3766097005208 : JumpEnd); (13.4635451666667 : 13.3766097005208 : JumpStart); (13.6302118333333 : 13.3766097005208 : JumpEnd); (14.2838451538462 : 13.3766097005208); (14.7838451538462 : 12.8766097005208)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/SaiGonDentalDBDataContext/DISTRICT/DISTRICT_EMPLOYEE" />
+      <nodes>
+        <classShapeMoniker Id="2f4d57a2-5892-46ab-98f7-dd3d035f3474" />
+        <classShapeMoniker Id="1310c0c4-af1a-493a-8e22-d0dafaf98d93" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(8.25 : 11.8862939453125); (8.625 : 12.2612939453125); (8.625 : 13.2516097005208); (9.91666666666667 : 13.2516097005208 : JumpStart); (10.0833333333333 : 13.2516097005208 : JumpEnd); (12.1354141666667 : 13.2516097005208 : JumpStart); (12.3020808333333 : 13.2516097005208 : JumpEnd); (13.4635451666667 : 13.2516097005208 : JumpStart); (13.6302118333333 : 13.2516097005208 : JumpEnd); (14.3426923076923 : 13.2516097005208); (14.75 : 12.8443020082131)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/SaiGonDentalDBDataContext/WARD/WARD_EMPLOYEE" />
+      <nodes>
+        <classShapeMoniker Id="e42456ac-43b6-4419-b3e2-547eba43decb" />
+        <classShapeMoniker Id="1310c0c4-af1a-493a-8e22-d0dafaf98d93" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(19.75 : 4.69314697265625); (20.5 : 4.69314697265625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SaiGonDentalDBDataContext/GROUP/GROUP_GROUP_DETAIL" />
+      <nodes>
+        <classShapeMoniker Id="b2cfc32e-8846-4a95-a221-7429857ccd52" />
+        <classShapeMoniker Id="c6203d05-608b-44c7-8ccb-c62c663e27de" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(11 : 8.3550439453125); (11.84375 : 8.3550439453125); (11.84375 : 9.5)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SaiGonDentalDBDataContext/JOB/JOB_CUSTOMER" />
+      <nodes>
+        <classShapeMoniker Id="ef8c8580-0db0-4f17-b0e2-9ae7f728bbd8" />
+        <classShapeMoniker Id="9b8ebb5a-8678-4dde-8e0c-e912add1e4ce" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(11.8750025 : 9.5); (11.8750025 : 8.6206689453125); (13.8229166666667 : 8.6206689453125 : JumpStart); (13.9895833333333 : 8.6206689453125 : JumpEnd); (17.1041666666667 : 8.6206689453125 : JumpStart); (17.2708333333333 : 8.6206689453125 : JumpEnd); (17.2916666666667 : 8.6206689453125 : JumpStart); (17.4583333333333 : 8.6206689453125 : JumpEnd); (17.5 : 8.6206689453125)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SaiGonDentalDBDataContext/CUSTOMER/CUSTOMER_KNOWREASON_DETAIL" />
+      <nodes>
+        <classShapeMoniker Id="9b8ebb5a-8678-4dde-8e0c-e912add1e4ce" />
+        <classShapeMoniker Id="4703c1ca-17dd-4f6c-bc5e-40ad734684c5" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(16.75 : 7.69314697265625); (17.1041666666667 : 7.69314697265625 : JumpStart); (17.2708333333333 : 7.69314697265625 : JumpEnd); (17.2916666666667 : 7.69314697265625 : JumpStart); (17.4583333333333 : 7.69314697265625 : JumpEnd); (17.5 : 7.69314697265625)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SaiGonDentalDBDataContext/KNOWREASON/KNOWREASON_KNOWREASON_DETAIL" />
+      <nodes>
+        <classShapeMoniker Id="b7d85e61-a8ee-402c-b9bc-c718868ad079" />
+        <classShapeMoniker Id="4703c1ca-17dd-4f6c-bc5e-40ad734684c5" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(19.75 : 2.19314697265625); (21.5 : 2.19314697265625); (21.5 : 3.5)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SaiGonDentalDBDataContext/RULE/RULE_GROUP_DETAIL" />
+      <nodes>
+        <classShapeMoniker Id="4d15ca96-1eba-4011-801d-3b9f37e2a9b9" />
+        <classShapeMoniker Id="c6203d05-608b-44c7-8ccb-c62c663e27de" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(8.25 : 14.2219962565104); (10 : 14.2219962565104); (10 : 12.2804996744792)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SaiGonDentalDBDataContext/STREET/STREET_BRANCH" />
+      <nodes>
+        <classShapeMoniker Id="82212c65-4594-4f6a-ba6c-ac2340460bc4" />
+        <classShapeMoniker Id="d2e58f3c-f9ad-4311-87b7-543205d72221" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(8.25 : 13.8922456282552); (9.91666666666667 : 13.8922456282552 : JumpStart); (10.0833333333333 : 13.8922456282552 : JumpEnd); (12.2187475 : 13.8922456282552); (12.2187475 : 12.8093082682292)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SaiGonDentalDBDataContext/STREET/STREET_CUSTOMER" />
+      <nodes>
+        <classShapeMoniker Id="82212c65-4594-4f6a-ba6c-ac2340460bc4" />
+        <classShapeMoniker Id="9b8ebb5a-8678-4dde-8e0c-e912add1e4ce" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(6.28122649649439 : 13.625); (6.03125 : 13.3750235035056); (6.03125 : 9.1050439453125); (6.25 : 8.8862939453125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/SaiGonDentalDBDataContext/STREET/STREET_DISTRICT_DETAIL" />
+      <nodes>
+        <classShapeMoniker Id="82212c65-4594-4f6a-ba6c-ac2340460bc4" />
+        <classShapeMoniker Id="3b6eb1f5-f4c1-4ab3-98cd-deea7392220f" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(8.25 : 14.0711253141276); (9.91666666666667 : 14.0711253141276 : JumpStart); (10.0833333333333 : 14.0711253141276 : JumpEnd); (13.4635451666667 : 14.0711253141276 : JumpStart); (13.6302118333333 : 14.0711253141276 : JumpEnd); (16.6249975 : 14.0711253141276); (16.6249975 : 12.8766097005208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SaiGonDentalDBDataContext/STREET/STREET_EMPLOYEE" />
+      <nodes>
+        <classShapeMoniker Id="82212c65-4594-4f6a-ba6c-ac2340460bc4" />
+        <classShapeMoniker Id="1310c0c4-af1a-493a-8e22-d0dafaf98d93" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(13.281252 : 12.8093082682292); (13.281252 : 13.0016097005208); (13.4635451666667 : 13.0016097005208 : JumpStart); (13.6302118333333 : 13.0016097005208 : JumpEnd); (14.509358974359 : 13.0016097005208 : JumpStart); (14.7421784871795 : 13.0016097005208 : JumpEnd); (16.5416641666667 : 13.0016097005208 : JumpStart); (16.7395833333333 : 13.0016097005208 : JumpEnd); (17.0416666666667 : 13.0016097005208 : JumpStart); (17.2083333333333 : 13.0016097005208 : JumpEnd); (20.125 : 13.0016097005208); (20.125 : 11.2123527018229); (20.5 : 11.2123527018229)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SaiGonDentalDBDataContext/CUSTOMER/CUSTOMER_TREATMENTDETAIL" />
+      <nodes>
+        <classShapeMoniker Id="9b8ebb5a-8678-4dde-8e0c-e912add1e4ce" />
+        <classShapeMoniker Id="95cd9f83-3ab0-408c-9054-6c693638de02" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(16.75 : 12.3117496744792); (17.0416666666667 : 12.3117496744792 : JumpStart); (17.2083333333333 : 12.3117496744792 : JumpEnd); (20.0416666666667 : 12.3117496744792 : JumpStart); (20.2083333333333 : 12.3117496744792 : JumpEnd); (20.5 : 12.3117496744792)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SaiGonDentalDBDataContext/EMPLOYEE/EMPLOYEE_TREATMENTDETAIL" />
+      <nodes>
+        <classShapeMoniker Id="1310c0c4-af1a-493a-8e22-d0dafaf98d93" />
+        <classShapeMoniker Id="95cd9f83-3ab0-408c-9054-6c693638de02" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(16.75 : 10.09375); (17.1041666666667 : 10.09375 : JumpStart); (17.2708333333333 : 10.09375 : JumpEnd); (20.5 : 10.09375)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SaiGonDentalDBDataContext/EMPLOYEE/EMPLOYEE_TREATMENTDETAIL1" />
+      <nodes>
+        <classShapeMoniker Id="1310c0c4-af1a-493a-8e22-d0dafaf98d93" />
+        <classShapeMoniker Id="95cd9f83-3ab0-408c-9054-6c693638de02" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(16.5 : 20.4431469726563); (18.25 : 20.4431469726563); (18.25 : 16.1362939453125)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SaiGonDentalDBDataContext/TREATMENTPLAN/TREATMENTPLAN_TREATMENTPLAN_DETAIL" />
+      <nodes>
+        <classShapeMoniker Id="01a3a933-e819-476e-b01c-b0cebb6d09ff" />
+        <classShapeMoniker Id="a962ad9d-676e-494e-9935-56a8012e909d" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(16.5 : 15.4431469726562); (16.5729166666667 : 15.4431469726562 : JumpStart); (16.7395833333333 : 15.4431469726562 : JumpEnd); (17.25 : 15.4431469726562)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SaiGonDentalDBDataContext/TREATMENTPROFILE/TREATMENTPROFILE_TREATMENTPLAN_DETAIL" />
+      <nodes>
+        <classShapeMoniker Id="f6c287df-d26b-416b-9f62-422cfe386c61" />
+        <classShapeMoniker Id="a962ad9d-676e-494e-9935-56a8012e909d" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(13.5468785 : 12.8093082682292); (13.5468785 : 15.4239005533854); (14.5 : 15.4239005533854)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SaiGonDentalDBDataContext/CUSTOMER/CUSTOMER_TREATMENTPROFILE" />
+      <nodes>
+        <classShapeMoniker Id="9b8ebb5a-8678-4dde-8e0c-e912add1e4ce" />
+        <classShapeMoniker Id="f6c287df-d26b-416b-9f62-422cfe386c61" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(16.75 : 9.37653746153846); (17.1285744349011 : 8.99796302663734 : JumpStart); (17.2464255650989 : 8.88011189643958 : JumpEnd); (17.375 : 8.75153746153846); (17.375 : 6.7812505); (20.5 : 6.7812505)]" fixedFrom="NotFixed" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SaiGonDentalDBDataContext/EMPLOYEE/EMPLOYEE_USER" />
+      <nodes>
+        <classShapeMoniker Id="1310c0c4-af1a-493a-8e22-d0dafaf98d93" />
+        <classShapeMoniker Id="6b7cbfd8-9c3b-4c9a-8bc1-add98f6f46dd" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(19.65625 : 5.8862939453125); (19.65625 : 6.42187275); (20.5 : 6.42187275)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/SaiGonDentalDBDataContext/GROUP/GROUP_USER" />
+      <nodes>
+        <classShapeMoniker Id="b2cfc32e-8846-4a95-a221-7429857ccd52" />
+        <classShapeMoniker Id="6b7cbfd8-9c3b-4c9a-8bc1-add98f6f46dd" />
+      </nodes>
+    </associationConnector>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>
