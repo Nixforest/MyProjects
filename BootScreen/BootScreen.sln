@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BootScreen", "BootScreen\BootScreen.vcxproj", "{D6218F32-5EC6-4E91-82AA-99A1D3CFC95F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DialogCreateMSG", "DialogCreateMSG\DialogCreateMSG.vcxproj", "{A6F07B05-3974-4799-A4E9-94755F135838}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HookMessageBox", "HookMessageBox\HookMessageBox.vcxproj", "{3EA0A2FE-A7CA-40F2-A33D-BEB7803D4585}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D6218F32-5EC6-4E91-82AA-99A1D3CFC95F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D6218F32-5EC6-4E91-82AA-99A1D3CFC95F}.Debug|Win32.Build.0 = Debug|Win32
+		{D6218F32-5EC6-4E91-82AA-99A1D3CFC95F}.Release|Win32.ActiveCfg = Release|Win32
+		{D6218F32-5EC6-4E91-82AA-99A1D3CFC95F}.Release|Win32.Build.0 = Release|Win32
+		{A6F07B05-3974-4799-A4E9-94755F135838}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A6F07B05-3974-4799-A4E9-94755F135838}.Debug|Win32.Build.0 = Debug|Win32
+		{A6F07B05-3974-4799-A4E9-94755F135838}.Release|Win32.ActiveCfg = Release|Win32
+		{A6F07B05-3974-4799-A4E9-94755F135838}.Release|Win32.Build.0 = Release|Win32
+		{3EA0A2FE-A7CA-40F2-A33D-BEB7803D4585}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3EA0A2FE-A7CA-40F2-A33D-BEB7803D4585}.Debug|Win32.Build.0 = Debug|Win32
+		{3EA0A2FE-A7CA-40F2-A33D-BEB7803D4585}.Release|Win32.ActiveCfg = Release|Win32
+		{3EA0A2FE-A7CA-40F2-A33D-BEB7803D4585}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
