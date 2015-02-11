@@ -23,6 +23,11 @@
 
 // CBootScreenDlg dialog
 
+/* Global module */
+HMODULE	hDLL;
+HHOOK CBootScreenDlg::s_HookMsgBox = NULL;
+
+typedef VOID(*LOADPROC)(HHOOK hHook);
 
 
 
@@ -31,8 +36,34 @@ CBootScreenDlg::CBootScreenDlg(CWnd* pParent /*=NULL*/)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 	m_bIsShowMsg = FALSE;
+	if (!InstallHook())
+	{
+		MessageBox(_T("Install hook error"), _T("Error"), NULL);
+	}
 }
-
+BOOL CBootScreenDlg::InstallHook()
+{
+	if (LoadLibrary(_T("HookMessageBox.dll")) == NULL)
+	{
+		MessageBox(_T("Load library error"), _T("Error"), NULL);
+		return FALSE;
+	}
+	hDLL = GetModuleHandle(_T("HookMessageBox"));
+	if (!hDLL)
+	{
+		return FALSE;
+	}
+	s_HookMsgBox = SetWindowsHookEx(WH_CBT/*WH_MSGFILTER*/,
+		(HOOKPROC)GetProcAddress(hDLL, "HookMessageBoxProc"), hDLL, 0);
+	LOADPROC fPtrFcnt;
+	fPtrFcnt = (LOADPROC)GetProcAddress(hDLL, "SetGlobalHookHandle");
+	if (!fPtrFcnt)
+	{
+		return FALSE;
+	}
+	fPtrFcnt(s_HookMsgBox);
+	return TRUE;
+}
 void CBootScreenDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
@@ -61,32 +92,8 @@ BOOL CBootScreenDlg::OnInitDialog()
 	::SetWindowPos(this->GetSafeHwnd(), HWND_TOPMOST,
 		(SCREEN_WIDTH - WND_WIDTH) / 2,
 		(SCREEN_HEIGHT - WND_HEIGHT) / 2, WND_WIDTH, WND_HEIGHT, NULL);
-
-	/* Install hook */
-	HINSTANCE hInstance;
-	hInstance = LoadLibrary(_T("HookMessageBox.dll"));
-	if (hInstance)
-	{
-		InstanceFunc Install = (BOOL(WINAPI *)(HWND)) GetProcAddress(hInstance, "InstallHook");
-		if (Install)
-		{
-			Install(this->GetSafeHwnd());
-		}
-	}
-	/*HOOKPROC hkprcSysMsg;
-	HINSTANCE hInstance; 
-	static HHOOK hhookSysMsg; 
- 
-	hInstance = LoadLibrary(_T("HookMessageBox.dll")); 
-	hkprcSysMsg = (HOOKPROC)GetProcAddress(hInstance, "HookMessageBoxProc"); 
-
-	hhookSysMsg = SetWindowsHookEx( 
-						WH_CBT,
-						hkprcSysMsg,
-						hInstance,
-						0); */
-	
-	SetTimer(CHECK_BOOTSCREEN, TIMER_CHECK_BS, NULL);
+		
+	//SetTimer(CHECK_BOOTSCREEN, TIMER_CHECK_BS, NULL);
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
@@ -128,8 +135,8 @@ HCURSOR CBootScreenDlg::OnQueryDragIcon()
 
 void CBootScreenDlg::OnOK()
 {
-	/* Install hook */
-	HINSTANCE hInstance;
+	/* Un-Install hook */
+	/*HINSTANCE hInstance;
 	hInstance = LoadLibrary(_T("HookMessageBox.dll"));
 	if (hInstance)
 	{
@@ -138,6 +145,10 @@ void CBootScreenDlg::OnOK()
 		{
 			UnInstall(this->GetSafeHwnd());
 		}
+	}*/
+	if (s_HookMsgBox && UnhookWindowsHookEx(s_HookMsgBox))
+	{
+		s_HookMsgBox = NULL;
 	}
 
 	CDialogEx::OnOK();
@@ -158,7 +169,8 @@ void CBootScreenDlg::OnTimer(UINT_PTR nIDEvent)
 				if (!m_bIsShowMsg)
 				{
 					m_bIsShowMsg = TRUE;
-					int nRet = MessageBox(_T("Content"), _T("Error"), MB_OK);
+					//int nRet = MessageBox(_T("Content"), _T("Error"), MB_OK);
+					int nRet = MessageBox(_T("Content"), _T("Error"), MB_OK | MB_SETFOREGROUND);
 					if(nRet == IDOK)
 					{
 						m_bIsShowMsg = FALSE;

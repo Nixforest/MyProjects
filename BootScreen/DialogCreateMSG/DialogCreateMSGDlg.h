@@ -4,6 +4,7 @@
 
 #pragma once
 
+typedef BOOL(WINAPI* InstanceFunc)(HWND);
 
 // CDialogCreateMSGDlg dialog
 class CDialogCreateMSGDlg : public CDialogEx
@@ -33,4 +34,5 @@ public:
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 private:
 	BOOL	m_bIsShowMsg;
+	virtual void OnOK();
 };

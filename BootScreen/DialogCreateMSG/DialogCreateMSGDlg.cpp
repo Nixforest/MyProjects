@@ -14,7 +14,8 @@
 #define SCREEN_HEIGHT		768
 #define CHECK_BOOTSCREEN	1
 #define TIMER_CHECK_BS		5000
-#define	BS_WND_NAME			_T("Boot Screen")
+#define	BS_WND_NAME			_T("PCPfBootScreen")
+#define	HOOKSTARTSCREEN_TITLE		_T("Start Screen: Hook Window")
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -176,7 +177,7 @@ void CDialogCreateMSGDlg::OnTimer(UINT_PTR nIDEvent)
 	{
 	case CHECK_BOOTSCREEN:
 		{
-			CWnd* hBS = FindWindow(NULL, BS_WND_NAME);
+			 CWnd* hBS = FindWindow(NULL, BS_WND_NAME);
 			if (hBS)
 			{
 				if (!m_bIsShowMsg)
@@ -194,4 +195,10 @@ void CDialogCreateMSGDlg::OnTimer(UINT_PTR nIDEvent)
 	default: break;
 	}
 	CDialogEx::OnTimer(nIDEvent);
+}
+
+
+void CDialogCreateMSGDlg::OnOK()
+{
+	CDialogEx::OnOK();
 }

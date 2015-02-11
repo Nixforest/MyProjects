@@ -32,4 +32,6 @@ protected:
 private:
 	virtual void OnOK();
 	BOOL m_bIsShowMsg;
+	static HHOOK	s_HookMsgBox;
+	BOOL InstallHook();
 };

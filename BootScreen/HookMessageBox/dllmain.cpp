@@ -4,19 +4,23 @@
 #include "stdafx.h"
 #include <afxwin.h>
 #include <afxdllx.h>
+#define	MSGBOX_STYLE		(WS_CAPTION		| \
+							WS_POPUP		| \
+							WS_CLIPSIBLINGS | \
+							WS_SYSMENU		| \
+							DS_ABSALIGN		| \
+							DS_3DLOOK		| \
+							DS_SETFONT		| \
+							DS_NOIDLEMSG)
+#define	BS_WND_NAME			_T("Boot Screen")
 
-#pragma data_seg("SHAREDDATA")
-HWND	hWndHook = NULL;
+#pragma data_seg("SHARED_DATA")
 HHOOK g_HookHandle = 0;
 #pragma data_seg()
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-
-HINSTANCE	hInst;
-HHOOK		hook;
-static LRESULT CALLBACK HookMessageBoxProc(int nCode, WPARAM wParam, LPARAM lParam);
 
 static AFX_EXTENSION_MODULE HookMessageBoxDLL = { NULL, NULL };
 
@@ -45,7 +49,7 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 		//  the CDynLinkLibrary object will not be attached to the
 		//  Regular DLL's resource chain, and serious problems will
 		//  result.
-		hInst = hInstance;
+		//hInst = hInstance;
 
 		new CDynLinkLibrary(HookMessageBoxDLL);
 
@@ -53,7 +57,7 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 	else if (dwReason == DLL_PROCESS_DETACH)
 	{
 		TRACE0("HookMessageBox.DLL Terminating!\n");
-		if (hWndHook)
+		//if (hWndHook)
 		{
 			// Clear hook
 		}
@@ -62,65 +66,35 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 	}
 	return 1;   // ok
 }
-BOOL WINAPI InstallHook(HWND hWnd)
-{
-	if (hWndHook)
-	{
-		return FALSE;
-	}
-	hook = SetWindowsHookEx(WH_CBT, (HOOKPROC)HookMessageBoxProc,
-		hInst, 0);
-	if (hook)
-	{
-		hWndHook = hWnd;
-		return TRUE;
-	}
-	return FALSE;
-}
-BOOL UnInstallHook(HWND hWnd)
-{
-	if (hWnd != hWndHook)
-	{
-		return FALSE;
-	}
-	BOOL bRet = UnhookWindowsHookEx(hook);
-	if (bRet)
-	{
-		hWndHook = NULL;
-	}
-	return bRet;
-}
-static LRESULT CALLBACK HookMessageBoxProc(int nCode, WPARAM wParam, LPARAM lParam)
+__declspec(dllexport) LRESULT CALLBACK HookMessageBoxProc(int nCode, WPARAM wParam, LPARAM lParam)
 {
 	if (nCode < 0)
 	{
-		CallNextHookEx(hook, nCode, wParam, lParam);
+		CallNextHookEx(g_HookHandle, nCode, wParam, lParam);
 		return 0;
 	}
 	switch (nCode)
 	{
-	case HCBT_CREATEWND:
-		{
-			OutputDebugString(_T("HCBT_CREATEWND\n"));
-			HWND hWnd = (HWND)wParam;
-			_TCHAR name[MAX_PATH];
-			::GetWindowText(hWnd, name, MAX_PATH);
-			OutputDebugString(name);
-			OutputDebugString(_T("\n"));
-		}
-		break;
-
 	case HCBT_ACTIVATE:
 		{
-			OutputDebugString(_T("HCBT_ACTIVATE\n"));
 			HWND hWnd = (HWND)wParam;
-			_TCHAR name[MAX_PATH];
-			::GetWindowText(hWnd, name, MAX_PATH);
-			OutputDebugString(name);
-			OutputDebugString(_T("\n"));
+			LONG dwStyle = GetWindowLong(hWnd, GWL_STYLE);
+			if ((dwStyle | MSGBOX_STYLE) == dwStyle)
+			{	
+				HWND hWndBS = FindWindow(NULL, BS_WND_NAME);
+				if (hWndBS)
+				{
+					SetWindowPos(hWnd, HWND_TOPMOST, 0, 0, NULL, NULL, SWP_NOSIZE | SWP_NOMOVE);
+				}
+			}
 		}
 		break;
 	default: break;
 	}
-	return 0;
+	return CallNextHookEx(g_HookHandle, nCode, wParam, lParam);
+}
+/* Set hook handle */
+__declspec(dllexport) void SetGlobalHookHandle(HHOOK hHook)
+{
+	g_HookHandle = hHook;
 }

@@ -1,8 +1,10 @@
 ; HookMessageBox.def : Declares the module parameters for the DLL.
 
-LIBRARY
+LIBRARY "HookMessageBox"
 
 EXPORTS
     ; Explicit exports can go here
-	InstallHook
-	UnInstallHook
+	HookMessageBoxProc
+	SetGlobalHookHandle
+SECTIONS
+	SHARED_DATA	Read Write Shared
