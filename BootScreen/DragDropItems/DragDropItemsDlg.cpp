@@ -1,5 +1,12 @@
+/************************* Reference *****************************/
 /* http://flylib.com/books/en/4.348.1.88/1/ */
 /* http://www.codeproject.com/Articles/1951/Drag-and-Drop-between-and-within-a-CListCtrl?rp=/KB/list/dragtest/DragTest_demo.zip */
+/* http://www.codeguru.com/cpp/misc/misc/draganddrop/article.php/c255/Drag-and-Drop-Between-Any-CWndDerived-Window.htm */
+/* http://www.codeguru.com/cpp/misc/misc/draganddrop/article.php/c349/Drag-And-Drop-between-Window-Controls.htm */
+/* http://www.codeproject.com/Articles/840/How-to-Implement-Drag-and-Drop-Between-Your-Progra */
+/* http://www.codeproject.com/Questions/64426/How-to-change-the-default-cursor-during-drag-and-d */
+/************************* Reference *****************************/
+
 // DragDropItemsDlg.cpp : implementation file
 //
 
@@ -137,23 +144,30 @@ void CDragDropItemsDlg::LoadListControlData()
 {
 	LVCOLUMN lvCol;
 	int nCol;
+	/* Index column */
+	lvCol.mask = LVCF_FMT | LVCF_TEXT | LVCF_WIDTH;
+	lvCol.fmt = LVCFMT_LEFT;
+	lvCol.cx = 110;
+	lvCol.pszText = _T("");
+	nCol = m_ListCtrlAnno.InsertColumn(0, &lvCol);
+
 	lvCol.mask = LVCF_FMT | LVCF_TEXT | LVCF_WIDTH;
 	lvCol.fmt = LVCFMT_LEFT;
 	lvCol.cx = 60;
 	lvCol.pszText = LIST_COLUM_CLASS;
-	nCol = m_ListCtrlAnno.InsertColumn(0, &lvCol);
+	nCol = m_ListCtrlAnno.InsertColumn(1, &lvCol);
 
 	lvCol.mask = LVCF_FMT | LVCF_TEXT | LVCF_WIDTH;
 	lvCol.fmt = LVCFMT_LEFT;
 	lvCol.cx = 100;
 	lvCol.pszText = LIST_COLUM_KEY;
-	m_ListCtrlAnno.InsertColumn(1, &lvCol);
+	m_ListCtrlAnno.InsertColumn(2, &lvCol);
 
 	lvCol.mask = LVCF_FMT | LVCF_TEXT | LVCF_WIDTH;
 	lvCol.fmt = LVCFMT_LEFT;
 	lvCol.cx = 300;
 	lvCol.pszText = LIST_COLUM_WORD;
-	m_ListCtrlAnno.InsertColumn(2, &lvCol);
+	m_ListCtrlAnno.InsertColumn(3, &lvCol);
 	LVITEM lvItem;
 	int nItem;
 
@@ -167,7 +181,7 @@ void CDragDropItemsDlg::LoadListControlData()
 		lvItem.iSubItem = 0;
 		if (pAnnoData)
 		{
-			szClass.Format(_T("%d"), pAnnoData->unClassID);
+			szClass.Format(_T("%d"), pAnnoData->unID);
 			lvItem.pszText = (LPTSTR)(LPCTSTR)szClass;
 		}
 		else
@@ -178,8 +192,10 @@ void CDragDropItemsDlg::LoadListControlData()
 
 		if (pAnnoData)
 		{
-			m_ListCtrlAnno.SetItemText(nItem, 1, pAnnoData->szKey);
-			m_ListCtrlAnno.SetItemText(nItem, 2, pAnnoData->szWord);
+			szClass.Format(_T("%d"), pAnnoData->unClassID);
+			m_ListCtrlAnno.SetItemText(nItem, 1, szClass);
+			m_ListCtrlAnno.SetItemText(nItem, 2, pAnnoData->szKey);
+			m_ListCtrlAnno.SetItemText(nItem, 3, pAnnoData->szWord);
 		}
 		else
 		{
@@ -188,6 +204,7 @@ void CDragDropItemsDlg::LoadListControlData()
 		}
 	}
 	m_ListCtrlAnno.SetExtendedStyle(LVS_EX_FULLROWSELECT /*| LVS_EX_GRIDLINES*/);
+	m_ListCtrlAnno.Initialize(&m_ListCtrlAnno);
 }
 
 // If you add a minimize button to your dialog, you will need the code below

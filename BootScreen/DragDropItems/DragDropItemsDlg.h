@@ -8,6 +8,7 @@
 #include "CustomBtn.h"
 #include "AnnotationData.h"
 #include "afxcmn.h"
+#include "CustomListCtrl.h"
 
 
 // CDragDropItemsDlg dialog
@@ -39,5 +40,5 @@ private:
 	void			LoadListToggleButtonData();
 	void			LoadListControlData();
 public:
-	CListCtrl m_ListCtrlAnno;
+	CCustomListCtrl m_ListCtrlAnno;
 };
