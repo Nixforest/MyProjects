@@ -1,5 +1,12 @@
+/************************* Reference *****************************/
 /* http://flylib.com/books/en/4.348.1.88/1/ */
 /* http://www.codeproject.com/Articles/1951/Drag-and-Drop-between-and-within-a-CListCtrl?rp=/KB/list/dragtest/DragTest_demo.zip */
+/* http://www.codeguru.com/cpp/misc/misc/draganddrop/article.php/c255/Drag-and-Drop-Between-Any-CWndDerived-Window.htm */
+/* http://www.codeguru.com/cpp/misc/misc/draganddrop/article.php/c349/Drag-And-Drop-between-Window-Controls.htm */
+/* http://www.codeproject.com/Articles/840/How-to-Implement-Drag-and-Drop-Between-Your-Progra */
+/* http://www.codeproject.com/Questions/64426/How-to-change-the-default-cursor-during-drag-and-d */
+/************************* Reference *****************************/
+
 // DragDropItemsDlg.cpp : implementation file
 //
 
@@ -88,11 +95,13 @@ void CDragDropItemsDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CHECK60, m_arrToggleBtnList[59]);
 
 	DDX_Control(pDX, IDC_LIST_ANNO_ASSIGN, m_ListCtrlAnno);
+	DDX_Control(pDX, IDC_LIST_SYSANNO, m_ListBoxSysAnno);
 }
 
 BEGIN_MESSAGE_MAP(CDragDropItemsDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_BN_CLICKED(IDSAVE2, &CDragDropItemsDlg::OnBnClickedSave2)
 END_MESSAGE_MAP()
 
 
@@ -107,22 +116,58 @@ BOOL CDragDropItemsDlg::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
-	ShowWindow(SW_MAXIMIZE);
+	/* Make window position */
+	::SetWindowPos(NULL, NULL, 0, 0, WND_WIDTH, WND_HEIGHT, SWP_NOMOVE);
 
+	/* Load system annotations */
+	LoadListSystemAnnoData();
 	/* Load data for list of toggle buttons */
 	LoadListToggleButtonData();
+	for (int i = 0; i < TOGGLE_BTN_NUM; i++)
+	{
+		m_arrToggleBtnList[i].Initialize(&m_arrToggleBtnList[i]);
+	}
+	/* Create structure of list control */
+	LVCOLUMN lvCol;
+	int nCol;
+	/* Index column */
+	lvCol.mask = LVCF_FMT | LVCF_TEXT | LVCF_WIDTH;
+	lvCol.fmt = LVCFMT_LEFT;
+	lvCol.cx = 0;
+	lvCol.pszText = _T("");
+	nCol = m_ListCtrlAnno.InsertColumn(0, &lvCol);
+
+	lvCol.mask = LVCF_FMT | LVCF_TEXT | LVCF_WIDTH;
+	lvCol.fmt = LVCFMT_LEFT;
+	lvCol.cx = 60;
+	lvCol.pszText = LIST_COLUM_CLASS;
+	nCol = m_ListCtrlAnno.InsertColumn(1, &lvCol);
+
+	lvCol.mask = LVCF_FMT | LVCF_TEXT | LVCF_WIDTH;
+	lvCol.fmt = LVCFMT_LEFT;
+	lvCol.cx = 100;
+	lvCol.pszText = LIST_COLUM_KEY;
+	m_ListCtrlAnno.InsertColumn(2, &lvCol);
+
+	lvCol.mask = LVCF_FMT | LVCF_TEXT | LVCF_WIDTH;
+	lvCol.fmt = LVCFMT_LEFT;
+	lvCol.cx = 300;
+	lvCol.pszText = LIST_COLUM_WORD;
+	m_ListCtrlAnno.InsertColumn(3, &lvCol);
 	/* Load data for list control */
 	LoadListControlData();
+	m_ListCtrlAnno.Initialize(&m_ListCtrlAnno);
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
+/* Load list toggle buttons data	*/
 void CDragDropItemsDlg::LoadListToggleButtonData()
 {
 	for (int i = 0; i < TOGGLE_BTN_NUM; i++)
 	{
-		m_arrToggleBtnList[i].SetAnnotationID(m_Data.GetIdByPosition(i));
-		ANNOTATION_DATA_t* pAnnoData = m_Data.GetAnnotationByID(m_arrToggleBtnList[i].GetAnnotationID());
+		m_arrToggleBtnList[i].SetAnnotationID(m_Data.GetAnnoIdByPos(i));
+		ANNOTATION_DATA_t* pAnnoData = m_Data.GetSysAnnotationByID(m_arrToggleBtnList[i].GetAnnotationID());
 		if (pAnnoData)
 		{
 			m_arrToggleBtnList[i].SetWindowTextW(pAnnoData->szKey);
@@ -133,41 +178,30 @@ void CDragDropItemsDlg::LoadListToggleButtonData()
 		}
 	}
 }
+/* Load list control data			*/
 void CDragDropItemsDlg::LoadListControlData()
 {
-	LVCOLUMN lvCol;
-	int nCol;
-	lvCol.mask = LVCF_FMT | LVCF_TEXT | LVCF_WIDTH;
-	lvCol.fmt = LVCFMT_LEFT;
-	lvCol.cx = 60;
-	lvCol.pszText = LIST_COLUM_CLASS;
-	nCol = m_ListCtrlAnno.InsertColumn(0, &lvCol);
+	int nCount = m_ListCtrlAnno.GetItemCount();
 
-	lvCol.mask = LVCF_FMT | LVCF_TEXT | LVCF_WIDTH;
-	lvCol.fmt = LVCFMT_LEFT;
-	lvCol.cx = 100;
-	lvCol.pszText = LIST_COLUM_KEY;
-	m_ListCtrlAnno.InsertColumn(1, &lvCol);
-
-	lvCol.mask = LVCF_FMT | LVCF_TEXT | LVCF_WIDTH;
-	lvCol.fmt = LVCFMT_LEFT;
-	lvCol.cx = 300;
-	lvCol.pszText = LIST_COLUM_WORD;
-	m_ListCtrlAnno.InsertColumn(2, &lvCol);
+	// Delete all of the items from the list view control. 
+	for (int i = 0; i < nCount; i++)
+	{
+		m_ListCtrlAnno.DeleteItem(0);
+	}
 	LVITEM lvItem;
 	int nItem;
 
 	for (int i = 0; i < TOGGLE_BTN_NUM; i++)
 	{
-		int nIndex = m_Data.GetIdByPosition(i);
+		int nIndex = m_Data.GetAnnoIdByPos(i);
 		CString szClass;
-		ANNOTATION_DATA_t* pAnnoData = m_Data.GetAnnotationByID(nIndex);
+		ANNOTATION_DATA_t* pAnnoData = m_Data.GetSysAnnotationByID(nIndex);
 		lvItem.mask = LVIF_TEXT;
 		lvItem.iItem = i;
 		lvItem.iSubItem = 0;
 		if (pAnnoData)
 		{
-			szClass.Format(_T("%d"), pAnnoData->unClassID);
+			szClass.Format(_T("%d"), pAnnoData->unID);
 			lvItem.pszText = (LPTSTR)(LPCTSTR)szClass;
 		}
 		else
@@ -175,11 +209,14 @@ void CDragDropItemsDlg::LoadListControlData()
 			lvItem.pszText = _T("");
 		}
 		nItem = m_ListCtrlAnno.InsertItem(&lvItem);
+		m_ListCtrlAnno.SetItemData(nItem, (DWORD_PTR)pAnnoData);
 
 		if (pAnnoData)
 		{
-			m_ListCtrlAnno.SetItemText(nItem, 1, pAnnoData->szKey);
-			m_ListCtrlAnno.SetItemText(nItem, 2, pAnnoData->szWord);
+			szClass.Format(_T("%d"), pAnnoData->unClassID);
+			m_ListCtrlAnno.SetItemText(nItem, 1, szClass);
+			m_ListCtrlAnno.SetItemText(nItem, 2, pAnnoData->szKey);
+			m_ListCtrlAnno.SetItemText(nItem, 3, pAnnoData->szWord);
 		}
 		else
 		{
@@ -188,6 +225,16 @@ void CDragDropItemsDlg::LoadListControlData()
 		}
 	}
 	m_ListCtrlAnno.SetExtendedStyle(LVS_EX_FULLROWSELECT /*| LVS_EX_GRIDLINES*/);
+}
+/* Load list system annotation data */
+void CDragDropItemsDlg::LoadListSystemAnnoData()
+{
+	int nPos = 0;
+	for (unsigned int i = 0; i < m_Data.GetSysAnnotationNum(); i++)
+	{
+		nPos = m_ListBoxSysAnno.AddString(m_Data.GetSysAnnotationByID(i)->szKey);
+		m_ListBoxSysAnno.SetItemDataPtr(nPos, (void*)m_Data.GetSysAnnotationByID(i));
+	}
 }
 
 // If you add a minimize button to your dialog, you will need the code below
@@ -224,4 +271,35 @@ void CDragDropItemsDlg::OnPaint()
 HCURSOR CDragDropItemsDlg::OnQueryDragIcon()
 {
 	return static_cast<HCURSOR>(m_hIcon);
+}
+
+
+void CDragDropItemsDlg::OnOK()
+{
+	for (int i = 0; i < TOGGLE_BTN_NUM; i++)
+	{
+		m_Data.SetAnnoIdByPos(i, m_arrToggleBtnList[i].GetAnnotationID());
+	}
+	m_Data.WritePreAnnotationData();
+	LoadListControlData();
+	//CDialogEx::OnOK();
+}
+
+
+void CDragDropItemsDlg::OnBnClickedSave2()
+{
+	for (int i = 0; i < TOGGLE_BTN_NUM; i++)
+	{
+		ANNOTATION_DATA_t* pData = (ANNOTATION_DATA_t*)m_ListCtrlAnno.GetItemData(i);
+		if (pData)
+		{
+			m_Data.SetAnnoIdByPos(i, pData->unID);
+		}
+		else
+		{
+			m_Data.SetAnnoIdByPos(i, -1);
+		}
+	}
+	m_Data.WritePreAnnotationData();
+	LoadListToggleButtonData();
 }

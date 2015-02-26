@@ -1,12 +1,15 @@
 #pragma once
 #include <tchar.h>
 
+#define WND_WIDTH					1014
+#define WND_HEIGHT					973
 #define	TOGGLE_BTN_NUM				60
 #define	ANNOTATION_DATA_PATH		_T("data.csv")
 #define	ANNO_ASSIGN_DATA_PATH		_T("assigndata.csv")
 #define LIST_COLUM_CLASS			_T("Class")
 #define LIST_COLUM_KEY				_T("Key")
 #define LIST_COLUM_WORD				_T("Word")
+#define	DATASOURCE_BUFFER			10
 
 /* Define struct of annotation data */
 typedef struct
