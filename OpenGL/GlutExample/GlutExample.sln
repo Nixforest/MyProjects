@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GlutExample", "GlutExample\GlutExample.vcxproj", "{CBD6527B-EF7B-4E5C-AF6D-85C5B9B3ADE2}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GlutExample1", "GlutExample1\GlutExample1.vcxproj", "{A5E618B5-1E79-4D43-A236-72F903C2B08E}"
@@ -12,6 +14,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LightingDemo", "LightingDemo\LightingDemo.vcxproj", "{714CD97E-F9C2-4594-91C1-B09B8BC09475}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DrawCubeOPP", "DrawCubeOPP\DrawCubeOPP.vcxproj", "{0D915578-E85F-4BED-AEF8-A3B8F8E5E2ED}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Nehe_L001", "Nehe_L001\Nehe_L001.vcxproj", "{176BC5C6-3D04-469C-BE77-BCBA828E56EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +47,10 @@ Global
 		{0D915578-E85F-4BED-AEF8-A3B8F8E5E2ED}.Debug|Win32.Build.0 = Debug|Win32
 		{0D915578-E85F-4BED-AEF8-A3B8F8E5E2ED}.Release|Win32.ActiveCfg = Release|Win32
 		{0D915578-E85F-4BED-AEF8-A3B8F8E5E2ED}.Release|Win32.Build.0 = Release|Win32
+		{176BC5C6-3D04-469C-BE77-BCBA828E56EF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{176BC5C6-3D04-469C-BE77-BCBA828E56EF}.Debug|Win32.Build.0 = Debug|Win32
+		{176BC5C6-3D04-469C-BE77-BCBA828E56EF}.Release|Win32.ActiveCfg = Release|Win32
+		{176BC5C6-3D04-469C-BE77-BCBA828E56EF}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
