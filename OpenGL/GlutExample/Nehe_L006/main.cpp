@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <gl\GLU.h>
 #include <gl\GL.h>
-#include <gl\GLAUX.H>
+#include <SOIL.h>
 #pragma comment(linker, "/subsystem:\"windows\"")
 
 //----------Defines constant----------//
@@ -15,7 +15,7 @@
 #define		WINDOW_WIDTH						640							// Window width
 #define		WINDOW_HEIGHT						480							// Window hight
 #define		WINDOW_BIT							16							// Window bit
-#define		NUMBER_TEXTURE						3							// Number of textures
+#define		NUMBER_TEXTURE						1							// Number of textures
 
 //----------Define messages----------//
 #define		MSG_RELEASEDCRCFAILED				"Release Of DC And RC Failed."
@@ -89,20 +89,26 @@ const static	GLfloat		s_fO[3]	= { 0.0f, 1.0f, 0.0f};
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);	// Declare for WndProc
 
 /* Load a bitmap image */
-AUX_RGBImageRec *LoadBMP(char* pFileName)
+int LoadGLTextures()
 {
-	FILE* file = NULL;									// File handle
-	if (!pFileName)										// Make sure a file name was given
+	int nStatus = TRUE;									// Status Indicator
+	char* arrFileName[NUMBER_TEXTURE] =
 	{
-		return NULL;									// If not return NULL
-	}
-	fopen_s(&file, pFileName, "r");						// Check to see if the file exists
-	if (file)
+		"texture.bmp"
+	};
+	for (int i = 0; i < NUMBER_TEXTURE; i++)
 	{
-		fclose(file);									// Close the handle
-		return auxDIBImageLoad(pFileName);				// Load the bitmap and return the pointer
+		g_Texture[i] = SOIL_load_OGL_texture(arrFileName[i],
+			SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
+		if (!g_Texture[i])
+		{
+			nStatus = FALSE;
+		}
+		glBindTexture(GL_TEXTURE_2D, g_Texture[i]);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR); // Linear Filtering
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR); // Linear Filtering
 	}
-	return NULL;
+	return nStatus;                                        // Return Success
 }
 
 /* Resize and initialize the GL Window */
@@ -124,6 +130,11 @@ GLvoid ReSizeGLScene(GLsizei width, GLsizei height)
 
 int InitGL(GLvoid)										// All setup for openGL goes here
 {
+	if (!LoadGLTextures())								// Jump To Texture Loading Routine ( NEW )
+	{
+		return FALSE;									// If Texture Didn't Load Return FALSE
+	}
+	glEnable(GL_TEXTURE_2D);							// Enable Texture Mapping
 	glShadeModel(GL_SMOOTH);							// Enable smooth shading
 	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);				// Black background
 	glClearDepth(1.0f);									// Depth buffer setup
@@ -151,30 +162,27 @@ void DrawTriAngles(const GLfloat* d1, const GLfloat* d2, const GLfloat* d3,	// P
 void DrawQuads(const GLfloat* d1, const GLfloat* d2,
 	const GLfloat* d3, const GLfloat* d4, const GLfloat* color)
 {
-	glColor3fv(color);
+	//glColor3fv(color);
 	glBegin(GL_QUADS);									// Draw A Quad
 	{
+		glTexCoord2f(0.0f, 0.0f);
 		glVertex3fv(d1);								// Top Left
+		glTexCoord2f(1.0f, 0.0f);
 		glVertex3fv(d2);								// Top Right
+		glTexCoord2f(1.0f, 1.0f);
 		glVertex3fv(d3);								// Bottom Right
+		glTexCoord2f(0.0f, 1.0f);
 		glVertex3fv(d4);								// Bottom Left
 	}
 	glEnd();											// Done Drawing The Quad
 }
 int DrawGLScene(GLvoid)									// Here's where we do all the drawing
 {
-	GLfloat angle1[3] = { 0.0f, 1.0f, 0.0f };
-	GLfloat angle2[3] = {-1.0f,-1.0f, 0.0f };
-	GLfloat angle3[3] = { 1.0f,-1.0f, 0.0f };
-	GLfloat color1[3] = { 1.0f, 0.0f, 0.0f };
-	GLfloat color2[3] = { 0.0f, 1.0f, 0.0f };
-	GLfloat color3[3] = { 0.0f, 0.0f, 1.0f };
-	GLfloat color4[3] = { 0.5f, 0.5f, 1.0f };
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear screen and depth buffer
 	/* Start draw pyramid */
 	glLoadIdentity();									// Reset the current model-view matrix
-	glTranslatef(g_MoveX, g_MoveY, g_MoveZ);					// Move Left 1.5 Units And Into The Screen 6.0
-	//glRotatef(g_RotateX, 1.0f, 0.0f, 0.0f);             // Rotate The Triangle On The X axis
+	glTranslatef(g_MoveX, g_MoveY, g_MoveZ);			// Move Left 1.5 Units And Into The Screen 6.0
+	glRotatef(g_RotateX, 1.0f, 0.0f, 0.0f);				// Rotate The Triangle On The X axis
 	glRotatef(g_RotateY, 0.0f, 1.0f, 0.0f);             // Rotate The Triangle On The Y axis
 	glRotatef(g_RotateZ, 0.0f, 0.0f, 1.0f);             // Rotate The Triangle On The Z axis
 	
@@ -194,23 +202,27 @@ int DrawGLScene(GLvoid)									// Here's where we do all the drawing
 	/* Start draw cube */
 	glLoadIdentity();
 	glTranslatef(1.5f, 0.0f, -7.0f);					// Move Right 3 Units
-	glRotatef(g_RotateX, 1.0f, 1.0f, 1.0f);
-
+	glRotatef(g_RotateX, 1.0f, 0.0f, 0.0f);				// Rotate The Triangle On The X axis
+	glRotatef(g_RotateY, 0.0f, 1.0f, 0.0f);             // Rotate The Triangle On The Y axis
+	glRotatef(g_RotateZ, 0.0f, 0.0f, 1.0f);             // Rotate The Triangle On The Z axis
+	glBindTexture(GL_TEXTURE_2D, g_Texture[0]);
 	// Front
-	DrawQuads(s_fD, s_fH, s_fG, s_fC, s_GreenColor);
+	//glTexCoord2f
+	DrawQuads(s_fG, s_fH, s_fD, s_fC, s_GreenColor);
 	// Left
-	DrawQuads(s_fC, s_fG, s_fF, s_fB, s_OrangeColor);
+	DrawQuads(s_fF, s_fG, s_fC, s_fB, s_OrangeColor);
 	// Behind
-	DrawQuads(s_fB, s_fF, s_fE, s_fA, s_RedColor);
+	DrawQuads(s_fE, s_fF, s_fB, s_fA, s_RedColor);
 	// Right
-	DrawQuads(s_fA, s_fE, s_fH, s_fD, s_YellowColor);
-	// Up
-	DrawQuads(s_fA, s_fD, s_fC, s_fB, s_BlueColor);
-	// Down
-	DrawQuads(s_fE, s_fH, s_fG, s_fF, s_WhiteColor);
+	DrawQuads(s_fH, s_fE, s_fA, s_fD, s_YellowColor);
+	// Top
+	DrawQuads(s_fC, s_fD, s_fA, s_fB, s_BlueColor);
+	// Bottom
+	DrawQuads(s_fF, s_fE, s_fH, s_fG, s_WhiteColor);
 
-	g_RotateX += g_RDeltaX;
-	g_RotateY -= g_RDeltaY;
+	//g_RotateX += g_RDeltaX;
+	//g_RotateY -= g_RDeltaY;
+	g_RotateZ += g_RDeltaZ;
 	return TRUE;										// Everything went OK
 }
 
