@@ -25,6 +25,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Nehe_L004", "Nehe_L004\Nehe
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Nehe_L005", "Nehe_L005\Nehe_L005.vcxproj", "{259DB82E-BA8C-4F93-900C-60895F746165}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Nehe_L006", "Nehe_L006\Nehe_L006.vcxproj", "{7D097A5C-C642-4B43-9EF9-FD1C351671DC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -75,6 +77,10 @@ Global
 		{259DB82E-BA8C-4F93-900C-60895F746165}.Debug|Win32.Build.0 = Debug|Win32
 		{259DB82E-BA8C-4F93-900C-60895F746165}.Release|Win32.ActiveCfg = Release|Win32
 		{259DB82E-BA8C-4F93-900C-60895F746165}.Release|Win32.Build.0 = Release|Win32
+		{7D097A5C-C642-4B43-9EF9-FD1C351671DC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7D097A5C-C642-4B43-9EF9-FD1C351671DC}.Debug|Win32.Build.0 = Debug|Win32
+		{7D097A5C-C642-4B43-9EF9-FD1C351671DC}.Release|Win32.ActiveCfg = Release|Win32
+		{7D097A5C-C642-4B43-9EF9-FD1C351671DC}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
