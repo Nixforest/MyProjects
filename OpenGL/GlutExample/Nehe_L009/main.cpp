@@ -17,8 +17,9 @@
 #define		WINDOW_BIT							16							// Window bit
 #define		NUMBER_TEXTURE						1							// Number of textures
 #define		NUMBER_FILTER						3							// Number of filters
-#define		NUMBER_STARS						50							// Number of stars
+#define		NUMBER_STARS						100							// Number of stars
 #define		COLOR_MARK							256
+#define		MAXSIZE								15.0f
 
 //----------Define messages----------//
 #define		MSG_RELEASEDCRCFAILED				"Release Of DC And RC Failed."
@@ -81,12 +82,12 @@ GLfloat	g_MoveZ						= -15.0f;							// Move distance by z axis
 GLfloat	g_MDeltaX					= 0.05f;							// Move distance step by x axis
 GLfloat	g_MDeltaY					= 0.05f;							// Move distance step by y axis
 GLfloat	g_MDeltaZ					= 0.20f;							// Move distance step by z axis
-GLfloat	g_RotateX					= 90.0f;							// Rotate angle by x axis
+GLfloat	g_RotateX					= 30.0f;							// Rotate angle by x axis
 GLfloat	g_RotateY					= 0.0f;								// Rotate angle by y axis
 GLfloat	g_RotateZ					= 0.0f;								// Rotate angle by z axis
-GLfloat	g_RDeltaX					= 0.10f;							// Rotate angle step by x axis
+GLfloat	g_RDeltaX					= 2.50f;							// Rotate angle step by x axis
 GLfloat	g_RDeltaY					= 1.05f;							// Rotate angle step by y axis
-GLfloat	g_RDeltaZ					= 0.005f;							// Rotate angle step by z axis
+GLfloat	g_RDeltaZ					= 0.001f;							// Rotate angle step by z axis
 GLuint	g_Texture[NUMBER_TEXTURE];										// Textures in program
 STAR_t	g_Stars[NUMBER_STARS];											// Stars list
 GLuint	g_uLoop						= 0;								// General loop variable
@@ -226,7 +227,7 @@ int InitGL(GLvoid)										// All setup for openGL goes here
 	for (g_uLoop = 0; g_uLoop < NUMBER_STARS; g_uLoop++)
 	{
 		g_Stars[g_uLoop].fAngle		= 0.0f;
-		g_Stars[g_uLoop].fDist		= (float(g_uLoop) / NUMBER_STARS) * 5.0f;
+		g_Stars[g_uLoop].fDist		= (float(g_uLoop) / NUMBER_STARS) * MAXSIZE;
 		g_Stars[g_uLoop].r			= rand() % COLOR_MARK;				// Give g_Stars[g_uLoop] A Random Red Intensity
 		g_Stars[g_uLoop].g			= rand() % COLOR_MARK;				// Give g_Stars[g_uLoop] A Random Green Intensity
 		g_Stars[g_uLoop].b			= rand() % COLOR_MARK;				// Give g_Stars[g_uLoop] A Random Blue Intensity
@@ -273,9 +274,10 @@ int DrawGLScene(GLvoid)									// Here's where we do all the drawing
 	for (g_uLoop = 0; g_uLoop < NUMBER_STARS; g_uLoop++)
 	{
 		glLoadIdentity();
-		glTranslatef(0.0f, 0.0f, g_MoveZ);						// Zoom Into The Screen (Using The Value In 'g_MoveZ')
+		//glTranslatef(0.0f, 0.0f, g_MoveZ);						// Zoom Into The Screen (Using The Value In 'g_MoveZ')
+		glTranslatef(g_MoveX, g_MoveY, g_MoveZ);
 		glRotatef(g_RotateX, 1.0f, 0.0f, 0.0f);					// Tilt The View (Using The Value In 'g_RotateX')
-		glRotatef(g_Stars[g_uLoop].fAngle, 0.0f, 1.0f, 0.0f);	// Rotate to the current stars angle
+		glRotatef(g_Stars[g_uLoop].fAngle, 0.0f, 1.0f, 0.0f);	// Rotate to the current stars angle in Y plane
 		glTranslatef(g_Stars[g_uLoop].fDist, 0.0f, 0.0f);		// Move forward on the X plane
 		glRotatef(-g_Stars[g_uLoop].fAngle, 0.0f, 1.0f, 0.0f);	// Cancel the current stars angle
 		glRotatef(-g_RotateX, 1.0f, 0.0f, 0.0f);				// Cancel the screen tilt
@@ -294,11 +296,18 @@ int DrawGLScene(GLvoid)									// Here's where we do all the drawing
 		DrawQuads(s_fL, s_fM, s_fI, s_fK, s_GreenColor);
 
 		g_RotateZ += g_RDeltaZ;
-		g_Stars[g_uLoop].fAngle += float(g_uLoop) / NUMBER_STARS;	// Changes The Angle Of A Star
-		g_Stars[g_uLoop].fDist -= 0.01f;							// Changes The Distance Of A Star
+		g_Stars[g_uLoop].fAngle -= float(g_uLoop) / NUMBER_STARS/5;	// Changes The Angle Of A Star
+		g_Stars[g_uLoop].fDist += 0.001f;							// Changes The Distance Of A Star
 		if (g_Stars[g_uLoop].fDist < 0.0f)							// Is The Star In The Middle Yet
 		{
 			g_Stars[g_uLoop].fDist += 5.0f;							// Move The Star 5 Units From The Center
+			g_Stars[g_uLoop].r = rand() % COLOR_MARK;				// Give g_Stars[g_uLoop] A Random Red Intensity
+			g_Stars[g_uLoop].g = rand() % COLOR_MARK;				// Give g_Stars[g_uLoop] A Random Green Intensity
+			g_Stars[g_uLoop].b = rand() % COLOR_MARK;				// Give g_Stars[g_uLoop] A Random Blue Intensity
+		}
+		if (g_Stars[g_uLoop].fDist > MAXSIZE)							// Is The Star In The Middle Yet
+		{
+			g_Stars[g_uLoop].fDist = 0.0f;							// Move The Star 5 Units From The Center
 			g_Stars[g_uLoop].r = rand() % COLOR_MARK;				// Give g_Stars[g_uLoop] A Random Red Intensity
 			g_Stars[g_uLoop].g = rand() % COLOR_MARK;				// Give g_Stars[g_uLoop] A Random Green Intensity
 			g_Stars[g_uLoop].b = rand() % COLOR_MARK;				// Give g_Stars[g_uLoop] A Random Blue Intensity
@@ -782,14 +791,14 @@ int WINAPI WinMain(
 			if (g_bKeysArr[VK_PRIOR])
 			{
 				g_bKeysArr[VK_PRIOR] = FALSE;
-				//g_RotateZ += g_RDeltaZ;
-				g_MoveZ -= 0.02f;
+				g_RotateZ += g_RDeltaZ;
+				//g_MoveZ -= 0.02f;
 			}
 			if (g_bKeysArr[VK_NEXT])
 			{
 				g_bKeysArr[VK_NEXT] = FALSE;
-				//g_RotateZ -= g_RDeltaZ;
-				g_MoveZ += 0.02f;
+				g_RotateZ -= g_RDeltaZ;
+				//g_MoveZ += 0.02f;
 			}
 			if (g_bKeysArr[VK_SUBTRACT])
 			{
