@@ -20,8 +20,8 @@
 #define		NUMBER_STARS						100							// Number of stars
 #define		COLOR_MARK							256							// Color mark when draw color for star
 #define		MAXSIZE								15.0f						// Max of circle's size which star move inside
-#define		WORLD_FILE_PATH						"data\world.txt"			// File path of world file
-#define		TEXTURE_FILE_PATH					"data\texture.bmp"			// File path of texture file
+#define		WORLD_FILE_PATH						"data\\world.txt"			// File path of world file
+#define		TEXTURE_FILE_PATH					"data\\texture.bmp"			// File path of texture file
 #define		STRING_BUFFER						256							// String buffer
 #define		LINE_FEED							'\n'						// Line feed character
 #define		SLASH								'/'							// Slash character
@@ -113,46 +113,46 @@ HGLRC		hRC						= NULL;								// Permanent Rendering Context
 HWND		hWnd					= NULL;								// Holds Our Window Handle
 HINSTANCE	hInstance;													// Holds the instance of the application
 
-bool	g_bKeysArr[KEYNUMBER];											// Array used for the keyboard routine
-bool	g_bActive					= TRUE;								// Window Active flag set to TRUE by default
-bool	g_bFullscreen				= TRUE;								// Full screen flag set to Full screen Mode by default
-GLfloat	g_MoveX						= 0.5f;								// Move distance by x axis
-GLfloat	g_MoveY						= 0.0f;								// Move distance by y axis
-GLfloat	g_MoveZ						= -15.0f;							// Move distance by z axis
-GLfloat	g_MDeltaX					= 0.05f;							// Move distance step by x axis
-GLfloat	g_MDeltaY					= 0.05f;							// Move distance step by y axis
-GLfloat	g_MDeltaZ					= 0.20f;							// Move distance step by z axis
-GLfloat	g_RotateX					= 30.0f;							// Rotate angle by x axis
-GLfloat	g_RotateY					= 0.0f;								// Rotate angle by y axis
-GLfloat	g_RotateZ					= 0.0f;								// Rotate angle by z axis
-GLfloat	g_RDeltaX					= 2.50f;							// Rotate angle step by x axis
-GLfloat	g_RDeltaY					= 1.05f;							// Rotate angle step by y axis
-GLfloat	g_RDeltaZ					= 0.001f;							// Rotate angle step by z axis
-GLuint	g_Texture[NUMBER_TEXTURE];										// Textures in program
-STAR_t	g_Stars[NUMBER_STARS];											// Stars list
-GLuint	g_uLoop						= 0;								// General loop variable
-
-GLuint	g_uFilter					= 2;								// Which Filter To Use
-BOOL	g_bLight					= FALSE;							// Lighting ON/OFF
-BOOL	g_bBlend					= FALSE;							// Blend ON/OFF
-BOOL	g_bTwinkle					= FALSE;							// Twinkling Stars ON/OFF
-BOOL	g_bLPress					= FALSE;							// L Pressed?
-BOOL	g_bFPress					= FALSE;							// F Pressed?
-BOOL	g_bBPress					= FALSE;							// B Pressed?
-BOOL	g_bTPress					= FALSE;							// T Pressed?
-BOOL	g_bPause					= FALSE;							// Pause?
-BOOL	g_bPPress					= FALSE;							// P Pressed?
-GLfloat	g_LightAmbient[]			= {0.5f, 0.5f, 0.5f, 1.0f};			// Ambient Light values
-GLfloat	g_LightDiffuse[]			= {1.0f, 1.0f, 1.0f, 1.0f};			// Diffuse Light values
-GLfloat	g_LightPosition[]			= {0.0f, 0.0f, 2.0f, 1.0f};			// Light position
+bool		g_bKeysArr[KEYNUMBER];										// Array used for the keyboard routine
+bool		g_bActive				= TRUE;								// Window Active flag set to TRUE by default
+bool		g_bFullscreen			= TRUE;								// Full screen flag set to Full screen Mode by default
+GLfloat		g_MoveX					= 0.5f;								// Move distance by x axis
+GLfloat		g_MoveY					= 0.0f;								// Move distance by y axis
+GLfloat		g_MoveZ					= -15.0f;							// Move distance by z axis
+GLfloat		g_MDeltaX				= 0.05f;							// Move distance step by x axis
+GLfloat		g_MDeltaY				= 0.05f;							// Move distance step by y axis
+GLfloat		g_MDeltaZ				= 0.20f;							// Move distance step by z axis
+GLfloat		g_RotateX				= 30.0f;							// Rotate angle by x axis
+GLfloat		g_RotateY				= 0.0f;								// Rotate angle by y axis
+GLfloat		g_RotateZ				= 0.0f;								// Rotate angle by z axis
+GLfloat		g_RDeltaX				= 2.50f;							// Rotate angle step by x axis
+GLfloat		g_RDeltaY				= 1.05f;							// Rotate angle step by y axis
+GLfloat		g_RDeltaZ				= 0.001f;							// Rotate angle step by z axis
+GLuint		g_Texture[NUMBER_TEXTURE];									// Textures in program
+STAR_t		g_Stars[NUMBER_STARS];										// Stars list
+GLuint		g_uLoop					= 0;								// General loop variable
+Sector_t	g_Sector;													// Our model sector
+GLuint		g_uFilter				= 2;								// Which Filter To Use
+BOOL		g_bLight				= FALSE;							// Lighting ON/OFF
+BOOL		g_bBlend				= FALSE;							// Blend ON/OFF
+BOOL		g_bTwinkle				= FALSE;							// Twinkling Stars ON/OFF
+BOOL		g_bLPress				= FALSE;							// L Pressed?
+BOOL		g_bFPress				= FALSE;							// F Pressed?
+BOOL		g_bBPress				= FALSE;							// B Pressed?
+BOOL		g_bTPress				= FALSE;							// T Pressed?
+BOOL		g_bPause				= FALSE;							// Pause?
+BOOL		g_bPPress				= FALSE;							// P Pressed?
+GLfloat		g_LightAmbient[]		= {0.5f, 0.5f, 0.5f, 1.0f};			// Ambient Light values
+GLfloat		g_LightDiffuse[]		= {1.0f, 1.0f, 1.0f, 1.0f};			// Diffuse Light values
+GLfloat		g_LightPosition[]		= {0.0f, 0.0f, 2.0f, 1.0f};			// Light position
 
 /* Color */
-GLfloat	s_RedColor[3]				= {1.0f, 0.0f, 0.0f};				// Red color
-GLfloat	s_GreenColor[3]				= {0.0f, 1.0f, 0.0f};				// Green color
-GLfloat	s_BlueColor[3]				= {0.0f, 0.0f, 1.0f};				// Blue color
-GLfloat	s_WhiteColor[3]				= {1.0f, 1.0f, 1.0f};				// White color
-GLfloat	s_YellowColor[3]			= {1.0f, 1.0f, 0.0f};				// Yellow color
-GLfloat	s_OrangeColor[3]			= {1.0f, 0.5f, 0.0f};				// Orange color
+GLfloat		s_RedColor[3]			= {1.0f, 0.0f, 0.0f};				// Red color
+GLfloat		s_GreenColor[3]			= {0.0f, 1.0f, 0.0f};				// Green color
+GLfloat		s_BlueColor[3]			= {0.0f, 0.0f, 1.0f};				// Blue color
+GLfloat		s_WhiteColor[3]			= {1.0f, 1.0f, 1.0f};				// White color
+GLfloat		s_YellowColor[3]		= {1.0f, 1.0f, 0.0f};				// Yellow color
+GLfloat		s_OrangeColor[3]		= {1.0f, 0.5f, 0.0f};				// Orange color
 
 /* Pointer */
 const static	GLfloat		s_fA[3]	= { 1.0f, 1.0f,-1.0f};
@@ -179,11 +179,21 @@ const static	GLfloat		s_fCubeNormal[CUBE_NORMAL_NUM][3] =
 };
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);	// Declare for WndProc
+
+/* Read a string */
+void ReadStr(FILE* pFile, char* pString)
+{
+	do
+	{
+		fgets(pString, STRING_BUFFER - 1, pFile);		// Read one line
+	} while ((pString[0] == SLASH) || (pString[0] == LINE_FEED));	// See If It Is Worthy Of Processing
+}
+
 /* Setup our world */
 void SetupWorld()
 {
-	FILE*	pFile;
-	int		nErr = 0;
+	FILE*	pFile;												// Pointer of file
+	int		nErr = 0;											// Error code
 	UINT	unNumTriAngles = 0;									// Number Of Triangles In Sector
 	char	arrLine[STRING_BUFFER - 1];							// String To Store Data In
 
@@ -191,24 +201,18 @@ void SetupWorld()
 	/* Open file is failed */
 	if (nErr)
 	{
-		MessageBox(NULL, MSG_READFILEFAILED,
+		MessageBox(NULL, MSG_READFILEFAILED,					// Show message open file is failed
 			ERR_ERROR, MB_OK | MB_ICONEXCLAMATION);
 	}
 	else
 	{
 		ReadStr(pFile, arrLine);								// Get Single Line Of Data
 		sscanf_s(arrLine, "NUMPOLLIES %d\n", &unNumTriAngles);	// Read In Number Of Triangles
-		fclose(pFile);
+		g_Sector.pTriangle = new Triangle_t[unNumTriAngles];
+		fclose(pFile);											// Close file after done
 	}
 }
-/* Read a string */
-void ReadStr(FILE* pFile, char* pString)
-{
-	do
-	{
-		fgets(pString, STRING_BUFFER - 1, pFile);		// Read one line
-	}while ((pString[0] == SLASH) || (pString[0] == LINE_FEED));	// See If It Is Worthy Of Processing
-}
+
 /* Load a bitmap image */
 int LoadGLTextures()
 {
