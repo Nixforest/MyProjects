@@ -192,10 +192,11 @@ void ReadStr(FILE* pFile, char* pString)
 /* Setup our world */
 void SetupWorld()
 {
-	FILE*	pFile;												// Pointer of file
-	int		nErr = 0;											// Error code
-	UINT	unNumTriAngles = 0;									// Number Of Triangles In Sector
-	char	arrLine[STRING_BUFFER - 1];							// String To Store Data In
+	FILE*		pFile;											// Pointer of file
+	int			nErr			= 0;							// Error code
+	UINT		unNumTriAngles	= 0;							// Number Of Triangles In Sector
+	char		arrLine[STRING_BUFFER - 1];						// String To Store Data In
+	Vertex_t	vertex;
 
 	nErr = fopen_s(&pFile, WORLD_FILE_PATH, "rt");				// Open Our File
 	/* Open file is failed */
@@ -208,7 +209,21 @@ void SetupWorld()
 	{
 		ReadStr(pFile, arrLine);								// Get Single Line Of Data
 		sscanf_s(arrLine, "NUMPOLLIES %d\n", &unNumTriAngles);	// Read In Number Of Triangles
-		g_Sector.pTriangle = new Triangle_t[unNumTriAngles];
+		g_Sector.pTriangle = new Triangle_t[unNumTriAngles];	// Allocate Memory For numtriangles And Set Pointer
+		g_Sector.uNumTriAngle = unNumTriAngles;					// Define the number of triangles in sector
+		// Step through each triangle in sector
+		for (UINT ii = 0; ii < unNumTriAngles; ii++)			// Loop through all the triangles
+		{
+			// Step through each vertex in triangle
+			for (UINT jj = 0; jj < 3; jj++)						// Loop through all the vertices
+			{
+				ReadStr(pFile, arrLine);						// Read string to work with
+				sscanf_s(arrLine, "%f %f %f %f %f",				// Read data into respective vertex values
+					vertex.fX, vertex.fY, vertex.fZ, vertex.fU, vertex.fV);
+				g_Sector.pTriangle[ii].vertex[jj] = vertex;		// Store values into respective vertices
+			}
+		}
+
 		fclose(pFile);											// Close file after done
 	}
 }
