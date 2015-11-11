@@ -1,4 +1,5 @@
 #include <windows.h>
+#include <math.h>
 #include <stdio.h>
 #include <gl\GLU.h>
 #include <gl\GL.h>
@@ -118,16 +119,22 @@ bool		g_bActive				= TRUE;								// Window Active flag set to TRUE by default
 bool		g_bFullscreen			= TRUE;								// Full screen flag set to Full screen Mode by default
 GLfloat		g_MoveX					= 0.5f;								// Move distance by x axis
 GLfloat		g_MoveY					= 0.0f;								// Move distance by y axis
-GLfloat		g_MoveZ					= -15.0f;							// Move distance by z axis
+GLfloat		g_MoveZ					= 0.0f;							// Move distance by z axis
 GLfloat		g_MDeltaX				= 0.05f;							// Move distance step by x axis
 GLfloat		g_MDeltaY				= 0.05f;							// Move distance step by y axis
 GLfloat		g_MDeltaZ				= 0.20f;							// Move distance step by z axis
-GLfloat		g_RotateX				= 30.0f;							// Rotate angle by x axis
+GLfloat		g_RotateX				= 0.0f;								// Rotate angle by x axis
 GLfloat		g_RotateY				= 0.0f;								// Rotate angle by y axis
 GLfloat		g_RotateZ				= 0.0f;								// Rotate angle by z axis
-GLfloat		g_RDeltaX				= 2.50f;							// Rotate angle step by x axis
-GLfloat		g_RDeltaY				= 1.05f;							// Rotate angle step by y axis
+GLfloat		g_RDeltaX				= 1.00f;							// Rotate angle step by x axis
+GLfloat		g_RDeltaY				= 2.00f;							// Rotate angle step by y axis
 GLfloat		g_RDeltaZ				= 0.001f;							// Rotate angle step by z axis
+
+GLfloat		g_Walkbias				= 0.0f;
+GLfloat		g_Walkbiasangle			= 0.0f;
+float		g_Heading				= 0.0f;
+const float	PIOVER180				= 0.0174532925f;
+
 GLuint		g_Texture[NUMBER_TEXTURE];									// Textures in program
 STAR_t		g_Stars[NUMBER_STARS];										// Stars list
 GLuint		g_uLoop					= 0;								// General loop variable
@@ -192,7 +199,7 @@ void ReadStr(FILE* pFile, char* pString)
 /* Setup our world */
 void SetupWorld()
 {
-	FILE*		pFile;											// Pointer of file
+	FILE*		pFile			= NULL;							// Pointer of file
 	int			nErr			= 0;							// Error code
 	UINT		unNumTriAngles	= 0;							// Number Of Triangles In Sector
 	char		arrLine[STRING_BUFFER - 1];						// String To Store Data In
@@ -219,7 +226,7 @@ void SetupWorld()
 			{
 				ReadStr(pFile, arrLine);						// Read string to work with
 				sscanf_s(arrLine, "%f %f %f %f %f",				// Read data into respective vertex values
-					vertex.fX, vertex.fY, vertex.fZ, vertex.fU, vertex.fV);
+					&vertex.fX, &vertex.fY, &vertex.fZ, &vertex.fU, &vertex.fV);
 				g_Sector.pTriangle[ii].vertex[jj] = vertex;		// Store values into respective vertices
 			}
 		}
@@ -297,43 +304,37 @@ int InitGL(GLvoid)										// All setup for openGL goes here
 	}
 	glEnable(GL_TEXTURE_2D);							// Enable Texture Mapping
 	glShadeModel(GL_SMOOTH);							// Enable smooth shading
-	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);				// Black background
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);				// Black background
 	glClearDepth(1.0f);									// Depth buffer setup
-	//glEnable(GL_DEPTH_TEST);							// Enables depth testing
+	glDepthFunc(GL_LESS);								// The Type Of Depth Test To Do
+	glEnable(GL_DEPTH_TEST);							// Enables depth testing
 	//glDepthFunc(GL_LEQUAL);								// The type of depth testing to do
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really nice perspective calcutations
 	
-	glLightfv(GL_LIGHT1, GL_AMBIENT, g_LightAmbient);	// Setup the ambient light
-	glLightfv(GL_LIGHT1, GL_DIFFUSE, g_LightDiffuse);	// Setup the diffuse light
-	glLightfv(GL_LIGHT1, GL_POSITION, g_LightPosition);	// Position the light
-	glEnable(GL_LIGHT1);								// Enable light one
+	//glLightfv(GL_LIGHT1, GL_AMBIENT, g_LightAmbient);	// Setup the ambient light
+	//glLightfv(GL_LIGHT1, GL_DIFFUSE, g_LightDiffuse);	// Setup the diffuse light
+	//glLightfv(GL_LIGHT1, GL_POSITION, g_LightPosition);	// Position the light
+	//glEnable(GL_LIGHT1);								// Enable light one
 
-	glColor4f(1.0f, 1.0f, 1.0f, 0.5);					// Full Brightness.  50% Alpha
+	//glColor4f(1.0f, 1.0f, 1.0f, 0.5);					// Full Brightness.  50% Alpha
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE);					// Set The Blending Function For Translucency Based On Source Alpha Value
-	glEnable(GL_BLEND);									// Enable blending
-	/*----- Create a loop that goes through all the stars ----*/
-	for (g_uLoop = 0; g_uLoop < NUMBER_STARS; g_uLoop++)
-	{
-		g_Stars[g_uLoop].fAngle		= 0.0f;
-		g_Stars[g_uLoop].fDist		= (float(g_uLoop) / NUMBER_STARS) * MAXSIZE;
-		g_Stars[g_uLoop].r			= rand() % COLOR_MARK;				// Give g_Stars[g_uLoop] A Random Red Intensity
-		g_Stars[g_uLoop].g			= rand() % COLOR_MARK;				// Give g_Stars[g_uLoop] A Random Green Intensity
-		g_Stars[g_uLoop].b			= rand() % COLOR_MARK;				// Give g_Stars[g_uLoop] A Random Blue Intensity
-	}
+	//glEnable(GL_BLEND);									// Enable blending
+	SetupWorld();
+
 	return TRUE;										// Initialization went OK
 }
 // Draw a triangle
-void DrawTriAngles(const GLfloat* d1, const GLfloat* d2, const GLfloat* d3,	// Point 
-	const GLfloat* c1, const GLfloat* c2, const GLfloat* c3)				// Color
+void DrawTriAngles(Vertex_t vertex1, Vertex_t vertex2, Vertex_t vertex3)
 {
 	glBegin(GL_TRIANGLES);								// Drawing Using Triangles
 	{
-		glColor3fv(c1);
-		glVertex3fv(d1);
-		glColor3fv(c2);
-		glVertex3fv(d2);
-		glColor3fv(c3);
-		glVertex3fv(d3);
+		glNormal3f(0.0f, 0.0f, 1.0f);
+		glTexCoord2f(vertex1.fU, vertex1.fV);
+		glVertex3f(vertex1.fX, vertex1.fY, vertex1.fZ);
+		glTexCoord2f(vertex2.fU, vertex2.fV);
+		glVertex3f(vertex2.fX, vertex2.fY, vertex2.fZ);
+		glTexCoord2f(vertex3.fU, vertex3.fV);
+		glVertex3f(vertex3.fX, vertex3.fY, vertex3.fZ);
 	}
 	glEnd();
 }
@@ -357,49 +358,21 @@ void DrawQuads(const GLfloat* d1, const GLfloat* d2,
 int DrawGLScene(GLvoid)									// Here's where we do all the drawing
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear screen and depth buffer
-	glBindTexture(GL_TEXTURE_2D, g_Texture[g_uFilter]);			// Select Our Texture
-	// Loop Through All The Stars
-	for (g_uLoop = 0; g_uLoop < NUMBER_STARS; g_uLoop++)
+	glLoadIdentity();									// Reset current matrix
+	GLfloat fYTrans		= -g_Walkbias - 0.25f;				// Used For Bouncing Motion Up And Down
+	GLfloat fSceneRotY	= 360.0f - g_RotateY;			// 360 Degree Angle For Player Direction
+
+	glRotatef(g_RotateX, 1.0f, 0.0f, 0.0f);				// Rotate Up And Down To Look Up And Down
+	glRotatef(fSceneRotY, 0.0f, 1.0f, 0.0f);			// Rotate Depending On Direction Player Is Facing
+	glTranslatef(-g_MoveX, fYTrans, -g_MoveZ);			// Translate The Scene Based On Player Position
+	glBindTexture(GL_TEXTURE_2D, g_Texture[g_uFilter]);	// Select Our Texture
+
+	// Process each triangle
+	for (UINT ii = 0; ii < g_Sector.uNumTriAngle; ii++)	// Loop Through All The Triangles
 	{
-		glLoadIdentity();
-		//glTranslatef(0.0f, 0.0f, g_MoveZ);						// Zoom Into The Screen (Using The Value In 'g_MoveZ')
-		glTranslatef(g_MoveX, g_MoveY, g_MoveZ);
-		glRotatef(g_RotateX, 1.0f, 0.0f, 0.0f);					// Tilt The View (Using The Value In 'g_RotateX')
-		glRotatef(g_Stars[g_uLoop].fAngle, 0.0f, 1.0f, 0.0f);	// Rotate to the current stars angle in Y plane
-		glTranslatef(g_Stars[g_uLoop].fDist, 0.0f, 0.0f);		// Move forward on the X plane
-		glRotatef(-g_Stars[g_uLoop].fAngle, 0.0f, 1.0f, 0.0f);	// Cancel the current stars angle
-		glRotatef(-g_RotateX, 1.0f, 0.0f, 0.0f);				// Cancel the screen tilt
-		if (g_bTwinkle)											// Twinkling stars enabled
-		{
-			glColor4ub(g_Stars[NUMBER_STARS - g_uLoop - 1].r,
-				g_Stars[NUMBER_STARS - g_uLoop - 1].g,
-				g_Stars[NUMBER_STARS - g_uLoop - 1].b, COLOR_MARK - 1);
-			DrawQuads(s_fL, s_fM, s_fI, s_fK, s_GreenColor);
-		}
-		glRotatef(g_RotateZ, 0.0f, 0.0f, 1.0f);						// Rotate The Star On The Z Axi
-
-		glColor4ub(g_Stars[g_uLoop].r,
-			g_Stars[g_uLoop].g,
-			g_Stars[g_uLoop].b, COLOR_MARK - 1);
-		DrawQuads(s_fL, s_fM, s_fI, s_fK, s_GreenColor);
-
-		g_RotateZ += g_RDeltaZ;
-		g_Stars[g_uLoop].fAngle -= float(g_uLoop) / NUMBER_STARS/5;	// Changes The Angle Of A Star
-		g_Stars[g_uLoop].fDist += 0.001f;							// Changes The Distance Of A Star
-		if (g_Stars[g_uLoop].fDist < 0.0f)							// Is The Star In The Middle Yet
-		{
-			g_Stars[g_uLoop].fDist += 5.0f;							// Move The Star 5 Units From The Center
-			g_Stars[g_uLoop].r = rand() % COLOR_MARK;				// Give g_Stars[g_uLoop] A Random Red Intensity
-			g_Stars[g_uLoop].g = rand() % COLOR_MARK;				// Give g_Stars[g_uLoop] A Random Green Intensity
-			g_Stars[g_uLoop].b = rand() % COLOR_MARK;				// Give g_Stars[g_uLoop] A Random Blue Intensity
-		}
-		if (g_Stars[g_uLoop].fDist > MAXSIZE)							// Is The Star In The Middle Yet
-		{
-			g_Stars[g_uLoop].fDist = 0.0f;							// Move The Star 5 Units From The Center
-			g_Stars[g_uLoop].r = rand() % COLOR_MARK;				// Give g_Stars[g_uLoop] A Random Red Intensity
-			g_Stars[g_uLoop].g = rand() % COLOR_MARK;				// Give g_Stars[g_uLoop] A Random Green Intensity
-			g_Stars[g_uLoop].b = rand() % COLOR_MARK;				// Give g_Stars[g_uLoop] A Random Blue Intensity
-		}
+		DrawTriAngles(g_Sector.pTriangle[ii].vertex[0],
+			g_Sector.pTriangle[ii].vertex[1],
+			g_Sector.pTriangle[ii].vertex[2]);
 	}
 	return TRUE;										// Everything went OK
 }
@@ -829,23 +802,45 @@ int WINAPI WinMain(
 			if (g_bKeysArr[VK_LEFT])
 			{
 				g_bKeysArr[VK_LEFT] = FALSE;
+				//g_Heading -= g_MDeltaX;
 				g_MoveX -= g_MDeltaX;
 			}
 			if (g_bKeysArr[VK_RIGHT])
 			{
 				g_bKeysArr[VK_RIGHT] = FALSE;
+				//g_Heading += g_MDeltaX;
 				g_MoveX += g_MDeltaX;
 			}
 			// Handle move up-down
 			if (g_bKeysArr[VK_UP])
 			{
 				g_bKeysArr[VK_UP] = FALSE;
-				g_MoveY += g_MDeltaY;
+				g_MoveX -= (float)sin(g_Heading * PIOVER180) * 0.05f;
+				g_MoveZ -= (float)cos(g_Heading * PIOVER180) * 0.05f;
+				if (g_Walkbiasangle >= 359.0f)
+				{
+					g_Walkbiasangle = 0.0f;
+				}
+				else
+				{
+					g_Walkbiasangle += 10.0f;
+				}
+				g_Walkbias = (float)sin(g_Walkbiasangle * PIOVER180) / 20.0f;
 			}
 			if (g_bKeysArr[VK_DOWN])
 			{
 				g_bKeysArr[VK_DOWN] = FALSE;
-				g_MoveY -= g_MDeltaY;
+				g_MoveX += (float)sin(g_Heading * PIOVER180) * 0.05f;
+				g_MoveZ += (float)cos(g_Heading * PIOVER180) * 0.05f;
+				if (g_Walkbiasangle <= 1.0f)
+				{
+					g_Walkbiasangle = 359.0f;
+				}
+				else
+				{
+					g_Walkbiasangle -= 10.0f;
+				}
+				g_Walkbias = (float)sin(g_Walkbiasangle * PIOVER180) / 20.0f;
 			}
 			// Handle move forward-backward
 			if (g_bKeysArr[VK_ADD])
@@ -857,7 +852,8 @@ int WINAPI WinMain(
 			if (g_bKeysArr[VK_INSERT])
 			{
 				g_bKeysArr[VK_INSERT] = FALSE;
-				g_RotateX += g_RDeltaX;
+				g_Heading += g_RDeltaY;
+				g_RotateY = g_Heading;
 			}
 			if (g_bKeysArr[VK_DELETE])
 			{
@@ -868,18 +864,19 @@ int WINAPI WinMain(
 			if (g_bKeysArr[VK_HOME])
 			{
 				g_bKeysArr[VK_HOME] = FALSE;
-				g_RotateY += g_RDeltaY;
+				g_RotateX += g_RDeltaX;
 			}
 			if (g_bKeysArr[VK_END])
 			{
 				g_bKeysArr[VK_END] = FALSE;
-				g_RotateY -= g_RDeltaY;
+				g_RotateX -= g_RDeltaX;
 			}
 			// Handle rotate follow Z axis
 			if (g_bKeysArr[VK_PRIOR])
 			{
 				g_bKeysArr[VK_PRIOR] = FALSE;
-				g_RotateZ += g_RDeltaZ;
+				g_Heading -= g_RDeltaY;
+				g_RotateY = g_Heading;
 				//g_MoveZ -= 0.02f;
 			}
 			if (g_bKeysArr[VK_NEXT])
