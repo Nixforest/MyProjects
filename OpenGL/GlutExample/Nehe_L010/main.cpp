@@ -4,6 +4,7 @@
 #include <gl\GLU.h>
 #include <gl\GL.h>
 #include <SOIL.h>
+#include <GL\GLAUX.H>
 #pragma comment(linker, "/subsystem:\"windows\"")
 
 //----------Defines constant----------//
@@ -26,6 +27,7 @@
 #define		STRING_BUFFER						256							// String buffer
 #define		LINE_FEED							'\n'						// Line feed character
 #define		SLASH								'/'							// Slash character
+#define		TWO_PI								360.0f						// Degrees of 2 PI angle
 
 //----------Define messages----------//
 #define		MSG_RELEASEDCRCFAILED				"Release Of DC And RC Failed."
@@ -118,7 +120,7 @@ bool		g_bKeysArr[KEYNUMBER];										// Array used for the keyboard routine
 bool		g_bActive				= TRUE;								// Window Active flag set to TRUE by default
 bool		g_bFullscreen			= TRUE;								// Full screen flag set to Full screen Mode by default
 GLfloat		g_MoveX					= 0.5f;								// Move distance by x axis
-GLfloat		g_MoveY					= 0.0f;								// Move distance by y axis
+GLfloat		g_MoveY					= 0.5f;								// Move distance by y axis
 GLfloat		g_MoveZ					= 0.0f;							// Move distance by z axis
 GLfloat		g_MDeltaX				= 0.05f;							// Move distance step by x axis
 GLfloat		g_MDeltaY				= 0.05f;							// Move distance step by y axis
@@ -126,14 +128,14 @@ GLfloat		g_MDeltaZ				= 0.20f;							// Move distance step by z axis
 GLfloat		g_RotateX				= 0.0f;								// Rotate angle by x axis
 GLfloat		g_RotateY				= 0.0f;								// Rotate angle by y axis
 GLfloat		g_RotateZ				= 0.0f;								// Rotate angle by z axis
-GLfloat		g_RDeltaX				= 1.00f;							// Rotate angle step by x axis
+GLfloat		g_RDeltaX				= 2.00f;							// Rotate angle step by x axis
 GLfloat		g_RDeltaY				= 2.00f;							// Rotate angle step by y axis
 GLfloat		g_RDeltaZ				= 0.001f;							// Rotate angle step by z axis
 
 GLfloat		g_Walkbias				= 0.0f;								// Value use for walk down and up
 GLfloat		g_Walkbiasangle			= 0.0f;								// Value use for walk down and up
-float		g_Heading				= 0.0f;								// Heading value????
-const float	PIOVER180				= 0.0174532925f;					// Value of PI/180 -> Use for convert radians to degrees
+GLfloat		g_WalkbiasAngleDelta	= 18.0f;							// Value use for walk down and up
+const float	PIOVER180				= 0.0174532925f;					// Value of PI/180 -> Use for convert degrees to radians
 
 GLuint		g_Texture[NUMBER_TEXTURE];									// Textures in program
 STAR_t		g_Stars[NUMBER_STARS];										// Stars list
@@ -236,46 +238,63 @@ void SetupWorld()
 }
 
 /* Load a bitmap image */
+AUX_RGBImageRec *LoadBMP(char* pFileName)				// Load a bitmap image
+{
+	FILE* file = NULL;									// File handle
+	if (!pFileName)										// Make sure a file name was given
+	{
+		return NULL;									// If not return NULL
+	}
+	fopen_s(&file, pFileName, "r");						// Check to see if the file exists
+	if (file)
+	{
+		fclose(file);									// Close the handle
+		return auxDIBImageLoad(pFileName);				// Load the bitmap and return the pointer
+	}
+	return NULL;
+}
 int LoadGLTextures()
 {
 	int nStatus = TRUE;									// Status Indicator
 
-	char* arrFileName[NUMBER_TEXTURE] =
+	AUX_RGBImageRec *pTextureImage[1];                   // Create Storage Space For The Texture
+	memset(pTextureImage, 0, sizeof(void *)* 1);                // Set The Pointer To NULL
+	if (pTextureImage[0] = LoadBMP(TEXTURE_FILE_PATH))
 	{
-		TEXTURE_FILE_PATH,
-	};
-	//glGenTextures(3, &g_Texture[0]);
-	// Create Nearest Filtered Texture
-	g_Texture[0] = SOIL_load_OGL_texture(arrFileName[0],
-		SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
-	if (!g_Texture[0])
-	{
-		nStatus = FALSE;
-	}
-	glBindTexture(GL_TEXTURE_2D, g_Texture[0]);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	// Create Linear Filtered Texture
-	g_Texture[1] = SOIL_load_OGL_texture(arrFileName[0],
-		SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
-	if (!g_Texture[1])
-	{
-		nStatus = FALSE;
-	}
-	glBindTexture(GL_TEXTURE_2D, g_Texture[1]);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	// Create MipMapped Texture
-	g_Texture[2] = SOIL_load_OGL_texture(arrFileName[0],
-		SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
-	if (!g_Texture[2])
-	{
-		nStatus = FALSE;
-	}
-	glBindTexture(GL_TEXTURE_2D, g_Texture[2]);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		nStatus = TRUE;
+		glGenTextures(3, &g_Texture[0]);
+		// Create Nearest Filtered Texture
+		glBindTexture(GL_TEXTURE_2D, g_Texture[0]);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexImage2D(GL_TEXTURE_2D, 0, 3, pTextureImage[0]->sizeX,
+			pTextureImage[0]->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE,
+			pTextureImage[0]->data);
 
+		// Create Linear Filtered Texture
+		glBindTexture(GL_TEXTURE_2D, g_Texture[1]);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexImage2D(GL_TEXTURE_2D, 0, 3, pTextureImage[0]->sizeX,
+			pTextureImage[0]->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE,
+			pTextureImage[0]->data);
+
+		// Create MipMapped Texture
+		glBindTexture(GL_TEXTURE_2D, g_Texture[2]);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+		gluBuild2DMipmaps(GL_TEXTURE_2D, 3, pTextureImage[0]->sizeX,
+			pTextureImage[0]->sizeY, GL_RGB, GL_UNSIGNED_BYTE,
+			pTextureImage[0]->data);
+	}
+	if (pTextureImage[0])
+	{
+		if (pTextureImage[0]->data)
+		{
+			free(pTextureImage[0]->data);
+		}
+		free(pTextureImage[0]);
+	}
 	return nStatus;                                        // Return Success
 }
 
@@ -359,12 +378,10 @@ int DrawGLScene(GLvoid)									// Here's where we do all the drawing
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear screen and depth buffer
 	glLoadIdentity();									// Reset current matrix
-	GLfloat fYTrans		= -g_Walkbias - 0.25f;				// Used For Bouncing Motion Up And Down
-	GLfloat fSceneRotY	= 360.0f - g_RotateY;			// 360 Degree Angle For Player Direction
 
-	glRotatef(g_RotateX, 1.0f, 0.0f, 0.0f);				// Rotate Up And Down To Look Up And Down
-	glRotatef(fSceneRotY, 0.0f, 1.0f, 0.0f);			// Rotate Depending On Direction Player Is Facing
-	glTranslatef(-g_MoveX, fYTrans, -g_MoveZ);			// Translate The Scene Based On Player Position
+	glRotatef(TWO_PI - g_RotateX, 1.0f, 0.0f, 0.0f);	// Rotate Up And Down To Look Up And Down
+	glRotatef(TWO_PI - g_RotateY, 0.0f, 1.0f, 0.0f);	// Rotate Depending On Direction Player Is Facing
+	glTranslatef(-g_MoveX, -g_MoveY, -g_MoveZ);			// Translate The Scene Based On Player Position
 	glBindTexture(GL_TEXTURE_2D, g_Texture[g_uFilter]);	// Select Our Texture
 
 	// Process each triangle
@@ -809,99 +826,105 @@ int WINAPI WinMain(
 			if (g_bKeysArr[VK_LEFT])
 			{
 				g_bKeysArr[VK_LEFT] = FALSE;
-				//g_Heading -= g_MDeltaX;
-				g_MoveX -= g_MDeltaX;
+				g_MoveX -= (float)cos(g_RotateY * PIOVER180) * 0.05f;
+				g_MoveZ += (float)sin(g_RotateY * PIOVER180) * 0.05f;
 			}
 			if (g_bKeysArr[VK_RIGHT])
 			{
 				g_bKeysArr[VK_RIGHT] = FALSE;
-				//g_Heading += g_MDeltaX;
-				g_MoveX += g_MDeltaX;
+
+				g_MoveX += (float)cos(g_RotateY * PIOVER180) * 0.05f;
+				g_MoveZ -= (float)sin(g_RotateY * PIOVER180) * 0.05f;
 			}
-			// Handle move up-down
+			// Handle move forward
 			if (g_bKeysArr[VK_UP])
 			{
 				g_bKeysArr[VK_UP] = FALSE;
-				g_MoveX -= (float)sin(g_Heading * PIOVER180) * 0.05f;
-				g_MoveZ -= (float)cos(g_Heading * PIOVER180) * 0.05f;
-				if (g_Walkbiasangle >= 359.0f)
-				{
-					g_Walkbiasangle = 0.0f;
-				}
-				else
-				{
-					g_Walkbiasangle += 10.0f;
-				}
-				g_Walkbias = (float)sin(g_Walkbiasangle * PIOVER180) / 20.0f;
+				g_MoveX -= (float)sin(g_RotateY * PIOVER180) * 0.05f;
+				g_MoveZ -= (float)cos(g_RotateY * PIOVER180) * 0.05f;
+				// Foot step
+				//if (g_Walkbiasangle >= (TWO_PI - 1))
+				//{
+				//	g_Walkbiasangle = 0.0f;
+				//}
+				//else
+				//{
+				//	g_Walkbiasangle += g_WalkbiasAngleDelta;
+				//}
+				//g_MoveY = (float)sin(g_Walkbiasangle * PIOVER180) / 20.0f;
+				g_MoveY += (float)sin(g_RotateX * PIOVER180) * 0.05f;
+				g_MoveZ -= (float)cos(g_RotateX * PIOVER180) * 0.05f;
 			}
+			// Handle move backward
 			if (g_bKeysArr[VK_DOWN])
 			{
 				g_bKeysArr[VK_DOWN] = FALSE;
-				g_MoveX += (float)sin(g_Heading * PIOVER180) * 0.05f;
-				g_MoveZ += (float)cos(g_Heading * PIOVER180) * 0.05f;
-				if (g_Walkbiasangle <= 1.0f)
-				{
-					g_Walkbiasangle = 359.0f;
-				}
-				else
-				{
-					g_Walkbiasangle -= 10.0f;
-				}
-				g_Walkbias = (float)sin(g_Walkbiasangle * PIOVER180) / 20.0f;
+				g_MoveX += (float)sin(g_RotateY * PIOVER180) * 0.05f;
+				g_MoveZ += (float)cos(g_RotateY * PIOVER180) * 0.05f;
+				// Foot step
+				//if (g_Walkbiasangle <= 1.0f)
+				//{
+				//	g_Walkbiasangle = (TWO_PI - 1);
+				//}
+				//else
+				//{
+				//	g_Walkbiasangle -= g_WalkbiasAngleDelta;
+				//}
+				//g_MoveY = (float)sin(g_Walkbiasangle * PIOVER180) / 20.0f;
+				g_MoveY -= (float)sin(g_RotateX * PIOVER180) * 0.05f;
+				g_MoveZ += (float)cos(g_RotateX * PIOVER180) * 0.05f;
 			}
-			// Handle move forward-backward
-			if (g_bKeysArr[VK_ADD])
-			{
-				g_bKeysArr[VK_ADD] = FALSE;
-				g_MoveZ -= g_MDeltaZ;
-			}
-			// Handle rotate follow X asix
+			//// Handle move forward-backward
+			//if (g_bKeysArr[VK_ADD])
+			//{
+			//	g_bKeysArr[VK_ADD] = FALSE;
+			//	g_MoveZ -= g_MDeltaZ;
+			//}
+			// Handle rotate follow Y asix
 			if (g_bKeysArr[VK_INSERT])
 			{
 				g_bKeysArr[VK_INSERT] = FALSE;
-				g_Heading += g_RDeltaY;
-				g_RotateY = g_Heading;
+				g_RotateY += g_RDeltaY;
 			}
-			if (g_bKeysArr[VK_DELETE])
-			{
-				g_bKeysArr[VK_DELETE] = FALSE;
-				g_RotateX -= g_RDeltaX;
-			}
-			// Handle rotate follow Y asix
+			//if (g_bKeysArr[VK_DELETE])
+			//{
+			//	g_bKeysArr[VK_DELETE] = FALSE;
+			//	g_RotateX -= g_RDeltaX;
+			//}
+			// Handle rotate follow X asix
 			if (g_bKeysArr[VK_HOME])
 			{
 				g_bKeysArr[VK_HOME] = FALSE;
 				g_RotateX += g_RDeltaX;
 			}
+			// Handle rotate follow X asix
 			if (g_bKeysArr[VK_END])
 			{
 				g_bKeysArr[VK_END] = FALSE;
 				g_RotateX -= g_RDeltaX;
 			}
-			// Handle rotate follow Z axis
+			// Handle rotate follow Y axis
 			if (g_bKeysArr[VK_PRIOR])
 			{
 				g_bKeysArr[VK_PRIOR] = FALSE;
-				g_Heading -= g_RDeltaY;
-				g_RotateY = g_Heading;
-				//g_MoveZ -= 0.02f;
+				g_RotateY -= g_RDeltaY;
 			}
-			if (g_bKeysArr[VK_NEXT])
-			{
-				g_bKeysArr[VK_NEXT] = FALSE;
-				g_RotateZ -= g_RDeltaZ;
-				//g_MoveZ += 0.02f;
-			}
-			if (g_bKeysArr[VK_SUBTRACT])
-			{
-				g_bKeysArr[VK_SUBTRACT] = FALSE;
-				g_MoveZ += g_MDeltaZ;
-			}
+			//if (g_bKeysArr[VK_NEXT])
+			//{
+			//	g_bKeysArr[VK_NEXT] = FALSE;
+			//	g_RotateZ -= g_RDeltaZ;
+			//	//g_MoveZ += 0.02f;
+			//}
+			//if (g_bKeysArr[VK_SUBTRACT])
+			//{
+			//	g_bKeysArr[VK_SUBTRACT] = FALSE;
+			//	g_MoveZ += g_MDeltaZ;
+			//}
 
-			if (g_bKeysArr[VK_TAB])
-			{
-				g_bKeysArr[VK_TAB] = FALSE;
-			}
+			//if (g_bKeysArr[VK_TAB])
+			//{
+			//	g_bKeysArr[VK_TAB] = FALSE;
+			//}
 		}
 	}
 
