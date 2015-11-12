@@ -130,10 +130,10 @@ GLfloat		g_RDeltaX				= 1.00f;							// Rotate angle step by x axis
 GLfloat		g_RDeltaY				= 2.00f;							// Rotate angle step by y axis
 GLfloat		g_RDeltaZ				= 0.001f;							// Rotate angle step by z axis
 
-GLfloat		g_Walkbias				= 0.0f;
-GLfloat		g_Walkbiasangle			= 0.0f;
-float		g_Heading				= 0.0f;
-const float	PIOVER180				= 0.0174532925f;
+GLfloat		g_Walkbias				= 0.0f;								// Value use for walk down and up
+GLfloat		g_Walkbiasangle			= 0.0f;								// Value use for walk down and up
+float		g_Heading				= 0.0f;								// Heading value????
+const float	PIOVER180				= 0.0174532925f;					// Value of PI/180 -> Use for convert radians to degrees
 
 GLuint		g_Texture[NUMBER_TEXTURE];									// Textures in program
 STAR_t		g_Stars[NUMBER_STARS];										// Stars list
@@ -212,12 +212,13 @@ void SetupWorld()
 		MessageBox(NULL, MSG_READFILEFAILED,					// Show message open file is failed
 			ERR_ERROR, MB_OK | MB_ICONEXCLAMATION);
 	}
-	else
+	else														// Open file is success
 	{
 		ReadStr(pFile, arrLine);								// Get Single Line Of Data
 		sscanf_s(arrLine, "NUMPOLLIES %d\n", &unNumTriAngles);	// Read In Number Of Triangles
 		g_Sector.pTriangle = new Triangle_t[unNumTriAngles];	// Allocate Memory For numtriangles And Set Pointer
 		g_Sector.uNumTriAngle = unNumTriAngles;					// Define the number of triangles in sector
+
 		// Step through each triangle in sector
 		for (UINT ii = 0; ii < unNumTriAngles; ii++)			// Loop through all the triangles
 		{
@@ -230,7 +231,6 @@ void SetupWorld()
 				g_Sector.pTriangle[ii].vertex[jj] = vertex;		// Store values into respective vertices
 			}
 		}
-
 		fclose(pFile);											// Close file after done
 	}
 }
@@ -303,11 +303,12 @@ int InitGL(GLvoid)										// All setup for openGL goes here
 		return FALSE;									// If Texture Didn't Load Return FALSE
 	}
 	glEnable(GL_TEXTURE_2D);							// Enable Texture Mapping
-	glShadeModel(GL_SMOOTH);							// Enable smooth shading
+	glBlendFunc(GL_SRC_ALPHA,GL_ONE);					// Set The Blending Function For Translucency Based On Source Alpha Value
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);				// Black background
 	glClearDepth(1.0f);									// Depth buffer setup
 	glDepthFunc(GL_LESS);								// The Type Of Depth Test To Do
 	glEnable(GL_DEPTH_TEST);							// Enables depth testing
+	glShadeModel(GL_SMOOTH);							// Enable smooth shading
 	//glDepthFunc(GL_LEQUAL);								// The type of depth testing to do
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really nice perspective calcutations
 	
@@ -317,7 +318,6 @@ int InitGL(GLvoid)										// All setup for openGL goes here
 	//glEnable(GL_LIGHT1);								// Enable light one
 
 	//glColor4f(1.0f, 1.0f, 1.0f, 0.5);					// Full Brightness.  50% Alpha
-	glBlendFunc(GL_SRC_ALPHA,GL_ONE);					// Set The Blending Function For Translucency Based On Source Alpha Value
 	//glEnable(GL_BLEND);									// Enable blending
 	SetupWorld();
 
@@ -379,6 +379,13 @@ int DrawGLScene(GLvoid)									// Here's where we do all the drawing
 
 GLvoid KillGLWindow(GLvoid)								// Properly kill the window
 {
+	// Release memory
+	if (g_Sector.pTriangle)
+	{
+		delete[] g_Sector.pTriangle;
+		g_Sector.pTriangle = NULL;
+		g_Sector.uNumTriAngle = 0;
+	}
 	if (g_bFullscreen)									// Are we in fullscreen mode?
 	{
 		ChangeDisplaySettings(NULL, 0);					// If so switch back to the desktop
