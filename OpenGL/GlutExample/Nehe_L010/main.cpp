@@ -852,8 +852,8 @@ int WINAPI WinMain(
 				//	g_Walkbiasangle += g_WalkbiasAngleDelta;
 				//}
 				//g_MoveY = (float)sin(g_Walkbiasangle * PIOVER180) / 20.0f;
-				g_MoveY += (float)sin(g_RotateX * PIOVER180) * 0.05f;
-				g_MoveZ -= (float)cos(g_RotateX * PIOVER180) * 0.05f;
+				//g_MoveY += (float)sin(g_RotateX * PIOVER180) * 0.05f;
+				//g_MoveZ -= (float)cos(g_RotateX * PIOVER180) * 0.05f;
 			}
 			// Handle move backward
 			if (g_bKeysArr[VK_DOWN])
@@ -871,8 +871,8 @@ int WINAPI WinMain(
 				//	g_Walkbiasangle -= g_WalkbiasAngleDelta;
 				//}
 				//g_MoveY = (float)sin(g_Walkbiasangle * PIOVER180) / 20.0f;
-				g_MoveY -= (float)sin(g_RotateX * PIOVER180) * 0.05f;
-				g_MoveZ += (float)cos(g_RotateX * PIOVER180) * 0.05f;
+				//g_MoveY -= (float)sin(g_RotateX * PIOVER180) * 0.05f;
+				//g_MoveZ += (float)cos(g_RotateX * PIOVER180) * 0.05f;
 			}
 			//// Handle move forward-backward
 			//if (g_bKeysArr[VK_ADD])
