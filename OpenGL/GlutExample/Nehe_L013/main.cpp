@@ -18,6 +18,8 @@
 #define		WINDOW_HEIGHT						480							// Window hight
 #define		WINDOW_BIT							16							// Window bit
 #define		PROG_FONTFACE						"Courier New"				// Program font face
+#define		FONT_CHAR_NUM						96							// Number of character of font
+#define		STRINGBUFFER						256							// Buffer size of string
 
 //----------Define messages----------//
 #define		MSG_RELEASEDCRCFAILED				"Release Of DC And RC Failed."
@@ -63,7 +65,7 @@ GLvoid BuildFont(GLvoid)
 {
 	HFONT	hFont;										// Windows font ID
 	HFONT	oldFont;									// Used for good house keeping
-	g_uBase = glGenLists(96);							// Storage for 96 characters
+	g_uBase = glGenLists(FONT_CHAR_NUM);				// Storage for 96 characters
 	hFont = CreateFont(-24,								// Height of font
 		0,												// Width of font
 		0,												// Angle of escapement
@@ -80,7 +82,31 @@ GLvoid BuildFont(GLvoid)
 														// and pitch: DEFAULT_PITCH, FIXED_PITCH and VARIABLE_PITCH
 		PROG_FONTFACE);									// Font name
 	oldFont = (HFONT)SelectObject(hDC, hFont);			// Select the font we want
-	wglUseFontBitmaps(hDC, 32, 96, g_uBase);			
+	wglUseFontBitmaps(hDC, VK_SPACE, FONT_CHAR_NUM, g_uBase);	// Build 96 characters starting at character 32
+	SelectObject(hDC, oldFont);							// Select the old font we want
+	DeleteObject(hFont);								// Delete the font
+}
+/* Delete the font list */
+GLvoid KillFont(GLvoid)
+{
+	glDeleteLists(g_uBase, FONT_CHAR_NUM);				// Delete All 96 Characters
+}
+/* Custom GL "Print" routine */
+GLvoid glPrint(const char *fmt, ...)
+{
+	char	lpszText[STRINGBUFFER];						// Hold string
+	va_list	pLstArg;									// Pointer to list of arguments
+	if (NULL == fmt)									// If there's no text
+	{
+		return;											// Do nothing
+	}
+	va_start(pLstArg, fmt);								// Parses The String For Variables
+	vsprintf(lpszText, fmt, pLstArg);					// And Converts Symbols To Actual Numbers
+	va_end(pLstArg);									// Results Are Stored In Text
+	glPushAttrib(GL_LIST_BIT);							// Pushes The Display List Bits
+	glListBase(g_uBase - VK_SPACE);						// Sets The Base Character to 32
+	glCallLists(strlen(lpszText), GL_UNSIGNED_BYTE, lpszText);	// Draws The Display List Text
+	glPopAttrib();										// Pops The Display List Bits
 }
 GLvoid ReSizeGLScene(GLsizei width, GLsizei height)		// Resize and initialize the GL Window
 {
@@ -107,12 +133,25 @@ int InitGL(GLvoid)										// All setup for openGL goes here
 	glDepthFunc(GL_LEQUAL);								// The type of depth testing to do
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really nice perspective calcutations
 
+	BuildFont();										// Build font
+
 	return TRUE;										// Initialization went OK
 }
 int DrawGLScene(GLvoid)									// Here's where we do all the drawing
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear screen and depth buffer
 	glLoadIdentity();									// Reset the current model-view matrix
+	glTranslatef(0.0f, 0.0f, -1.0f);					// Move 1 unit into screen
+	// Pulsing colors based on text position
+	glColor3f(1.0f * float(cos(g_fCnt1)),
+		1.0f * float(sin(g_fCnt2)),
+		1.0f - 0.5f * float(cos(g_fCnt1 + g_fCnt2)));
+	// Position the text on screen
+	glRasterPos2f(-0.45f + 0.05f * float(cos(g_fCnt1)),
+		0.35f * float(sin(g_fCnt2)));
+	glPrint("I want to become a part of Internet of Thing - %7.2f", g_fCnt1);
+	g_fCnt1 += 0.0051f;
+	g_fCnt2 += 0.0005f;
 	return TRUE;										// Everything went OK
 }
 
