@@ -40,6 +40,18 @@
 #define		ERR_SHUTDOWN_ERROR					"SHUTDOWN ERROR"
 #define		ERR_ERROR							"ERROR"
 
+//----------Define enum	----------//
+typedef enum CUBE_NORMAL
+{
+	CUBE_NORMAL_FRONT = 0,
+	CUBE_NORMAL_LEFT,
+	CUBE_NORMAL_BEHIND,
+	CUBE_NORMAL_RIGHT,
+	CUBE_NORMAL_TOP,
+	CUBE_NORMAL_BOTTOM,
+	CUBE_NORMAL_NUM
+};
+
 //----------Global variable----------//
 HDC			hDC						= NULL;								// Private GDI Device Context
 HGLRC		hRC						= NULL;								// Permanent Rendering Context
@@ -58,8 +70,8 @@ GLfloat	g_MDeltaZ					= 0.05f;							// Move distance step by z axis
 GLfloat	g_RotateX					= 0.0f;								// Rotate angle by x axis
 GLfloat	g_RotateY					= 0.0f;								// Rotate angle by y axis
 GLfloat	g_RotateZ					= 0.0f;								// Rotate angle by z axis
-GLfloat	g_RDeltaX					= 0.05f;							// Rotate angle step by x axis
-GLfloat	g_RDeltaY					= 0.05f;							// Rotate angle step by y axis
+GLfloat	g_RDeltaX					= 2.5f;								// Rotate angle step by x axis
+GLfloat	g_RDeltaY					= 2.5f;								// Rotate angle step by y axis
 GLfloat	g_RDeltaZ					= 0.05f;							// Rotate angle step by z axis
 GLuint	g_Texture[NUMBER_TEXTURE];										// Textures in program
 GLuint	g_Box						= 0;								// Storage For The Display List
@@ -87,6 +99,15 @@ const static	GLfloat		s_fK[3]	= {-1.0f, 1.0f, 0.0f};
 const static	GLfloat		s_fL[3]	= {-1.0f,-1.0f, 0.0f};
 const static	GLfloat		s_fM[3]	= { 1.0f,-1.0f, 0.0f};
 const static	GLfloat		s_fO[3]	= { 0.0f, 1.0f, 0.0f};
+const static	GLfloat		s_fCubeNormal[CUBE_NORMAL_NUM][3] = 
+{
+	{ 0.0f, 0.0f, 1.0f},
+	{-1.0f, 0.0f, 0.0f},
+	{ 0.0f, 0.0f,-1.0f},
+	{ 1.0f, 0.0f, 0.0f},
+	{ 0.0f, 1.0f, 0.0f},
+	{ 0.0f,-1.0f, 0.0f},
+};
 static GLfloat	s_BoxColor[5][3] =					// Array For Box Colors
 {
 	{1.0f, 0.0f, 0.0f}, 
@@ -111,7 +132,7 @@ int LoadGLTextures()
 	int nStatus = TRUE;									// Status Indicator
 	char* arrFileName[NUMBER_TEXTURE] =
 	{
-		"texture.bmp"
+		"data\\cube.bmp"
 	};
 	for (int i = 0; i < NUMBER_TEXTURE; i++)
 	{
@@ -143,23 +164,6 @@ GLvoid ReSizeGLScene(GLsizei width, GLsizei height)
 	gluPerspective(DEFAULT_PERSPECTIVE_FOVY, (GLfloat)width / (GLfloat)height, 0.1f, 100.0f);
 	glMatrixMode(GL_MODELVIEW);							// Select the model-view matrix
 	glLoadIdentity();									// Reset the model-view matrix
-}
-
-int InitGL(GLvoid)										// All setup for openGL goes here
-{
-	if (!LoadGLTextures())								// Jump To Texture Loading Routine ( NEW )
-	{
-		return FALSE;									// If Texture Didn't Load Return FALSE
-	}
-	glEnable(GL_TEXTURE_2D);							// Enable Texture Mapping
-	glShadeModel(GL_SMOOTH);							// Enable smooth shading
-	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);				// Black background
-	glClearDepth(1.0f);									// Depth buffer setup
-	glEnable(GL_DEPTH_TEST);							// Enables depth testing
-	glDepthFunc(GL_LEQUAL);								// The type of depth testing to do
-	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really nice perspective calcutations
-
-	return TRUE;										// Initialization went OK
 }
 // Draw a triangle
 void DrawTriAngles(const GLfloat* d1, const GLfloat* d2, const GLfloat* d3,	// Point 
@@ -193,53 +197,86 @@ void DrawQuads(const GLfloat* d1, const GLfloat* d2,
 	}
 	glEnd();											// Done Drawing The Quad
 }
+
+// Build Box Display List
+GLvoid BuildLists()
+{
+	g_Box = glGenLists(2);								// Building Two Lists
+	glNewList(g_Box, GL_COMPILE);						// New Compiled box Display List
+	// Front
+	glNormal3fv(s_fCubeNormal[CUBE_NORMAL_FRONT]);
+	DrawQuads(s_fG, s_fH, s_fD, s_fC, s_GreenColor);
+	// Left
+	glNormal3fv(s_fCubeNormal[CUBE_NORMAL_LEFT]);
+	DrawQuads(s_fF, s_fG, s_fC, s_fB, s_OrangeColor);
+	// Behind
+	glNormal3fv(s_fCubeNormal[CUBE_NORMAL_BEHIND]);
+	DrawQuads(s_fE, s_fF, s_fB, s_fA, s_RedColor);
+	// Right
+	glNormal3fv(s_fCubeNormal[CUBE_NORMAL_RIGHT]);
+	DrawQuads(s_fH, s_fE, s_fA, s_fD, s_YellowColor);
+	//// Top
+	//glNormal3fv(s_fCubeNormal[CUBE_NORMAL_TOP]);
+	//DrawQuads(s_fC, s_fD, s_fA, s_fB, s_BlueColor);
+	// Bottom
+	glNormal3fv(s_fCubeNormal[CUBE_NORMAL_BOTTOM]);
+	DrawQuads(s_fF, s_fE, s_fH, s_fG, s_WhiteColor);
+	glEndList();										// Done Building The box List
+	
+	g_Top = g_Box + 1;									// top List Value Is box List Value +1
+	glNewList(g_Top, GL_COMPILE);						// New Compiled top Display List
+	glNormal3fv(s_fCubeNormal[CUBE_NORMAL_TOP]);
+	DrawQuads(s_fC, s_fD, s_fA, s_fB, s_BlueColor);		// Top
+	glEndList();										// Done Building The top List
+}
+
+int InitGL(GLvoid)										// All setup for openGL goes here
+{
+	if (!LoadGLTextures())								// Jump To Texture Loading Routine ( NEW )
+	{
+		return FALSE;									// If Texture Didn't Load Return FALSE
+	}
+	BuildLists();										// Jump To The Code That Creates Our Display Lists
+	glEnable(GL_TEXTURE_2D);							// Enable Texture Mapping
+	glShadeModel(GL_SMOOTH);							// Enable smooth shading
+	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);				// Black background
+	glClearDepth(1.0f);									// Depth buffer setup
+	glEnable(GL_DEPTH_TEST);							// Enables depth testing
+	glDepthFunc(GL_LEQUAL);								// The type of depth testing to do
+	glEnable(GL_LIGHT0);								// Quick And Dirty Lighting (Assumes Light0 Is Set Up)
+	glEnable(GL_LIGHTING);								// Enable Lighting
+	glEnable(GL_COLOR_MATERIAL);						// // Enable Material Coloring
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really nice perspective calcutations
+
+	return TRUE;										// Initialization went OK
+}
 int DrawGLScene(GLvoid)									// Here's where we do all the drawing
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear screen and depth buffer
-	/* Start draw pyramid */
-	glLoadIdentity();									// Reset the current model-view matrix
-	glTranslatef(g_MoveX, g_MoveY, g_MoveZ);			// Move Left 1.5 Units And Into The Screen 6.0
-	glRotatef(g_RotateX, 1.0f, 0.0f, 0.0f);				// Rotate The Triangle On The X axis
-	glRotatef(g_RotateY, 0.0f, 1.0f, 0.0f);             // Rotate The Triangle On The Y axis
-	glRotatef(g_RotateZ, 0.0f, 0.0f, 1.0f);             // Rotate The Triangle On The Z axis
+	glBindTexture(GL_TEXTURE_2D, g_Texture[0]);			// Select The Texture
 	
-	// Front
-	DrawTriAngles(s_fO, s_fG, s_fH,						// Drawing Using Triangles
-		s_RedColor, s_GreenColor, s_BlueColor);
-	// Right
-	DrawTriAngles(s_fO, s_fH, s_fE,						// Drawing Using Triangles
-		s_RedColor, s_GreenColor, s_BlueColor);
-	// Left
-	DrawTriAngles(s_fO, s_fF, s_fG,						// Drawing Using Triangles
-		s_RedColor, s_GreenColor, s_BlueColor);
-	// Back
-	DrawTriAngles(s_fO, s_fE, s_fF,						// Drawing Using Triangles
-		s_RedColor, s_GreenColor, s_BlueColor);
-
-	/* Start draw cube */
-	glLoadIdentity();
-	glTranslatef(1.5f, 0.0f, -7.0f);					// Move Right 3 Units
-	glRotatef(g_RotateX, 1.0f, 0.0f, 0.0f);				// Rotate The Triangle On The X axis
-	glRotatef(g_RotateY, 0.0f, 1.0f, 0.0f);             // Rotate The Triangle On The Y axis
-	glRotatef(g_RotateZ, 0.0f, 0.0f, 1.0f);             // Rotate The Triangle On The Z axis
-	glBindTexture(GL_TEXTURE_2D, g_Texture[0]);
-	// Front
-	//glTexCoord2f
-	DrawQuads(s_fG, s_fH, s_fD, s_fC, s_GreenColor);
-	// Left
-	DrawQuads(s_fF, s_fG, s_fC, s_fB, s_OrangeColor);
-	// Behind
-	DrawQuads(s_fE, s_fF, s_fB, s_fA, s_RedColor);
-	// Right
-	DrawQuads(s_fH, s_fE, s_fA, s_fD, s_YellowColor);
-	// Top
-	DrawQuads(s_fC, s_fD, s_fA, s_fB, s_BlueColor);
-	// Bottom
-	DrawQuads(s_fF, s_fE, s_fH, s_fG, s_WhiteColor);
+	for (int y = 0; y < 5; y++)							// Loop Through The Y Plane
+	{
+		for (int x = 0; x < (y + 1); x++)
+		{
+			glLoadIdentity();								// Reset the current model-view matrix
+			// Position The Cubes On The Screen
+			glTranslatef(1.4f + (float(x) * 2.8f) - (float(y + 1) * 1.4f),
+				((6.0f - float(y + 1)) * 2.4f) - 7.0f,
+				-20.0f);
+			glRotatef(45.0f - (2.0f*(y + 1)) + g_RotateX,	// Tilt The Cubes Up And Down
+				1.0f, 0.0f, 0.0f);
+			glRotatef(45.0f + g_RotateY, 0.0f, 1.0f, 0.0f);	// Spin Cubes Left And Right
+			glColor3fv(s_BoxColor[y]);						// Select A Box Color
+			glCallList(g_Box);								// Draw the box
+			glColor3fv(s_TopColor[y]);						// Select A top Color
+			glCallList(g_Top);								// Draw the top
+		}
+	}
 
 	//g_RotateX += g_RDeltaX;
 	//g_RotateY -= g_RDeltaY;
-	g_RotateZ += g_RDeltaZ;
+	//g_RotateZ += g_RDeltaZ;
 	return TRUE;										// Everything went OK
 }
 
@@ -583,6 +620,29 @@ int WINAPI WinMain(
 				{
 					return 0;							// Quit If Window Was Not Created
 				}
+			}
+			
+			// Handle rotate follow X asix
+			if (g_bKeysArr[VK_INSERT])
+			{
+				g_bKeysArr[VK_INSERT] = FALSE;
+				g_RotateX += g_RDeltaX;
+			}
+			if (g_bKeysArr[VK_DELETE])
+			{
+				g_bKeysArr[VK_DELETE] = FALSE;
+				g_RotateX -= g_RDeltaX;
+			}
+			// Handle rotate follow Y asix
+			if (g_bKeysArr[VK_HOME])
+			{
+				g_bKeysArr[VK_HOME] = FALSE;
+				g_RotateY += g_RDeltaY;
+			}
+			if (g_bKeysArr[VK_END])
+			{
+				g_bKeysArr[VK_END] = FALSE;
+				g_RotateY -= g_RDeltaY;
 			}
 		}
 	}
