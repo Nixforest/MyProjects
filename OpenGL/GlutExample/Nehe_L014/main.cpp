@@ -17,8 +17,8 @@
 #define		WINDOW_WIDTH						640							// Window width
 #define		WINDOW_HEIGHT						480							// Window hight
 #define		WINDOW_BIT							16							// Window bit
-#define		PROG_FONTFACE						"Courier New"				// Program font face
-#define		FONT_CHAR_NUM						96							// Number of character of font
+#define		PROG_FONTFACE						"Comic Sans MS"				// Program font face
+#define		FONT_CHAR_NUM						256							// Number of character of font
 #define		NUMBER_TEXTURE						1							// Number of textures
 #define		NUMBER_FILTER						3							// Number of filters
 #define		NUMBER_STARS						100							// Number of stars
@@ -134,9 +134,9 @@ GLfloat		g_MDeltaZ				= 0.20f;							// Move distance step by z axis
 GLfloat		g_RotateX				= 0.0f;								// Rotate angle by x axis
 GLfloat		g_RotateY				= 0.0f;								// Rotate angle by y axis
 GLfloat		g_RotateZ				= 0.0f;								// Rotate angle by z axis
-GLfloat		g_RDeltaX				= 2.00f;							// Rotate angle step by x axis
-GLfloat		g_RDeltaY				= 2.00f;							// Rotate angle step by y axis
-GLfloat		g_RDeltaZ				= 0.001f;							// Rotate angle step by z axis
+GLfloat		g_RDeltaX				= 0.05f;							// Rotate angle step by x axis
+GLfloat		g_RDeltaY				= 0.05f;							// Rotate angle step by y axis
+GLfloat		g_RDeltaZ				= 0.05f;							// Rotate angle step by z axis
 
 GLfloat		g_Walkbias				= 0.0f;								// Value use for walk down and up
 GLfloat		g_Walkbiasangle			= 0.0f;								// Value use for walk down and up
@@ -160,6 +160,7 @@ BOOL		g_bPPress				= FALSE;							// P Pressed?
 GLfloat		g_LightAmbient[]		= {0.5f, 0.5f, 0.5f, 1.0f};			// Ambient Light values
 GLfloat		g_LightDiffuse[]		= {1.0f, 1.0f, 1.0f, 1.0f};			// Diffuse Light values
 GLfloat		g_LightPosition[]		= {0.0f, 0.0f, 2.0f, 1.0f};			// Light position
+GLYPHMETRICSFLOAT	g_GMF[FONT_CHAR_NUM];								// Storage For Information About Our Font
 
 /* Color */
 GLfloat		s_RedColor[3]			= {1.0f, 0.0f, 0.0f};				// Red color
@@ -216,8 +217,16 @@ GLvoid BuildFont(GLvoid)
 														// and pitch: DEFAULT_PITCH, FIXED_PITCH and VARIABLE_PITCH
 		PROG_FONTFACE);									// Font name
 	oldFont = (HFONT)SelectObject(hDC, hFont);			// Select the font we want
-	wglUseFontBitmaps(hDC, VK_SPACE, FONT_CHAR_NUM, g_uBase);	// Build 96 characters starting at character 32
-	SelectObject(hDC, oldFont);							// Select the old font we want
+	//wglUseFontBitmaps(hDC, VK_SPACE, FONT_CHAR_NUM, g_uBase);	// Build 96 characters starting at character 32
+	wglUseFontOutlines(hDC,								// Select The Current DC
+		0,												// Starting Character
+		FONT_CHAR_NUM - 1,								// Number Of Display Lists To Build
+		g_uBase,										// Starting Display Lists
+		0.0f,											// Deviation From The True Outlines
+		0.2f,
+		WGL_FONT_POLYGONS,
+		g_GMF);
+	//SelectObject(hDC, oldFont);							// Select the old font we want
 	DeleteObject(hFont);								// Delete the font
 }
 /* Delete the font list */
@@ -228,20 +237,24 @@ GLvoid KillFont(GLvoid)
 /* Custom GL "Print" routine */
 GLvoid glPrint(const char *fmt, ...)
 {
-	char	lpszText[STRING_BUFFER];						// Hold string
+	float	fLen = 0.0f;								// Used To Find The Length Of The Text
+	char	szText[STRING_BUFFER];						// Hold string
 	va_list	pLstArg;									// Pointer to list of arguments
 	if (NULL == fmt)									// If there's no text
 	{
 		return;											// Do nothing
 	}
 	va_start(pLstArg, fmt);								// Parses The String For Variables
-	//vsprintf(lpszText, fmt, pLstArg);					// And Converts Symbols To Actual Numbers
-	vsprintf_s(lpszText, fmt, pLstArg);
-	//vsprintf(lpszText,)
+		vsprintf_s(szText, fmt, pLstArg);					// And Converts Symbols To Actual Numbers
 	va_end(pLstArg);									// Results Are Stored In Text
+	for (UINT i = 0; i < strlen(szText); i++)			// Loop To Find Text Length
+	{
+		fLen += g_GMF[szText[i]].gmfCellIncX;			// Increase Length By Each Characters Width
+	}
+	glTranslatef(- fLen / 2.0f, 0.0f, 0.0f);			// Center our text on the screen
 	glPushAttrib(GL_LIST_BIT);							// Pushes The Display List Bits
-	glListBase(g_uBase - VK_SPACE);						// Sets The Base Character to 32
-	glCallLists(strlen(lpszText), GL_UNSIGNED_BYTE, lpszText);	// Draws The Display List Text
+	glListBase(g_uBase);								// Sets The Base Character to 32
+	glCallLists(strlen(szText), GL_UNSIGNED_BYTE, szText);	// Draws The Display List Text
 	glPopAttrib();										// Pops The Display List Bits
 }
 
@@ -373,22 +386,17 @@ GLvoid ReSizeGLScene(GLsizei width, GLsizei height)
 
 int InitGL(GLvoid)										// All setup for openGL goes here
 {
-	if (!LoadGLTextures())								// Jump To Texture Loading Routine ( NEW )
-	{
-		return FALSE;									// If Texture Didn't Load Return FALSE
-	}
-	glEnable(GL_TEXTURE_2D);							// Enable Texture Mapping
-	glBlendFunc(GL_SRC_ALPHA,GL_ONE);					// Set The Blending Function For Translucency Based On Source Alpha Value
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);				// Black background
-	glClearDepth(1.0f);									// Depth buffer setup
-	glDepthFunc(GL_LESS);								// The Type Of Depth Test To Do
-	glEnable(GL_DEPTH_TEST);							// Enables depth testing
-	glShadeModel(GL_SMOOTH);							// Enable smooth shading
+	glShadeModel(GL_SMOOTH);							// Enable Smooth Shading
+	glClearColor(0.0f, 0.0f, 0.0f, 0.5f);				// Black Background
+	glClearDepth(1.0f);									// Depth Buffer Setup
+	glEnable(GL_DEPTH_TEST);							// Enables Depth Testing
+	glDepthFunc(GL_LEQUAL);								// The Type Of Depth Testing To Do
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really Nice Perspective Calculations
+	glEnable(GL_LIGHT0);								// Enable Default Light (Quick And Dirty)
+	glEnable(GL_LIGHTING);								// Enable Lighting
+	glEnable(GL_COLOR_MATERIAL);						// Enable Coloring Of Material
 
-	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really nice perspective calcutations
-
-	SetupWorld();
-	BuildFont();										// Build font
+	BuildFont();										// Build The Font
 
 	return TRUE;										// Initialization went OK
 }
@@ -424,61 +432,23 @@ void DrawQuads(const GLfloat* d1, const GLfloat* d2,
 	}
 	glEnd();											// Done Drawing The Quad
 }
-/* Draw all texts on screen */
-GLvoid DrawText()
-{
-	glPushAttrib(GL_CURRENT_BIT);
-	glLoadIdentity();									// Reset the current model-view matrix
-	glTranslatef(0.0f, 0.0f, -1.0f);					// Move 1 unit into screen
-	// Pulsing colors based on text position
-	glColor3fv(s_WhiteColor);
-	//glColor3fv(s_BlueColor);
-	//glColor3f(1.0f * float(cos(g_fTextPosX)),
-	//	1.0f * float(sin(g_fTextPosY)),
-	//	1.0f - 0.5f * float(cos(g_fTextPosX + g_fTextPosY)));
-	// Position the text on screen
-	float fX = -0.45f + 0.05f * float(cos(g_fTextPosX));
-	float fY = 0.35f * float(sin(g_fTextPosY));
-	//glRasterPos2f(-0.45f + 0.05f * float(cos(g_fTextPosX)),
-	//	0.35f * float(sin(g_fTextPosY)));
-	glRasterPos2f(g_fTextPosX, g_fTextPosY);
-	glPrint("%20s - %17.2X", "hDC", hDC);
-	g_fTextPosY -= g_fLineSpace;
-	glRasterPos2f(g_fTextPosX, g_fTextPosY);
-	glPrint("%20s - %17.2X", "hWnd", hWnd);
-	/*g_fTextPosY -= g_fLineSpace;
-	glRasterPos2f(g_fTextPosX, g_fTextPosY);
-	glPrint("% 20s - %17.2X", "hInstance", hInstance);
-	g_fTextPosY -= g_fLineSpace;
-	glRasterPos2f(g_fTextPosX, g_fTextPosY);
-	glPrint("% 20s - %17.2X", "g_bActive", g_bActive);
-	g_fTextPosY -= g_fLineSpace;
-	glRasterPos2f(g_fTextPosX, g_fTextPosY);
-	glPrint("% 20s - %17.2X", "g_bFullscreen", g_bFullscreen);*/
-
-
-	glColor3fv(s_WhiteColor);
-}
 int DrawGLScene(GLvoid)									// Here's where we do all the drawing
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear screen and depth buffer
 	glLoadIdentity();									// Reset current matrix
-
-	glRotatef(TWO_PI - g_RotateX, 1.0f, 0.0f, 0.0f);	// Rotate Up And Down To Look Up And Down
-	glRotatef(TWO_PI - g_RotateY, 0.0f, 1.0f, 0.0f);	// Rotate Depending On Direction Player Is Facing
-	glTranslatef(-g_MoveX, -g_MoveY, -g_MoveZ);			// Translate The Scene Based On Player Position
-	glBindTexture(GL_TEXTURE_2D, g_Texture[g_uFilter]);	// Select Our Texture
-
-	// Process each triangle
-	for (UINT ii = 0; ii < g_Sector.uNumTriAngle; ii++)	// Loop Through All The Triangles
-	{
-		DrawTriAngles(g_Sector.pTriangle[ii].vertex[0],
-			g_Sector.pTriangle[ii].vertex[1],
-			g_Sector.pTriangle[ii].vertex[2]);
-	}
+	glTranslatef(0.0f, 0.0f, -10.0f);					// Move 10 units into the screen
+	glRotatef(g_RotateX,1.0f,0.0f,0.0f);				// Rotate On The X Axis
+	glRotatef(g_RotateY * 1.5f,0.0f,1.0f,0.0f);			// Rotate On The Y Axis
+	glRotatef(g_RotateZ * 1.4f,0.0f,0.0f,1.0f);			// Rotate On The Z Axis
 
 	// Draw all texts
-	DrawText();
+	glColor3f(1.0f * float(cos(g_RotateX / 20.0f)),
+		1.0f * float(sin(g_RotateY / 25.0f)),
+		1.0f - 0.5f * float(cos(g_RotateZ / 17.0f)));
+	glPrint("I want to become a part of Internet of Thing %3.2f", g_RotateX/50);
+	g_RotateX += g_RDeltaX;
+	g_RotateY += g_RDeltaY;
+	g_RotateZ += g_RDeltaZ;
 	return TRUE;										// Everything went OK
 }
 
