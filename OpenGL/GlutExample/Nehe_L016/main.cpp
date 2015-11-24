@@ -53,6 +53,18 @@ typedef enum CUBE_NORMAL
 	CUBE_NORMAL_NUM
 };
 
+typedef enum COLOR
+{
+	RED = 0,
+	GREEN,
+	BLUE,
+	WHITE,
+	YELLOW,
+	ORANGE,
+	GREY,
+	COLOR_NUM
+};
+
 //----------Global variable----------//
 HDC			hDC						= NULL;								// Private GDI Device Context
 HGLRC		hRC						= NULL;								// Permanent Rendering Context
@@ -60,6 +72,7 @@ HWND		hWnd					= NULL;								// Holds Our Window Handle
 HINSTANCE	hInstance;													// Holds the instance of the application
 
 bool	g_bKeysArr[KEYNUMBER];											// Array used for the keyboard routine
+bool	g_bKeyPress[KEYNUMBER];											// Array used for check the keyboard is pressed
 bool	g_bActive					= TRUE;								// Window Active flag set to TRUE by default
 bool	g_bFullscreen				= TRUE;								// Full screen flag set to Full screen Mode by default
 GLfloat	g_MoveX						= 0.5f;								// Move distance by x axis
@@ -78,6 +91,7 @@ GLuint	g_Texture[NUMBER_TEXTURE];										// Textures in program
 
 GLuint	g_uFilter					= 0;								// Which Filter To Use
 GLuint	g_uFogFilter				= 0;								// Which Fog To Use
+GLuint	g_uFogColor					= GREY;								// Which Fog color to use
 BOOL	g_bLight					= FALSE;							// Lighting ON/OFF
 BOOL	g_bLPress					= FALSE;							// L Pressed?
 BOOL	g_bFPress					= FALSE;							// F Pressed?
@@ -108,7 +122,16 @@ const static	GLfloat		s_fK[3]	= {-1.0f, 1.0f, 0.0f};
 const static	GLfloat		s_fL[3]	= {-1.0f,-1.0f, 0.0f};
 const static	GLfloat		s_fM[3]	= { 1.0f,-1.0f, 0.0f};
 const static	GLfloat		s_fO[3]	= { 0.0f, 1.0f, 0.0f};
-const static	GLfloat		s_fFogColor[4] = { 0.5f, 0.5f, 0.5f, 1.0f };	// Fog color
+const static	GLfloat		s_fFogColor[COLOR_NUM][4] =// { 0.5f, 0.5f, 0.5f, 1.0f };	// Fog color
+{
+	{s_RedColor[0],		s_RedColor[1],		s_RedColor[2],		1.0f},
+	{s_GreenColor[0],	s_GreenColor[1],	s_GreenColor[2],	1.0f},
+	{s_BlueColor[0],	s_BlueColor[1],		s_BlueColor[2],		1.0f},
+	{s_WhiteColor[0],	s_WhiteColor[1],	s_WhiteColor[2],	1.0f},
+	{s_YellowColor[0],	s_YellowColor[1],	s_YellowColor[2],	1.0f},
+	{s_OrangeColor[0],	s_OrangeColor[1],	s_OrangeColor[2],	1.0f},
+	{0.5,				0.5,				0.5,				1.0f},
+};
 const static	GLfloat		s_fCubeNormal[CUBE_NORMAL_NUM][3] = 
 {
 	{ 0.0f, 0.0f, 1.0f},
@@ -227,13 +250,14 @@ int InitGL(GLvoid)										// All setup for openGL goes here
 
 
 	glFogi(GL_FOG_MODE, s_FogMode[g_uFogFilter]);		// Fog mode
-	glFogfv(GL_FOG_COLOR, s_fFogColor);					// Set fog color
+	glFogfv(GL_FOG_COLOR, s_fFogColor[g_uFogColor]);	// Set fog color
 	glFogf(GL_FOG_DENSITY, 0.35f);						// How dense will the fog be
 	glHint(GL_FOG_HINT, GL_DONT_CARE);					// Fog hint value
 	glFogf(GL_FOG_START, 1.0f);							// Fog start depth
 	glFogf(GL_FOG_END, 5.0f);							// Fog end depth
 	glEnable(GL_FOG);									// Enables GL_FOG
 
+	ZeroMemory(g_bKeyPress, KEYNUMBER);
 	return TRUE;										// Initialization went OK
 }
 // Draw a triangle
@@ -658,6 +682,92 @@ int WINAPI WinMain(
 					if (!g_bKeysArr['F'])
 					{
 						g_bFPress = FALSE;
+					}
+					/*--- Handle 'G' key ---*/
+					if (g_bKeysArr['G'] && !g_bGPress)
+					{
+						g_bGPress = TRUE;
+						g_uFogFilter++;
+						if (g_uFogFilter > 2)
+						{
+							g_uFogFilter = 0;
+						}
+						glFogi(GL_FOG_MODE, s_FogMode[g_uFogFilter]);
+					}
+					if (!g_bKeysArr['G'])
+					{
+						g_bGPress = FALSE;
+					}
+					/*--- Handle Set fog color ---*/
+					if (g_bKeysArr['1'] && !g_bKeyPress['1'])
+					{
+						g_bKeyPress['1'] = TRUE;
+						g_uFogColor = RED;
+						glFogfv(GL_FOG_COLOR, s_fFogColor[g_uFogColor]);	// Set fog color
+					}
+					if (!g_bKeysArr['1'])
+					{
+						g_bKeyPress['1'] = FALSE;
+					}
+					if (g_bKeysArr['2'] && !g_bKeyPress['2'])
+					{
+						g_bKeyPress['2'] = TRUE;
+						g_uFogColor = GREEN;
+						glFogfv(GL_FOG_COLOR, s_fFogColor[g_uFogColor]);	// Set fog color
+					}
+					if (!g_bKeysArr['2'])
+					{
+						g_bKeyPress['2'] = FALSE;
+					}
+					if (g_bKeysArr['3'] && !g_bKeyPress['3'])
+					{
+						g_bKeyPress['3'] = TRUE;
+						g_uFogColor = BLUE;
+						glFogfv(GL_FOG_COLOR, s_fFogColor[g_uFogColor]);	// Set fog color
+					}
+					if (!g_bKeysArr['3'])
+					{
+						g_bKeyPress['3'] = FALSE;
+					}
+					if (g_bKeysArr['4'] && !g_bKeyPress['4'])
+					{
+						g_bKeyPress['4'] = TRUE;
+						g_uFogColor = WHITE;
+						glFogfv(GL_FOG_COLOR, s_fFogColor[g_uFogColor]);	// Set fog color
+					}
+					if (!g_bKeysArr['4'])
+					{
+						g_bKeyPress['4'] = FALSE;
+					}
+					if (g_bKeysArr['5'] && !g_bKeyPress['5'])
+					{
+						g_bKeyPress['5'] = TRUE;
+						g_uFogColor = YELLOW;
+						glFogfv(GL_FOG_COLOR, s_fFogColor[g_uFogColor]);	// Set fog color
+					}
+					if (!g_bKeysArr['5'])
+					{
+						g_bKeyPress['5'] = FALSE;
+					}
+					if (g_bKeysArr['6'] && !g_bKeyPress['6'])
+					{
+						g_bKeyPress['6'] = TRUE;
+						g_uFogColor = ORANGE;
+						glFogfv(GL_FOG_COLOR, s_fFogColor[g_uFogColor]);	// Set fog color
+					}
+					if (!g_bKeysArr['6'])
+					{
+						g_bKeyPress['6'] = FALSE;
+					}
+					if (g_bKeysArr['7'] && !g_bKeyPress['7'])
+					{
+						g_bKeyPress['7'] = TRUE;
+						g_uFogColor = GREY;
+						glFogfv(GL_FOG_COLOR, s_fFogColor[g_uFogColor]);	// Set fog color
+					}
+					if (!g_bKeysArr['7'])
+					{
+						g_bKeyPress['7'] = FALSE;
 					}
 				}
 			}
