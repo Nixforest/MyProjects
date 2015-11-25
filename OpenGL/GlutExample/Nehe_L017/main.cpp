@@ -16,8 +16,9 @@
 #define		WINDOW_WIDTH						640							// Window width
 #define		WINDOW_HEIGHT						480							// Window hight
 #define		WINDOW_BIT							16							// Window bit
-#define		NUMBER_TEXTURE						1							// Number of textures
+#define		NUMBER_TEXTURE						2							// Number of textures
 #define		NUMBER_FILTER						3							// Number of filters
+#define		NUMBER_CHARACTER					256							// Number of character
 
 //----------Define messages----------//
 #define		MSG_RELEASEDCRCFAILED				"Release Of DC And RC Failed."
@@ -114,6 +115,8 @@ GLuint			g_Texture[NUMBER_TEXTURE];										// Textures in program
 GLuint			g_uFilter					= 0;								// Which Filter To Use
 GLuint			g_uFogFilter				= 0;								// Which Fog To Use
 GLuint			g_uFogColor					= GREY;								// Which Fog color to use
+GLuint			g_uBase						= 0;								// Base Display List For The Font
+
 BOOL			g_bLight					= FALSE;							// Lighting ON/OFF
 BOOL			g_bPause					= FALSE;							// Pause?
 GLfloat			g_LightAmbient[]			= {0.5f, 0.5f, 0.5f, 1.0f};			// Ambient Light values
@@ -189,6 +192,7 @@ GLvoid				OnPressPRIOR(GLvoid);
 GLvoid				OnPressNEXT(GLvoid);
 AUX_RGBImageRec*	LoadBMP(char* pFileName);
 int					LoadGLTextures();
+GLvoid				BuildFont(GLvoid);
 GLvoid				ReSizeGLScene(GLsizei width, GLsizei height);
 int					InitGL(GLvoid);
 void				DrawTriAngles(const GLfloat* d1, const GLfloat* d2, const GLfloat* d3,
@@ -214,47 +218,61 @@ AUX_RGBImageRec*	LoadBMP(char* pFileName)				// Load a bitmap image
 }
 int					LoadGLTextures()
 {
-	int nStatus = TRUE;									// Status Indicator
+	int nStatus = TRUE;											// Status Indicator
 
-	AUX_RGBImageRec *pTextureImage[1];                   // Create Storage Space For The Texture
-	memset(pTextureImage, 0 ,sizeof(void *)*1);                // Set The Pointer To NULL
-	if (pTextureImage[0] = LoadBMP("data\\Crate.bmp"))
+	AUX_RGBImageRec *pTextureImage[NUMBER_TEXTURE];				// Create Storage Space For The Texture
+	memset(pTextureImage, 0, sizeof(void*)* NUMBER_TEXTURE);	// Set The Pointer To NULL
+	if ((pTextureImage[0] = LoadBMP("Data/Font.bmp"))			// Load The Font Bitmap
+		&& (pTextureImage[1] = LoadBMP("data\\Crate.bmp")))		// Load The Texture Bitmap
 	{
-		nStatus = TRUE;
-		glGenTextures(3, &g_Texture[0]);
-		// Create Nearest Filtered Texture
-		glBindTexture(GL_TEXTURE_2D, g_Texture[0]);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexImage2D(GL_TEXTURE_2D, 0, 3, pTextureImage[0]->sizeX,
-			pTextureImage[0]->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE,
-			pTextureImage[0]->data);
-		
-		// Create Linear Filtered Texture
-		glBindTexture(GL_TEXTURE_2D, g_Texture[1]);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexImage2D(GL_TEXTURE_2D, 0, 3, pTextureImage[0]->sizeX,
-			pTextureImage[0]->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE,
-			pTextureImage[0]->data);
-
-		// Create MipMapped Texture
-		glBindTexture(GL_TEXTURE_2D, g_Texture[2]);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
-		gluBuild2DMipmaps(GL_TEXTURE_2D, 3, pTextureImage[0]->sizeX,
-			pTextureImage[0]->sizeY, GL_RGB, GL_UNSIGNED_BYTE,
-			pTextureImage[0]->data);
-	}
-	if (pTextureImage[0])
-	{
-		if (pTextureImage[0]->data)
+		nStatus = TRUE;											// Set The Status To TRUE
+		glGenTextures(NUMBER_TEXTURE, &g_Texture[0]);			// Create Textures
+		for (GLuint i = 0; i < NUMBER_TEXTURE; i++)				// Loop Through All The Textures
 		{
-			free(pTextureImage[0]->data);
+			// Build All The Textures
+			glBindTexture(GL_TEXTURE_2D, g_Texture[i]);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTexImage2D(GL_TEXTURE_2D, 0, 3, pTextureImage[i]->sizeX,
+				pTextureImage[i]->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE,
+				pTextureImage[i]->data);
 		}
-		free(pTextureImage[0]);
+	}
+	for (GLuint i = 0; i < NUMBER_TEXTURE; i++)					// Loop Through All The Textures
+	{
+		if (pTextureImage[i])									// If Texture Exists
+		{
+			if (pTextureImage[i]->data)							// If Texture Image Exists
+			{
+				free(pTextureImage[i]->data);					// Free The Texture Image Memory
+			}
+			free(pTextureImage[i]);								// Free The Image Structure
+		}
 	}
 	return nStatus;                                        // Return Success
+}
+/* Build Our Font Display List */
+GLvoid				BuildFont(GLvoid)
+{
+	float	fX = 0.0f;										// Holds Our X Character Coord
+	float	fY = 0.0f;										// Holds Our Y Character Coord
+	g_uBase = glGenLists(NUMBER_CHARACTER);					// Creating 256 Display Lists
+	glBindTexture(GL_TEXTURE_2D, g_Texture[0]);				// Select Our Font Texture
+	for (GLuint i = 0; i < NUMBER_CHARACTER; i++)			// Loop Through All 256 Lists
+	{
+		fX = float(i % 16) / 16.0f;							// X Position Of Current Character
+		fY = float(i / 16) / 16.0f;							// Y Position Of Current Character
+		glNewList(g_uBase + i, GL_COMPILE);					// Start buiding a list
+		glBegin(GL_QUADS);									// Use A Quad For Each Character
+		{
+			glTexCoord2f(fX, 1 - fY - 0.0625f);				// Texture Coord (Bottom Left)
+			glVertex2i(0, 0);								// Vertex Coord (Bottom Left)
+			glTexCoord2f(fX + 0.0625f, 1 - fY - 0.0625f);	// Texture Coord (Bottom Right)
+			glVertex2i(16, 0);								// Vertex Coord (Bottom Right)
+
+		}
+		glEnd();
+	}
 }
 /* Resize and initialize the GL Window */
 GLvoid				ReSizeGLScene(GLsizei width, GLsizei height)
@@ -371,6 +389,7 @@ int					DrawGLScene(GLvoid)									// Here's where we do all the drawing
 	g_RotateZ += g_RDeltaZ;
 	return TRUE;										// Everything went OK
 }
+/* Assign type of key and function handle when press key */
 GLvoid				ProcessKeyboard()
 {
 	ZeroMemory(g_bKeyPress, KEYNUMBER);						/* Initialize keypress array				*/
