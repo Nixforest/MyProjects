@@ -216,6 +216,7 @@ AUX_RGBImageRec*	LoadBMP(char* pFileName)				// Load a bitmap image
 	}
 	return NULL;
 }
+/* Load all textures */
 int					LoadGLTextures()
 {
 	int nStatus = TRUE;											// Status Indicator
@@ -269,10 +270,30 @@ GLvoid				BuildFont(GLvoid)
 			glVertex2i(0, 0);								// Vertex Coord (Bottom Left)
 			glTexCoord2f(fX + 0.0625f, 1 - fY - 0.0625f);	// Texture Coord (Bottom Right)
 			glVertex2i(16, 0);								// Vertex Coord (Bottom Right)
-
+			glTexCoord2f(fX + 0.0625f, 1 - fY);				// Texture Coord (Top Right)
+			glVertex2i(16, 16);								// Vertex Coord (Top Right)
+			glTexCoord2f(fX, 1 - fY);						// Texture Coord (Top Left)
+			glVertex2i(16, 16);								// Vertex Coord (Top Right)
 		}
-		glEnd();
+		glEnd();											// Done Building Our Quad (Character)
+		glTranslated(10, 0, 0);								// Move To The Right Of The Character
+		glEndList();										// Done Building The Display List
 	}
+}
+/* Delete The Font From Memory */
+GLvoid				KillFont(GLvoid)
+{
+	glDeleteLists(g_uBase, NUMBER_CHARACTER);
+}
+/* Where The Printing Happens */
+GLvoid glPrint(GLint x, GLint y, char* pString, int nSet)
+{
+	if (nSet > 1)											// Is set Greater Than One?
+	{
+		nSet = 1;											// If So, Make Set Equal One
+	}
+	glBindTexture(GL_TEXTURE_2D, g_Texture[0]);				// Select Our Font Texture
+	glDisable(GL_DEPTH_TEST);								// Disables Depth Testing
 }
 /* Resize and initialize the GL Window */
 GLvoid				ReSizeGLScene(GLsizei width, GLsizei height)
