@@ -1,91 +1,24 @@
+/*=======================================================================================
+*	Copyright (c) Nixforest Corporation. 2015 All rights reserved.
+*
+* File Discription:
+*	main entry
+*
+* Note:
+*	None
+*
+* History:
+*	Date		Version		Code		PIC				Description
+*	2006/09/26	v0000.00	XXXXXXXX	NguyenPT		First create
+*=======================================================================================*/
 #include <windows.h>
 #include <stdio.h>
 #include <gl\GLU.h>
 #include <gl\GL.h>
 #include <gl\GLAUX.H>
+#include "general_defs.h"
+#include "general_prot.h"
 #pragma comment(linker, "/subsystem:\"windows\"")
-
-
-//----------Defines constant----------//
-#define		KEYNUMBER							256							// Number of keys input
-#define		DEFAULT_PERSPECTIVE_FOVY			45.0f						// Default perspective fovy
-#define		CLASSNAME							"OpenGL"					// Class name
-#define		DEPTHBUFFER							16							// Depth buffer
-#define		ARTIST_NAME							"Nixforest"					// Artist name
-#define		WINDOW_TITLE						"NeHe's OpenGL Framework"	// Window title
-#define		WINDOW_WIDTH						640							// Window width
-#define		WINDOW_HEIGHT						480							// Window hight
-#define		WINDOW_BIT							16							// Window bit
-#define		NUMBER_TEXTURE						2							// Number of textures
-#define		NUMBER_FILTER						3							// Number of filters
-#define		NUMBER_CHARACTER					256							// Number of character
-
-//----------Define messages----------//
-#define		MSG_RELEASEDCRCFAILED				"Release Of DC And RC Failed."
-#define		MSG_RELEASERCFAILED					"Release Rendering Context Failed."
-#define		MSG_RELEASEDCFAILED					"Release Device Context Failed."
-#define		MSG_RELEASEHWNDFAILED				"Could Not Release hWnd."
-#define		MSG_UNREGISTERCLASSFAILED			"Could not unregister class."
-#define		MSG_REGISTERCLASSFAILED				"Failed To Register The Window Class."
-#define		MSG_FULLSCREENNOTSUPPORT			"The requested fullscreen mode is not supported by\nyour video card. Use windowed mode instead?"
-#define		MSG_PROGRAMNOTCLOSE					"Program will not close."
-#define		MSG_CREATEWINDOWFAILED				"Window Creation Error."
-#define		MSG_CREATEGLDCFAILED				"Can't create a GL device context."
-#define		MSG_FINDPIXELFORMATFAILED			"Can't Find A Suitable PixelFormat."
-#define		MSG_SETPIXELFORMATFAILED			"Can't Set The PixelFormat."
-#define		MSG_CREATEGLRCFAILED				"Can't Create A GL Rendering Context."
-#define		MSG_ACTIVEGLRCFAILED				"Can't Activate The GL Rendering Context."
-#define		MSG_INITFAILED						"Initialization Failed."
-#define		MSG_RUNINFULLSCREEN					"Would You Like To Run In Fullscreen Mode?"
-#define		MSG_STARTFULLSCREEN					"Start FullScreen?"
-
-//----------Define error messages----------//
-#define		ERR_SHUTDOWN_ERROR					"SHUTDOWN ERROR"
-#define		ERR_ERROR							"ERROR"
-
-//----------Define enum	----------//
-/* Normal of cube sides */
-typedef enum CUBE_NORMAL
-{
-	CUBE_NORMAL_FRONT = 0,
-	CUBE_NORMAL_LEFT,
-	CUBE_NORMAL_BEHIND,
-	CUBE_NORMAL_RIGHT,
-	CUBE_NORMAL_TOP,
-	CUBE_NORMAL_BOTTOM,
-	CUBE_NORMAL_NUM
-};
-/* Color enum */
-typedef enum COLOR
-{
-	RED = 0,
-	GREEN,
-	BLUE,
-	WHITE,
-	YELLOW,
-	ORANGE,
-	GREY,
-	COLOR_NUM
-};
-/* Type of key on keyboard */
-typedef enum KEYTYPE
-{
-	NORMAL = 0,									/* Normal type, can press	*/
-	TOGGLE,										/* Turn on and turn off		*/
-	KEYTYPE_NUM									/* Number of tyoe of key	*/
-};
-
-//----------Define structure----------//
-typedef struct _Keyboard
-{
-	GLuint		uType;							/* Type of key on keyboard			*/
-	GLvoid		(*KeyboardFunc)(GLvoid);		/* Function handle when press key	*/
-	_Keyboard()									/* Constructor						*/
-	{
-		this->uType = NORMAL;					/* Default type is normal			*/
-		this->KeyboardFunc = NULL;				/* Default handle is NULL			*/
-	}
-}KEYBOARD_t;
 
 //----------Global variable----------//
 HDC				g_hDC						= NULL;								// Private GDI Device Context
@@ -171,415 +104,107 @@ const static	GLuint						s_FogMode[] =								// Storage For Three Types Of Fog
 	GL_LINEAR
 };
 
-/* ----- Define prototypes ----- */
-LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);	// Declare for WndProc
-GLvoid				KillGLWindow(GLvoid);
-BOOL				CreateGLWindow(char* title, int width, int height, int bits, bool fullScreenFlag);
-GLvoid				ProcessKeyboard();
-GLvoid				OnPressP(GLvoid);
-GLvoid				OnPressL(GLvoid);
-GLvoid				OnPressF(GLvoid);
-GLvoid				OnPressF1(GLvoid);
-GLvoid				OnPressLEFT(GLvoid);
-GLvoid				OnPressRIGHT(GLvoid);
-GLvoid				OnPressUP(GLvoid);
-GLvoid				OnPressDOWN(GLvoid);
-GLvoid				OnPressINSERT(GLvoid);
-GLvoid				OnPressDELETE(GLvoid);
-GLvoid				OnPressHOME(GLvoid);
-GLvoid				OnPressEND(GLvoid);
-GLvoid				OnPressPRIOR(GLvoid);
-GLvoid				OnPressNEXT(GLvoid);
-AUX_RGBImageRec*	LoadBMP(char* pFileName);
-int					LoadGLTextures();
-GLvoid				BuildFont(GLvoid);
-GLvoid				ReSizeGLScene(GLsizei width, GLsizei height);
-int					InitGL(GLvoid);
-void				DrawTriAngles(const GLfloat* d1, const GLfloat* d2, const GLfloat* d3,
-						const GLfloat* c1, const GLfloat* c2, const GLfloat* c3);
-void				DrawQuads(const GLfloat* d1, const GLfloat* d2,
-						const GLfloat* d3, const GLfloat* d4, const GLfloat* color);
-int					DrawGLScene(GLvoid);
-/* Load a bitmap image */
-AUX_RGBImageRec*	LoadBMP(char* pFileName)				// Load a bitmap image
+/*=======================================================================================
+* Module Name:
+*	Main module
+* Function description:
+*	Window procedure
+* Parameter:
+*	[Inputs]
+*		HWND	hWnd:			Handle For This Window
+*		UINT	uMsg:			Message For This Window
+*		WPARAM	wParam:			Additional Message Information
+*		LPARAM	lParam:			Additional Message Information
+*  [Output]
+*		None
+* Return Value:
+*	None
+* History:
+*	Date		Version		Code		PIC				Description
+*	2006/09/26	v0000.00	XXXXXXXX	NguyenPT		First create
+*=======================================================================================*/
+LRESULT CALLBACK	WndProc(HWND	hWnd,			// Handle For This Window
+							UINT	uMsg,			// Message For This Window
+							WPARAM	wParam,			// Additional Message Information
+							LPARAM	lParam)			// Additional Message Information
 {
-	FILE* file = NULL;									// File handle
-	if (!pFileName)										// Make sure a file name was given
+	switch (uMsg)									// Check For Windows Messages
 	{
-		return NULL;									// If not return NULL
-	}
-	fopen_s(&file, pFileName, "r");						// Check to see if the file exists
-	if (file)
-	{
-		fclose(file);									// Close the handle
-		return auxDIBImageLoad(pFileName);				// Load the bitmap and return the pointer
-	}
-	return NULL;
-}
-/* Load all textures */
-int					LoadGLTextures()
-{
-	int nStatus = TRUE;											// Status Indicator
-
-	AUX_RGBImageRec *pTextureImage[NUMBER_TEXTURE];				// Create Storage Space For The Texture
-	memset(pTextureImage, 0, sizeof(void*)* NUMBER_TEXTURE);	// Set The Pointer To NULL
-	if ((pTextureImage[0] = LoadBMP("Data/Font.bmp"))			// Load The Font Bitmap
-		&& (pTextureImage[1] = LoadBMP("data\\Crate.bmp")))		// Load The Texture Bitmap
-	{
-		nStatus = TRUE;											// Set The Status To TRUE
-		glGenTextures(NUMBER_TEXTURE, &g_Texture[0]);			// Create Textures
-		for (GLuint i = 0; i < NUMBER_TEXTURE; i++)				// Loop Through All The Textures
+		case WM_ACTIVATE:							// Watch For Window Activate Message
 		{
-			// Build All The Textures
-			glBindTexture(GL_TEXTURE_2D, g_Texture[i]);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			glTexImage2D(GL_TEXTURE_2D, 0, 3, pTextureImage[i]->sizeX,
-				pTextureImage[i]->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE,
-				pTextureImage[i]->data);
-		}
-	}
-	for (GLuint i = 0; i < NUMBER_TEXTURE; i++)					// Loop Through All The Textures
-	{
-		if (pTextureImage[i])									// If Texture Exists
-		{
-			if (pTextureImage[i]->data)							// If Texture Image Exists
+			if (!HIWORD(wParam))					// Check Minimization State
 			{
-				free(pTextureImage[i]->data);					// Free The Texture Image Memory
+				g_bActive = TRUE;					// Program Is Active
 			}
-			free(pTextureImage[i]);								// Free The Image Structure
+			else
+			{
+				g_bActive = FALSE;					// Program Is No Longer Active
+			}
+
+			return 0;								// Return To The Message Loop
 		}
-	}
-	return nStatus;                                        // Return Success
-}
-/* Build Our Font Display List */
-GLvoid				BuildFont(GLvoid)
-{
-	float	fX = 0.0f;										// Holds Our X Character Coord
-	float	fY = 0.0f;										// Holds Our Y Character Coord
-	g_uBase = glGenLists(NUMBER_CHARACTER);					// Creating 256 Display Lists
-	glBindTexture(GL_TEXTURE_2D, g_Texture[0]);				// Select Our Font Texture
-	for (GLuint i = 0; i < NUMBER_CHARACTER; i++)			// Loop Through All 256 Lists
-	{
-		fX = float(i % 16) / 16.0f;							// X Position Of Current Character
-		fY = float(i / 16) / 16.0f;							// Y Position Of Current Character
-		glNewList(g_uBase + i, GL_COMPILE);					// Start buiding a list
-		glBegin(GL_QUADS);									// Use A Quad For Each Character
+
+		case WM_SYSCOMMAND:							// Intercept System Commands
 		{
-			glTexCoord2f(fX, 1 - fY - 0.0625f);				// Texture Coord (Bottom Left)
-			glVertex2i(0, 0);								// Vertex Coord (Bottom Left)
-			glTexCoord2f(fX + 0.0625f, 1 - fY - 0.0625f);	// Texture Coord (Bottom Right)
-			glVertex2i(16, 0);								// Vertex Coord (Bottom Right)
-			glTexCoord2f(fX + 0.0625f, 1 - fY);				// Texture Coord (Top Right)
-			glVertex2i(16, 16);								// Vertex Coord (Top Right)
-			glTexCoord2f(fX, 1 - fY);						// Texture Coord (Top Left)
-			glVertex2i(16, 16);								// Vertex Coord (Top Right)
+			switch (wParam)							// Check System Calls
+			{
+				case SC_SCREENSAVE:					// Screensaver Trying To Start?
+				case SC_MONITORPOWER:				// Monitor Trying To Enter Powersave?
+				return 0;							// Prevent From Happening
+			}
+			break;									// Exit
 		}
-		glEnd();											// Done Building Our Quad (Character)
-		glTranslated(10, 0, 0);								// Move To The Right Of The Character
-		glEndList();										// Done Building The Display List
-	}
-}
-/* Delete The Font From Memory */
-GLvoid				KillFont(GLvoid)
-{
-	glDeleteLists(g_uBase, NUMBER_CHARACTER);
-}
-/* Where The Printing Happens */
-GLvoid glPrint(GLint x, GLint y, char* pString, int nSet)
-{
-	if (nSet > 1)											// Is set Greater Than One?
-	{
-		nSet = 1;											// If So, Make Set Equal One
-	}
-	glBindTexture(GL_TEXTURE_2D, g_Texture[0]);				// Select Our Font Texture
-	glDisable(GL_DEPTH_TEST);								// Disables Depth Testing
-}
-/* Resize and initialize the GL Window */
-GLvoid				ReSizeGLScene(GLsizei width, GLsizei height)
-{
-	if (height == 0)									// Prevent a divide by zero by
-	{													// making height equal one
-		height = 1;
-	}
-	glViewport(0, 0, width, height);					// Reset the current view-port
-	glMatrixMode(GL_PROJECTION);						// Select the projection matrix
-	glLoadIdentity();									// Reset the projection matrix
 
-	// Calculate the aspect ration of the window
-	gluPerspective(DEFAULT_PERSPECTIVE_FOVY, (GLfloat)width / (GLfloat)height, 0.1f, 100.0f);
-	glMatrixMode(GL_MODELVIEW);							// Select the model-view matrix
-	glLoadIdentity();									// Reset the model-view matrix
-}
-int					InitGL(GLvoid)										// All setup for openGL goes here
-{
-	if (!LoadGLTextures())								// Jump To Texture Loading Routine ( NEW )
-	{
-		return FALSE;									// If Texture Didn't Load Return FALSE
-	}
-	glEnable(GL_TEXTURE_2D);							// Enable Texture Mapping
-	glShadeModel(GL_SMOOTH);							// Enable smooth shading
-	//glClearColor(0.0f, 0.0f, 0.0f, 0.5f);				// Black background
-	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);				// Black background
-	glClearDepth(1.0f);									// Depth buffer setup
-	glEnable(GL_DEPTH_TEST);							// Enables depth testing
-	glDepthFunc(GL_LEQUAL);								// The type of depth testing to do
-	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really nice perspective calcutations
-	
-	glLightfv(GL_LIGHT1, GL_AMBIENT, g_LightAmbient);	// Setup the ambient light
-	glLightfv(GL_LIGHT1, GL_DIFFUSE, g_LightDiffuse);	// Setup the diffuse light
-	glLightfv(GL_LIGHT1, GL_POSITION, g_LightPosition);	// Position the light
-	glEnable(GL_LIGHT1);								// Enable light one
-
-
-	glFogi(GL_FOG_MODE, s_FogMode[g_uFogFilter]);		// Fog mode
-	glFogfv(GL_FOG_COLOR, s_fFogColor[g_uFogColor]);	// Set fog color
-	glFogf(GL_FOG_DENSITY, 0.35f);						// How dense will the fog be
-	glHint(GL_FOG_HINT, GL_DONT_CARE);					// Fog hint value
-	glFogf(GL_FOG_START, 1.0f);							// Fog start depth
-	glFogf(GL_FOG_END, 5.0f);							// Fog end depth
-	glEnable(GL_FOG);									// Enables GL_FOG
-
-	/* Handle keyboard */
-	ProcessKeyboard();
-	return TRUE;										// Initialization went OK
-}
-// Draw a triangle
-void				DrawTriAngles(const GLfloat* d1, const GLfloat* d2, const GLfloat* d3,	// Point 
-	const GLfloat* c1, const GLfloat* c2, const GLfloat* c3)				// Color
-{
-	glBegin(GL_TRIANGLES);								// Drawing Using Triangles
-	{
-		glColor3fv(c1);
-		glVertex3fv(d1);
-		glColor3fv(c2);
-		glVertex3fv(d2);
-		glColor3fv(c3);
-		glVertex3fv(d3);
-	}
-	glEnd();
-}
-void				DrawQuads(const GLfloat* d1, const GLfloat* d2,
-	const GLfloat* d3, const GLfloat* d4, const GLfloat* color)
-{
-	//glColor3fv(color);
-	glBegin(GL_QUADS);									// Draw A Quad
-	{
-		glTexCoord2f(0.0f, 0.0f);
-		glVertex3fv(d1);								// Top Left
-		glTexCoord2f(1.0f, 0.0f);
-		glVertex3fv(d2);								// Top Right
-		glTexCoord2f(1.0f, 1.0f);
-		glVertex3fv(d3);								// Bottom Right
-		glTexCoord2f(0.0f, 1.0f);
-		glVertex3fv(d4);								// Bottom Left
-	}
-	glEnd();											// Done Drawing The Quad
-}
-int					DrawGLScene(GLvoid)									// Here's where we do all the drawing
-{
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear screen and depth buffer
-	/* Start draw cube */
-	glLoadIdentity();
-	glTranslatef(g_MoveX, g_MoveY, g_MoveZ);			// Move Left 1.5 Units And Into The Screen 6.0
-	glRotatef(g_RotateX, 1.0f, 0.0f, 0.0f);				// Rotate The Triangle On The X axis
-	glRotatef(g_RotateY, 0.0f, 1.0f, 0.0f);             // Rotate The Triangle On The Y axis
-	glRotatef(g_RotateZ, 0.0f, 0.0f, 1.0f);             // Rotate The Triangle On The Z axis
-	glBindTexture(GL_TEXTURE_2D, g_Texture[g_uFilter]);
-	// Front
-	glNormal3fv(s_fCubeNormal[CUBE_NORMAL_FRONT]);
-	DrawQuads(s_fG, s_fH, s_fD, s_fC, s_GreenColor);
-	// Left
-	glNormal3fv(s_fCubeNormal[CUBE_NORMAL_LEFT]);
-	DrawQuads(s_fF, s_fG, s_fC, s_fB, s_OrangeColor);
-	// Behind
-	glNormal3fv(s_fCubeNormal[CUBE_NORMAL_BEHIND]);
-	DrawQuads(s_fE, s_fF, s_fB, s_fA, s_RedColor);
-	// Right
-	glNormal3fv(s_fCubeNormal[CUBE_NORMAL_RIGHT]);
-	DrawQuads(s_fH, s_fE, s_fA, s_fD, s_YellowColor);
-	// Top
-	glNormal3fv(s_fCubeNormal[CUBE_NORMAL_TOP]);
-	DrawQuads(s_fC, s_fD, s_fA, s_fB, s_BlueColor);
-	// Bottom
-	glNormal3fv(s_fCubeNormal[CUBE_NORMAL_BOTTOM]);
-	DrawQuads(s_fF, s_fE, s_fH, s_fG, s_WhiteColor);
-
-	g_RotateX += g_RDeltaX;
-	g_RotateY -= g_RDeltaY;
-	g_RotateZ += g_RDeltaZ;
-	return TRUE;										// Everything went OK
-}
-/* Assign type of key and function handle when press key */
-GLvoid				ProcessKeyboard()
-{
-	ZeroMemory(g_bKeyPress, KEYNUMBER);						/* Initialize keypress array				*/
-	g_KeyData['P'].uType				= TOGGLE;			/* P key is toggle: Pause ON/OFF			*/
-	g_KeyData['P'].KeyboardFunc			= &OnPressP;		/* Function handle of 'P' key				*/
-	g_KeyData['L'].uType				= TOGGLE;			/* L key is toggle: light ON/OFF			*/
-	g_KeyData['L'].KeyboardFunc			= &OnPressL;		/* Function handle of 'L' key				*/
-	g_KeyData['F'].uType				= NORMAL;			/* F key is toggle: Change filter			*/
-	g_KeyData['F'].KeyboardFunc			= &OnPressF;		/* Function handle of 'F' key				*/
-	g_KeyData[VK_F1].uType				= NORMAL;			/* F1 key is normal: change to fullscreen	*/
-	g_KeyData[VK_F1].KeyboardFunc		= &OnPressF1;		/* Function handle of 'F1' key				*/
-	g_KeyData[VK_LEFT].uType			= NORMAL;			/* LEFT key is normal:						*/
-	g_KeyData[VK_LEFT].KeyboardFunc		= &OnPressLEFT;		/* Function handle of 'LEFT' key			*/
-	g_KeyData[VK_RIGHT].uType			= NORMAL;			/* RIGHT key is normal:						*/
-	g_KeyData[VK_RIGHT].KeyboardFunc	= &OnPressRIGHT;	/* Function handle of 'RIGHT' key			*/
-	g_KeyData[VK_UP].uType				= NORMAL;			/* UP key is normal:						*/
-	g_KeyData[VK_UP].KeyboardFunc		= &OnPressUP;		/* Function handle of 'UP' key				*/
-	g_KeyData[VK_DOWN].uType			= NORMAL;			/* DOWN key is normal:						*/
-	g_KeyData[VK_DOWN].KeyboardFunc		= &OnPressDOWN;		/* Function handle of 'DOWN' key			*/
-	g_KeyData[VK_INSERT].uType			= NORMAL;			/* INSERT key is normal:					*/
-	g_KeyData[VK_INSERT].KeyboardFunc	= &OnPressINSERT;	/* Function handle of 'INSERT' key			*/
-	g_KeyData[VK_DELETE].uType			= NORMAL;			/* DELETE key is normal:					*/
-	g_KeyData[VK_DELETE].KeyboardFunc	= &OnPressDELETE;	/* Function handle of 'DELETE' key			*/
-	g_KeyData[VK_HOME].uType			= NORMAL;			/* HOME key is normal:						*/
-	g_KeyData[VK_HOME].KeyboardFunc		= &OnPressHOME;		/* Function handle of 'HOME' key			*/
-	g_KeyData[VK_END].uType				= NORMAL;			/* END key is normal:						*/
-	g_KeyData[VK_END].KeyboardFunc		= &OnPressEND;		/* Function handle of 'END' key				*/
-	g_KeyData[VK_PRIOR].uType			= NORMAL;			/* PRIOR key is normal:						*/
-	g_KeyData[VK_PRIOR].KeyboardFunc	= &OnPressPRIOR;	/* Function handle of 'PRIOR' key			*/
-	g_KeyData[VK_NEXT].uType			= NORMAL;			/* NEXT key is normal:						*/
-	g_KeyData[VK_NEXT].KeyboardFunc		= &OnPressNEXT;		/* Function handle of 'NEXT' key			*/
-}
-/* Handle when press 'P' */
-GLvoid				OnPressP(GLvoid)
-{
-	g_bPause = !g_bPause;			/* Turn ON/OFF pause status */
-}
-/* Handle when press 'F1' */
-GLvoid				OnPressF1(GLvoid)
-{
-	KillGLWindow();							// Kill Our Current Window
-	g_bFullscreen = !g_bFullscreen;			// Toggle Full screen / Windowed Mode
-	// Recreate Our OpenGL Window
-	if (!CreateGLWindow(WINDOW_TITLE, WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_BIT, g_bFullscreen))
-	{
-		return;								// Quit If Window Was Not Created
-	}
-}
-/* Handle when press 'L' */
-GLvoid				OnPressL(GLvoid)
-{
-	g_bLight = !g_bLight;			// Toggle light TRUE/FALSE
-	if (!g_bLight)
-	{
-		glDisable(GL_LIGHTING);		// Disable lighting
-	}
-	else
-	{
-		glEnable(GL_LIGHTING);		// Enable lighting
-	}
-}
-/* Handle when press 'F' */
-GLvoid				OnPressF(GLvoid)
-{
-	g_uFilter++;						/* Change filter selection	*/
-	if (g_uFilter >= NUMBER_FILTER)		/* Greater than max			*/
-	{
-		g_uFilter = 0;					/* Set to zero				*/
-	}
-}
-/* Handle when press 'LEFT' */
-GLvoid				OnPressLEFT(GLvoid)
-{
-	g_MoveX -= g_MDeltaX;
-}
-/* Handle when press 'RIGHT' */
-GLvoid				OnPressRIGHT(GLvoid)
-{
-	g_MoveX += g_MDeltaX;
-}
-/* Handle when press 'UP' */
-GLvoid				OnPressUP(GLvoid)
-{
-	g_MoveY += g_MDeltaY;
-}
-/* Handle when press 'DOWN' */
-GLvoid				OnPressDOWN(GLvoid)
-{
-	g_MoveY -= g_MDeltaY;
-}
-/* Handle when press 'INSERT' */
-GLvoid				OnPressINSERT(GLvoid)
-{
-	g_RotateX += g_RDeltaX;
-}
-/* Handle when press 'DELETE' */
-GLvoid				OnPressDELETE(GLvoid)
-{
-	g_RotateX -= g_RDeltaX;
-}
-/* Handle when press 'HOME' */
-GLvoid				OnPressHOME(GLvoid)
-{
-	g_RotateY += g_RDeltaY;
-}
-/* Handle when press 'END' */
-GLvoid				OnPressEND(GLvoid)
-{
-	g_RotateY -= g_RDeltaY;
-}
-/* Handle when press 'PRIOR' */
-GLvoid				OnPressPRIOR(GLvoid)
-{
-	g_RotateZ += g_RDeltaZ;
-}
-/* Handle when press 'NEXT' */
-GLvoid				OnPressNEXT(GLvoid)
-{
-	g_RotateZ -= g_RDeltaZ;
-}
-GLvoid				KillGLWindow(GLvoid)								// Properly kill the window
-{
-	if (g_bFullscreen)									// Are we in fullscreen mode?
-	{
-		ChangeDisplaySettings(NULL, 0);					// If so switch back to the desktop
-		ShowCursor(TRUE);								// Show mouse pointer
-	}
-	if (g_hRC)											// Do we have a rendering context
-	{
-		if (!wglMakeCurrent(NULL, NULL))				// Are we able to release the DC and RC contexts?
+		case WM_CLOSE:								// Did We Receive A Close Message?
 		{
-			MessageBox(NULL, MSG_RELEASEDCRCFAILED,
-				ERR_SHUTDOWN_ERROR, MB_OK | MB_ICONINFORMATION);
+			PostQuitMessage(0);						// Send A Quit Message
+			return 0;								// Jump Back
 		}
-		if (!wglDeleteContext(g_hRC))					// Are we able to delete the RC?
+
+		case WM_KEYDOWN:							// Is A Key Being Held Down?
 		{
-			MessageBox(NULL, MSG_RELEASERCFAILED,
-				ERR_SHUTDOWN_ERROR, MB_OK | MB_ICONINFORMATION);
+			g_bKeysArr[wParam] = TRUE;				// If So, Mark It As TRUE
+			return 0;								// Jump Back
 		}
-		g_hRC = NULL;									// Set RC to NULL
-	}
-	if (g_hDC && !ReleaseDC(g_hWnd, g_hDC))				// Are we able to release the DC
-	{
-		MessageBox(NULL, MSG_RELEASEDCFAILED,
-			ERR_SHUTDOWN_ERROR, MB_OK | MB_ICONINFORMATION);
-		g_hDC = NULL;									// Set DC to NULL
+
+		case WM_KEYUP:								// Has A Key Been Released?
+		{
+			g_bKeysArr[wParam] = FALSE;					// If So, Mark It As FALSE
+			return 0;								// Jump Back
+		}
+
+		case WM_SIZE:								// Resize The OpenGL Window
+		{
+			ReSizeGLScene(LOWORD(lParam),HIWORD(lParam));  // LoWord=Width, HiWord=Height
+			return 0;								// Jump Back
+		}
+		default: break;
 	}
 
-	if (g_hWnd && !DestroyWindow(g_hWnd))				// Are We Able To Destroy The Window?
-	{
-		MessageBox(NULL, MSG_RELEASEHWNDFAILED,
-			ERR_SHUTDOWN_ERROR, MB_OK | MB_ICONINFORMATION);
-		g_hWnd = NULL;									// Set g_hWnd To NULL
-	}
-
-	if (!UnregisterClass(CLASSNAME, hInstance))			// Are We Able To Unregister Class
-	{
-		MessageBox(NULL, MSG_UNREGISTERCLASSFAILED,
-			ERR_SHUTDOWN_ERROR, MB_OK | MB_ICONINFORMATION);
-		hInstance = NULL;								// Set hInstance to NULL
-	}
+	// Pass All Unhandled Messages To DefWindowProc
+	return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
 
-/*	This Code Creates Our OpenGL Window.  Parameters Are:					*
-*	title			- Title To Appear At The Top Of The Window				*
-*	width			- Width Of The GL Window Or Full screen Mode			*
-*	height			- Height Of The GL Window Or Full screen Mode			*
-*	bits			- Number Of Bits To Use For Color (8/16/24/32)			*
-*	fullscreenflag	- Use Full screen Mode (TRUE) Or Windowed Mode (FALSE)	*/
+/*=======================================================================================
+* Module Name:
+*	Main module
+* Function description:
+*	Create window
+* Parameter:
+*	[Inputs]
+*		char* 	title:				Title To Appear At The Top Of The Window
+*		int 	width:				Width Of The GL Window Or Full screen Mode
+*		int 	height:				Height Of The GL Window Or Full screen Mode
+*		int 	bits:				Number Of Bits To Use For Color (8/16/24/32)
+*		bool 	fullScreenFlag:		Use Full screen Mode (TRUE) Or Windowed Mode (FALSE)
+*  [Output]
+*		None
+* Return Value:
+*	Return TRUE if create window success, FALSE otherwise
+* History:
+*	Date		Version		Code		PIC				Description
+*	2006/09/26	v0000.00	XXXXXXXX	NguyenPT		First create
+*=======================================================================================*/
 BOOL				CreateGLWindow(char* title, int width, int height, int bits, bool fullScreenFlag)
 {
 	GLuint		PixelFormat;				// Holds the results after searching for a match
@@ -744,69 +369,848 @@ BOOL				CreateGLWindow(char* title, int width, int height, int bits, bool fullSc
 	return TRUE;									// Success
 }
 
-LRESULT CALLBACK	WndProc(	HWND	hWnd,			// Handle For This Window
-							UINT	uMsg,			// Message For This Window
-							WPARAM	wParam,			// Additional Message Information
-							LPARAM	lParam)			// Additional Message Information
+/*=======================================================================================
+* Module Name:
+*	Main module
+* Function description:
+*	Resize and initialize the GL Window
+* Parameter:
+*	[Inputs]
+*		GLsizei 	width:				Width Of The GL Window to resize
+*		GLsizei 	height:				Height Of The GL Window to resize
+*  [Output]
+*		None
+* Return Value:
+*	None
+* History:
+*	Date		Version		Code		PIC				Description
+*	2006/09/26	v0000.00	XXXXXXXX	NguyenPT		First create
+*=======================================================================================*/
+GLvoid				ReSizeGLScene(GLsizei width, GLsizei height)
 {
-	switch (uMsg)									// Check For Windows Messages
-	{
-		case WM_ACTIVATE:							// Watch For Window Activate Message
-		{
-			if (!HIWORD(wParam))					// Check Minimization State
-			{
-				g_bActive = TRUE;					// Program Is Active
-			}
-			else
-			{
-				g_bActive = FALSE;					// Program Is No Longer Active
-			}
-
-			return 0;								// Return To The Message Loop
-		}
-
-		case WM_SYSCOMMAND:							// Intercept System Commands
-		{
-			switch (wParam)							// Check System Calls
-			{
-				case SC_SCREENSAVE:					// Screensaver Trying To Start?
-				case SC_MONITORPOWER:				// Monitor Trying To Enter Powersave?
-				return 0;							// Prevent From Happening
-			}
-			break;									// Exit
-		}
-
-		case WM_CLOSE:								// Did We Receive A Close Message?
-		{
-			PostQuitMessage(0);						// Send A Quit Message
-			return 0;								// Jump Back
-		}
-
-		case WM_KEYDOWN:							// Is A Key Being Held Down?
-		{
-			g_bKeysArr[wParam] = TRUE;				// If So, Mark It As TRUE
-			return 0;								// Jump Back
-		}
-
-		case WM_KEYUP:								// Has A Key Been Released?
-		{
-			g_bKeysArr[wParam] = FALSE;					// If So, Mark It As FALSE
-			return 0;								// Jump Back
-		}
-
-		case WM_SIZE:								// Resize The OpenGL Window
-		{
-			ReSizeGLScene(LOWORD(lParam),HIWORD(lParam));  // LoWord=Width, HiWord=Height
-			return 0;								// Jump Back
-		}
-		default: break;
+	if (height == 0)									// Prevent a divide by zero by
+	{													// making height equal one
+		height = 1;
 	}
+	glViewport(0, 0, width, height);					// Reset the current view-port
+	glMatrixMode(GL_PROJECTION);						// Select the projection matrix
+	glLoadIdentity();									// Reset the projection matrix
 
-	// Pass All Unhandled Messages To DefWindowProc
-	return DefWindowProc(hWnd, uMsg, wParam, lParam);
+	// Calculate the aspect ration of the window
+	gluPerspective(DEFAULT_PERSPECTIVE_FOVY, (GLfloat)width / (GLfloat)height, 0.1f, 100.0f);
+	glMatrixMode(GL_MODELVIEW);							// Select the model-view matrix
+	glLoadIdentity();									// Reset the model-view matrix
 }
 
+/*=======================================================================================
+* Module Name:
+*	Main module
+* Function description:
+*	All setup for openGL goes here
+* Parameter:
+*	[Inputs]
+*		None
+*  [Output]
+*		None
+* Return Value:
+*	Return TRUE if init window success, FALSE otherwise
+* History:
+*	Date		Version		Code		PIC				Description
+*	2006/09/26	v0000.00	XXXXXXXX	NguyenPT		First create
+*=======================================================================================*/
+int					InitGL(GLvoid)
+{
+	if (!LoadGLTextures())								// Jump To Texture Loading Routine ( NEW )
+	{
+		return FALSE;									// If Texture Didn't Load Return FALSE
+	}
+	BuildFont();										// Build The Font
 
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);				// Black background
+	glClearDepth(1.0f);									// Depth buffer setup
+	//glEnable(GL_DEPTH_TEST);							// Enables depth testing
+	glDepthFunc(GL_LEQUAL);								// The type of depth testing to do
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE);					// Select The Type Of Blending
+	glShadeModel(GL_SMOOTH);							// Enable smooth shading
+	glEnable(GL_TEXTURE_2D);							// Enable Texture Mapping
+	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really nice perspective calcutations
+	
+	glLightfv(GL_LIGHT1, GL_AMBIENT, g_LightAmbient);	// Setup the ambient light
+	glLightfv(GL_LIGHT1, GL_DIFFUSE, g_LightDiffuse);	// Setup the diffuse light
+	glLightfv(GL_LIGHT1, GL_POSITION, g_LightPosition);	// Position the light
+	glEnable(GL_LIGHT1);								// Enable light one
+
+
+	glFogi(GL_FOG_MODE, s_FogMode[g_uFogFilter]);		// Fog mode
+	glFogfv(GL_FOG_COLOR, s_fFogColor[g_uFogColor]);	// Set fog color
+	glFogf(GL_FOG_DENSITY, 0.35f);						// How dense will the fog be
+	glHint(GL_FOG_HINT, GL_DONT_CARE);					// Fog hint value
+	glFogf(GL_FOG_START, 1.0f);							// Fog start depth
+	glFogf(GL_FOG_END, 5.0f);							// Fog end depth
+	glEnable(GL_FOG);									// Enables GL_FOG
+
+	/* Handle keyboard */
+	ProcessKeyboard();
+	return TRUE;										// Initialization went OK
+}
+
+/*=======================================================================================
+* Module Name:
+*	Main module
+* Function description:
+*	Here's where we do all the drawing
+* Parameter:
+*	[Inputs]
+*		None
+*  [Output]
+*		None
+* Return Value:
+*	Return TRUE if draw window success, FALSE otherwise
+* History:
+*	Date		Version		Code		PIC				Description
+*	2006/09/26	v0000.00	XXXXXXXX	NguyenPT		First create
+*=======================================================================================*/
+int					DrawGLScene(GLvoid)
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear screen and depth buffer
+	/* Start draw cube */
+	glLoadIdentity();
+	glTranslatef(g_MoveX, g_MoveY, g_MoveZ);			// Move Left 1.5 Units And Into The Screen 6.0
+	glRotatef(g_RotateX, 1.0f, 0.0f, 0.0f);				// Rotate The Triangle On The X axis
+	glRotatef(g_RotateY, 0.0f, 1.0f, 0.0f);             // Rotate The Triangle On The Y axis
+	glRotatef(g_RotateZ, 0.0f, 0.0f, 1.0f);             // Rotate The Triangle On The Z axis
+	glBindTexture(GL_TEXTURE_2D, g_Texture[g_uFilter]);
+	// Front
+	glNormal3fv(s_fCubeNormal[CUBE_NORMAL_FRONT]);
+	DrawQuads(s_fG, s_fH, s_fD, s_fC, s_GreenColor);
+	// Left
+	glNormal3fv(s_fCubeNormal[CUBE_NORMAL_LEFT]);
+	DrawQuads(s_fF, s_fG, s_fC, s_fB, s_OrangeColor);
+	// Behind
+	glNormal3fv(s_fCubeNormal[CUBE_NORMAL_BEHIND]);
+	DrawQuads(s_fE, s_fF, s_fB, s_fA, s_RedColor);
+	// Right
+	glNormal3fv(s_fCubeNormal[CUBE_NORMAL_RIGHT]);
+	DrawQuads(s_fH, s_fE, s_fA, s_fD, s_YellowColor);
+	// Top
+	glNormal3fv(s_fCubeNormal[CUBE_NORMAL_TOP]);
+	DrawQuads(s_fC, s_fD, s_fA, s_fB, s_BlueColor);
+	// Bottom
+	glNormal3fv(s_fCubeNormal[CUBE_NORMAL_BOTTOM]);
+	DrawQuads(s_fF, s_fE, s_fH, s_fG, s_WhiteColor);
+
+	g_RotateX += g_RDeltaX;
+	g_RotateY -= g_RDeltaY;
+	g_RotateZ += g_RDeltaZ;
+	return TRUE;										// Everything went OK
+}
+
+/*=======================================================================================
+* Module Name:
+*	Main module
+* Function description:
+*	Properly kill the window
+* Parameter:
+*	[Inputs]
+*		None
+*  [Output]
+*		None
+* Return Value:
+*	None
+* History:
+*	Date		Version		Code		PIC				Description
+*	2006/09/26	v0000.00	XXXXXXXX	NguyenPT		First create
+*=======================================================================================*/
+GLvoid				KillGLWindow(GLvoid)								// 
+{
+	if (g_bFullscreen)									// Are we in fullscreen mode?
+	{
+		ChangeDisplaySettings(NULL, 0);					// If so switch back to the desktop
+		ShowCursor(TRUE);								// Show mouse pointer
+	}
+	if (g_hRC)											// Do we have a rendering context
+	{
+		if (!wglMakeCurrent(NULL, NULL))				// Are we able to release the DC and RC contexts?
+		{
+			MessageBox(NULL, MSG_RELEASEDCRCFAILED,
+				ERR_SHUTDOWN_ERROR, MB_OK | MB_ICONINFORMATION);
+		}
+		if (!wglDeleteContext(g_hRC))					// Are we able to delete the RC?
+		{
+			MessageBox(NULL, MSG_RELEASERCFAILED,
+				ERR_SHUTDOWN_ERROR, MB_OK | MB_ICONINFORMATION);
+		}
+		g_hRC = NULL;									// Set RC to NULL
+	}
+	if (g_hDC && !ReleaseDC(g_hWnd, g_hDC))				// Are we able to release the DC
+	{
+		MessageBox(NULL, MSG_RELEASEDCFAILED,
+			ERR_SHUTDOWN_ERROR, MB_OK | MB_ICONINFORMATION);
+		g_hDC = NULL;									// Set DC to NULL
+	}
+
+	if (g_hWnd && !DestroyWindow(g_hWnd))				// Are We Able To Destroy The Window?
+	{
+		MessageBox(NULL, MSG_RELEASEHWNDFAILED,
+			ERR_SHUTDOWN_ERROR, MB_OK | MB_ICONINFORMATION);
+		g_hWnd = NULL;									// Set g_hWnd To NULL
+	}
+
+	if (!UnregisterClass(CLASSNAME, hInstance))			// Are We Able To Unregister Class
+	{
+		MessageBox(NULL, MSG_UNREGISTERCLASSFAILED,
+			ERR_SHUTDOWN_ERROR, MB_OK | MB_ICONINFORMATION);
+		hInstance = NULL;								// Set hInstance to NULL
+	}
+}
+
+/*=======================================================================================
+* Module Name:
+*	Main module
+* Function description:
+*	Assign type of key and function handle when press key
+* Parameter:
+*	[Inputs]
+*		None
+*  [Output]
+*		None
+* Return Value:
+*	None
+* History:
+*	Date		Version		Code		PIC				Description
+*	2006/09/26	v0000.00	XXXXXXXX	NguyenPT		First create
+*=======================================================================================*/
+GLvoid				ProcessKeyboard()
+{
+	ZeroMemory(g_bKeyPress, KEYNUMBER);						/* Initialize keypress array				*/
+	g_KeyData['P'].uType				= TOGGLE;			/* P key is toggle: Pause ON/OFF			*/
+	g_KeyData['P'].KeyboardFunc			= &OnPressP;		/* Function handle of 'P' key				*/
+	g_KeyData['L'].uType				= TOGGLE;			/* L key is toggle: light ON/OFF			*/
+	g_KeyData['L'].KeyboardFunc			= &OnPressL;		/* Function handle of 'L' key				*/
+	g_KeyData['F'].uType				= NORMAL;			/* F key is toggle: Change filter			*/
+	g_KeyData['F'].KeyboardFunc			= &OnPressF;		/* Function handle of 'F' key				*/
+	g_KeyData[VK_F1].uType				= NORMAL;			/* F1 key is normal: change to fullscreen	*/
+	g_KeyData[VK_F1].KeyboardFunc		= &OnPressF1;		/* Function handle of 'F1' key				*/
+	g_KeyData[VK_LEFT].uType			= NORMAL;			/* LEFT key is normal:						*/
+	g_KeyData[VK_LEFT].KeyboardFunc		= &OnPressLEFT;		/* Function handle of 'LEFT' key			*/
+	g_KeyData[VK_RIGHT].uType			= NORMAL;			/* RIGHT key is normal:						*/
+	g_KeyData[VK_RIGHT].KeyboardFunc	= &OnPressRIGHT;	/* Function handle of 'RIGHT' key			*/
+	g_KeyData[VK_UP].uType				= NORMAL;			/* UP key is normal:						*/
+	g_KeyData[VK_UP].KeyboardFunc		= &OnPressUP;		/* Function handle of 'UP' key				*/
+	g_KeyData[VK_DOWN].uType			= NORMAL;			/* DOWN key is normal:						*/
+	g_KeyData[VK_DOWN].KeyboardFunc		= &OnPressDOWN;		/* Function handle of 'DOWN' key			*/
+	g_KeyData[VK_INSERT].uType			= NORMAL;			/* INSERT key is normal:					*/
+	g_KeyData[VK_INSERT].KeyboardFunc	= &OnPressINSERT;	/* Function handle of 'INSERT' key			*/
+	g_KeyData[VK_DELETE].uType			= NORMAL;			/* DELETE key is normal:					*/
+	g_KeyData[VK_DELETE].KeyboardFunc	= &OnPressDELETE;	/* Function handle of 'DELETE' key			*/
+	g_KeyData[VK_HOME].uType			= NORMAL;			/* HOME key is normal:						*/
+	g_KeyData[VK_HOME].KeyboardFunc		= &OnPressHOME;		/* Function handle of 'HOME' key			*/
+	g_KeyData[VK_END].uType				= NORMAL;			/* END key is normal:						*/
+	g_KeyData[VK_END].KeyboardFunc		= &OnPressEND;		/* Function handle of 'END' key				*/
+	g_KeyData[VK_PRIOR].uType			= NORMAL;			/* PRIOR key is normal:						*/
+	g_KeyData[VK_PRIOR].KeyboardFunc	= &OnPressPRIOR;	/* Function handle of 'PRIOR' key			*/
+	g_KeyData[VK_NEXT].uType			= NORMAL;			/* NEXT key is normal:						*/
+	g_KeyData[VK_NEXT].KeyboardFunc		= &OnPressNEXT;		/* Function handle of 'NEXT' key			*/
+}
+
+/*=======================================================================================
+* Module Name:
+*	Main module
+* Function description:
+*	Handle when press 'P'
+* Parameter:
+*	[Inputs]
+*		None
+*  [Output]
+*		None
+* Return Value:
+*	None
+* History:
+*	Date		Version		Code		PIC				Description
+*	2006/09/26	v0000.00	XXXXXXXX	NguyenPT		First create
+*=======================================================================================*/
+GLvoid				OnPressP(GLvoid)
+{
+	g_bPause = !g_bPause;			/* Turn ON/OFF pause status */
+}
+
+/*=======================================================================================
+* Module Name:
+*	Main module
+* Function description:
+*	Handle when press 'L'
+* Parameter:
+*	[Inputs]
+*		None
+*  [Output]
+*		None
+* Return Value:
+*	None
+* History:
+*	Date		Version		Code		PIC				Description
+*	2006/09/26	v0000.00	XXXXXXXX	NguyenPT		First create
+*=======================================================================================*/
+GLvoid				OnPressL(GLvoid)
+{
+	g_bLight = !g_bLight;			// Toggle light TRUE/FALSE
+	if (!g_bLight)
+	{
+		glDisable(GL_LIGHTING);		// Disable lighting
+	}
+	else
+	{
+		glEnable(GL_LIGHTING);		// Enable lighting
+	}
+}
+
+/*=======================================================================================
+* Module Name:
+*	Main module
+* Function description:
+*	Handle when press 'F'
+* Parameter:
+*	[Inputs]
+*		None
+*  [Output]
+*		None
+* Return Value:
+*	None
+* History:
+*	Date		Version		Code		PIC				Description
+*	2006/09/26	v0000.00	XXXXXXXX	NguyenPT		First create
+*=======================================================================================*/
+GLvoid				OnPressF(GLvoid)
+{
+	g_uFilter++;						/* Change filter selection	*/
+	if (g_uFilter >= NUMBER_FILTER)		/* Greater than max			*/
+	{
+		g_uFilter = 0;					/* Set to zero				*/
+	}
+}
+
+/*=======================================================================================
+* Module Name:
+*	Main module
+* Function description:
+*	Handle when press 'F1'
+* Parameter:
+*	[Inputs]
+*		None
+*  [Output]
+*		None
+* Return Value:
+*	None
+* History:
+*	Date		Version		Code		PIC				Description
+*	2006/09/26	v0000.00	XXXXXXXX	NguyenPT		First create
+*=======================================================================================*/
+GLvoid				OnPressF1(GLvoid)
+{
+	KillGLWindow();							// Kill Our Current Window
+	g_bFullscreen = !g_bFullscreen;			// Toggle Full screen / Windowed Mode
+	// Recreate Our OpenGL Window
+	if (!CreateGLWindow(WINDOW_TITLE, WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_BIT, g_bFullscreen))
+	{
+		return;								// Quit If Window Was Not Created
+	}
+}
+
+/*=======================================================================================
+* Module Name:
+*	Main module
+* Function description:
+*	Handle when press 'LEFT'
+* Parameter:
+*	[Inputs]
+*		None
+*  [Output]
+*		None
+* Return Value:
+*	None
+* History:
+*	Date		Version		Code		PIC				Description
+*	2006/09/26	v0000.00	XXXXXXXX	NguyenPT		First create
+*=======================================================================================*/
+GLvoid				OnPressLEFT(GLvoid)
+{
+	g_MoveX -= g_MDeltaX;
+}
+
+/*=======================================================================================
+* Module Name:
+*	Main module
+* Function description:
+*	Handle when press 'RIGHT'
+* Parameter:
+*	[Inputs]
+*		None
+*  [Output]
+*		None
+* Return Value:
+*	None
+* History:
+*	Date		Version		Code		PIC				Description
+*	2006/09/26	v0000.00	XXXXXXXX	NguyenPT		First create
+*=======================================================================================*/
+GLvoid				OnPressRIGHT(GLvoid)
+{
+	g_MoveX += g_MDeltaX;
+}
+
+/*=======================================================================================
+* Module Name:
+*	Main module
+* Function description:
+*	Handle when press 'UP'
+* Parameter:
+*	[Inputs]
+*		None
+*  [Output]
+*		None
+* Return Value:
+*	None
+* History:
+*	Date		Version		Code		PIC				Description
+*	2006/09/26	v0000.00	XXXXXXXX	NguyenPT		First create
+*=======================================================================================*/
+GLvoid				OnPressUP(GLvoid)
+{
+	g_MoveY += g_MDeltaY;
+}
+
+/*=======================================================================================
+* Module Name:
+*	Main module
+* Function description:
+*	Handle when press 'DOWN'
+* Parameter:
+*	[Inputs]
+*		None
+*  [Output]
+*		None
+* Return Value:
+*	None
+* History:
+*	Date		Version		Code		PIC				Description
+*	2006/09/26	v0000.00	XXXXXXXX	NguyenPT		First create
+*=======================================================================================*/
+GLvoid				OnPressDOWN(GLvoid)
+{
+	g_MoveY -= g_MDeltaY;
+}
+
+/*=======================================================================================
+* Module Name:
+*	Main module
+* Function description:
+*	Handle when press 'INSERT'
+* Parameter:
+*	[Inputs]
+*		None
+*  [Output]
+*		None
+* Return Value:
+*	None
+* History:
+*	Date		Version		Code		PIC				Description
+*	2006/09/26	v0000.00	XXXXXXXX	NguyenPT		First create
+*=======================================================================================*/
+GLvoid				OnPressINSERT(GLvoid)
+{
+	g_RotateX += g_RDeltaX;
+}
+
+/*=======================================================================================
+* Module Name:
+*	Main module
+* Function description:
+*	Handle when press 'DELETE'
+* Parameter:
+*	[Inputs]
+*		None
+*  [Output]
+*		None
+* Return Value:
+*	None
+* History:
+*	Date		Version		Code		PIC				Description
+*	2006/09/26	v0000.00	XXXXXXXX	NguyenPT		First create
+*=======================================================================================*/
+GLvoid				OnPressDELETE(GLvoid)
+{
+	g_RotateX -= g_RDeltaX;
+}
+
+/*=======================================================================================
+* Module Name:
+*	Main module
+* Function description:
+*	Handle when press 'HOME'
+* Parameter:
+*	[Inputs]
+*		None
+*  [Output]
+*		None
+* Return Value:
+*	None
+* History:
+*	Date		Version		Code		PIC				Description
+*	2006/09/26	v0000.00	XXXXXXXX	NguyenPT		First create
+*=======================================================================================*/
+GLvoid				OnPressHOME(GLvoid)
+{
+	g_RotateY += g_RDeltaY;
+}
+
+/*=======================================================================================
+* Module Name:
+*	Main module
+* Function description:
+*	Handle when press 'END'
+* Parameter:
+*	[Inputs]
+*		None
+*  [Output]
+*		None
+* Return Value:
+*	None
+* History:
+*	Date		Version		Code		PIC				Description
+*	2006/09/26	v0000.00	XXXXXXXX	NguyenPT		First create
+*=======================================================================================*/
+GLvoid				OnPressEND(GLvoid)
+{
+	g_RotateY -= g_RDeltaY;
+}
+
+/*=======================================================================================
+* Module Name:
+*	Main module
+* Function description:
+*	Handle when press 'PRIOR'
+* Parameter:
+*	[Inputs]
+*		None
+*  [Output]
+*		None
+* Return Value:
+*	None
+* History:
+*	Date		Version		Code		PIC				Description
+*	2006/09/26	v0000.00	XXXXXXXX	NguyenPT		First create
+*=======================================================================================*/
+GLvoid				OnPressPRIOR(GLvoid)
+{
+	g_RotateZ += g_RDeltaZ;
+}
+
+/*=======================================================================================
+* Module Name:
+*	Main module
+* Function description:
+*	Handle when press 'NEXT'
+* Parameter:
+*	[Inputs]
+*		None
+*  [Output]
+*		None
+* Return Value:
+*	None
+* History:
+*	Date		Version		Code		PIC				Description
+*	2006/09/26	v0000.00	XXXXXXXX	NguyenPT		First create
+*=======================================================================================*/
+GLvoid				OnPressNEXT(GLvoid)
+{
+	g_RotateZ -= g_RDeltaZ;
+}
+
+/*=======================================================================================
+* Module Name:
+*	Main module
+* Function description:
+*	Load a bitmap image
+* Parameter:
+*	[Inputs]
+*		char*	pFileName:		Bitmap file name
+*  [Output]
+*		None
+* Return Value:
+*	Pointer to bitmap file
+* History:
+*	Date		Version		Code		PIC				Description
+*	2006/09/26	v0000.00	XXXXXXXX	NguyenPT		First create
+*=======================================================================================*/
+AUX_RGBImageRec*	LoadBMP(char* pFileName)				// Load a bitmap image
+{
+	FILE* file = NULL;									// File handle
+	if (!pFileName)										// Make sure a file name was given
+	{
+		return NULL;									// If not return NULL
+	}
+	fopen_s(&file, pFileName, "r");						// Check to see if the file exists
+	if (file)
+	{
+		fclose(file);									// Close the handle
+		return auxDIBImageLoad(pFileName);				// Load the bitmap and return the pointer
+	}
+	return NULL;
+}
+
+/*=======================================================================================
+* Module Name:
+*	Main module
+* Function description:
+*	Load all textures
+* Parameter:
+*	[Inputs]
+*		None
+*  [Output]
+*		None
+* Return Value:
+*	Return TRUE if load textures success, FALSE otherwise
+* History:
+*	Date		Version		Code		PIC				Description
+*	2006/09/26	v0000.00	XXXXXXXX	NguyenPT		First create
+*=======================================================================================*/
+int					LoadGLTextures()
+{
+	int nStatus = TRUE;											// Status Indicator
+
+	AUX_RGBImageRec *pTextureImage[NUMBER_TEXTURE];				// Create Storage Space For The Texture
+	memset(pTextureImage, 0, sizeof(void*)* NUMBER_TEXTURE);	// Set The Pointer To NULL
+	if ((pTextureImage[0] = LoadBMP("Data/Font.bmp"))			// Load The Font Bitmap
+		&& (pTextureImage[1] = LoadBMP("data\\Crate.bmp")))		// Load The Texture Bitmap
+	{
+		nStatus = TRUE;											// Set The Status To TRUE
+		glGenTextures(NUMBER_TEXTURE, &g_Texture[0]);			// Create Textures
+		for (GLuint i = 0; i < NUMBER_TEXTURE; i++)				// Loop Through All The Textures
+		{
+			// Build All The Textures
+			glBindTexture(GL_TEXTURE_2D, g_Texture[i]);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTexImage2D(GL_TEXTURE_2D, 0, 3, pTextureImage[i]->sizeX,
+				pTextureImage[i]->sizeY, 0, GL_RGB, GL_UNSIGNED_BYTE,
+				pTextureImage[i]->data);
+		}
+	}
+	for (GLuint i = 0; i < NUMBER_TEXTURE; i++)					// Loop Through All The Textures
+	{
+		if (pTextureImage[i])									// If Texture Exists
+		{
+			if (pTextureImage[i]->data)							// If Texture Image Exists
+			{
+				free(pTextureImage[i]->data);					// Free The Texture Image Memory
+			}
+			free(pTextureImage[i]);								// Free The Image Structure
+		}
+	}
+	return nStatus;                                        // Return Success
+}
+
+/*=======================================================================================
+* Module Name:
+*	Main module
+* Function description:
+*	Build Our Font Display List
+* Parameter:
+*	[Inputs]
+*		None
+*  [Output]
+*		None
+* Return Value:
+*	None
+* History:
+*	Date		Version		Code		PIC				Description
+*	2006/09/26	v0000.00	XXXXXXXX	NguyenPT		First create
+*=======================================================================================*/
+GLvoid				BuildFont(GLvoid)
+{
+	float	fX = 0.0f;										// Holds Our X Character Coord
+	float	fY = 0.0f;										// Holds Our Y Character Coord
+	g_uBase = glGenLists(NUMBER_CHARACTER);					// Creating 256 Display Lists
+	glBindTexture(GL_TEXTURE_2D, g_Texture[0]);				// Select Our Font Texture
+	for (GLuint i = 0; i < NUMBER_CHARACTER; i++)			// Loop Through All 256 Lists
+	{
+		fX = float(i % 16) / 16.0f;							// X Position Of Current Character
+		fY = float(i / 16) / 16.0f;							// Y Position Of Current Character
+		glNewList(g_uBase + i, GL_COMPILE);					// Start buiding a list
+		glBegin(GL_QUADS);									// Use A Quad For Each Character
+		{
+			glTexCoord2f(fX, 1 - fY - 0.0625f);				// Texture Coord (Bottom Left)
+			glVertex2i(0, 0);								// Vertex Coord (Bottom Left)
+			glTexCoord2f(fX + 0.0625f, 1 - fY - 0.0625f);	// Texture Coord (Bottom Right)
+			glVertex2i(16, 0);								// Vertex Coord (Bottom Right)
+			glTexCoord2f(fX + 0.0625f, 1 - fY);				// Texture Coord (Top Right)
+			glVertex2i(16, 16);								// Vertex Coord (Top Right)
+			glTexCoord2f(fX, 1 - fY);						// Texture Coord (Top Left)
+			glVertex2i(16, 16);								// Vertex Coord (Top Right)
+		}
+		glEnd();											// Done Building Our Quad (Character)
+		glTranslated(10, 0, 0);								// Move To The Right Of The Character
+		glEndList();										// Done Building The Display List
+	}
+}
+
+/*=======================================================================================
+* Module Name:
+*	Main module
+* Function description:
+*	Delete The Font From Memory
+* Parameter:
+*	[Inputs]
+*		None
+*  [Output]
+*		None
+* Return Value:
+*	None
+* History:
+*	Date		Version		Code		PIC				Description
+*	2006/09/26	v0000.00	XXXXXXXX	NguyenPT		First create
+*=======================================================================================*/
+GLvoid				KillFont(GLvoid)
+{
+	glDeleteLists(g_uBase, NUMBER_CHARACTER);
+}
+
+/*=======================================================================================
+* Module Name:
+*	Main module
+* Function description:
+*	Where The Printing Happens
+* Parameter:
+*	[Inputs]
+*		GLint		x:			X position
+*		GLint		y:			Y position
+*		char*		pString:	String to print
+*		int			nSet:		[Set] value
+*  [Output]
+*		None
+* Return Value:
+*	None
+* History:
+*	Date		Version		Code		PIC				Description
+*	2006/09/26	v0000.00	XXXXXXXX	NguyenPT		First create
+*=======================================================================================*/
+GLvoid				glPrint(GLint x, GLint y, char* pString, int nSet)
+{
+	if (nSet > 1)											// Is set Greater Than One?
+	{
+		nSet = 1;											// If So, Make Set Equal One
+	}
+	glBindTexture(GL_TEXTURE_2D, g_Texture[0]);				// Select Our Font Texture
+	glDisable(GL_DEPTH_TEST);								// Disables Depth Testing
+	glMatrixMode(GL_PROJECTION);							// Select the projection matrix
+	glPushMatrix();											// Store the projection matrix
+	glLoadIdentity();										// Reset The Projection Matrix
+	glOrtho(0, WINDOW_WIDTH, 0, WINDOW_HEIGHT, -1, 1);		// Set Up An Ortho Screen
+	glMatrixMode(GL_MODELVIEW);								// Select The Modelview Matrix
+	glPushMatrix();											// Store The Modelview Matrix
+	glLoadIdentity();										// Reset The Modelview Matrix
+	glTranslated(x, y, 0);									// Position The Text (0,0 - Bottom Left)
+	glListBase(g_uBase - 32 + (128 * nSet));				// Choose The Font Set (0 or 1)
+	glCallLists(strlen(pString), GL_UNSIGNED_BYTE, pString);// Write The Text To The Screen
+	glMatrixMode(GL_PROJECTION);							// Select The Projection Matrix
+	glPopMatrix();											// Restore The Old Projection Matrix
+	glMatrixMode(GL_MODELVIEW);								// Select The Modelview Matrix
+	glPopMatrix();											// Restore The Old Modelview Matrix
+	glEnable(GL_DEPTH_TEST);								// Enables Depth Testing
+}
+
+/*=======================================================================================
+* Module Name:
+*	Main module
+* Function description:
+*	Draw a triangle
+* Parameter:
+*	[Inputs]
+*		GLfloat* 	d1:			Vertex 1
+*		GLfloat* 	d2:			Vertex 2
+*		GLfloat* 	d3:			Vertex 3
+*		GLfloat* 	c1:			Color 1
+*		GLfloat* 	c2:			Color 2
+*		GLfloat* 	c3:			Color 3
+*  [Output]
+*		None
+* Return Value:
+*	None
+* History:
+*	Date		Version		Code		PIC				Description
+*	2006/09/26	v0000.00	XXXXXXXX	NguyenPT		First create
+*=======================================================================================*/
+void				DrawTriAngles(const GLfloat* d1, const GLfloat* d2, const GLfloat* d3,
+	const GLfloat* c1, const GLfloat* c2, const GLfloat* c3)
+{
+	glBegin(GL_TRIANGLES);								// Drawing Using Triangles
+	{
+		glColor3fv(c1);
+		glVertex3fv(d1);
+		glColor3fv(c2);
+		glVertex3fv(d2);
+		glColor3fv(c3);
+		glVertex3fv(d3);
+	}
+	glEnd();
+}
+
+/*=======================================================================================
+* Module Name:
+*	Main module
+* Function description:
+*	Draw a QUADS
+* Parameter:
+*	[Inputs]
+*		GLfloat* 	d1:			Vertex 1
+*		GLfloat* 	d2:			Vertex 2
+*		GLfloat* 	d3:			Vertex 3
+*		GLfloat* 	d4:			Vertex 4
+*		GLfloat* 	color:		Color
+*  [Output]
+*		None
+* Return Value:
+*	None
+* History:
+*	Date		Version		Code		PIC				Description
+*	2006/09/26	v0000.00	XXXXXXXX	NguyenPT		First create
+*=======================================================================================*/
+void				DrawQuads(const GLfloat* d1, const GLfloat* d2,
+	const GLfloat* d3, const GLfloat* d4, const GLfloat* color)
+{
+	//glColor3fv(color);
+	glBegin(GL_QUADS);									// Draw A Quad
+	{
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex3fv(d1);								// Top Left
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex3fv(d2);								// Top Right
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex3fv(d3);								// Bottom Right
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex3fv(d4);								// Bottom Left
+	}
+	glEnd();											// Done Drawing The Quad
+}
+
+/*=======================================================================================
+* Module Name:
+*	Main module
+* Function description:
+*	Main entry
+* Parameter:
+*	[Inputs]
+*		HINSTANCE	hInstance:		Instance
+*		HINSTANCE	hPrevInstance:	Previous Instance
+*		LPSTR		lpCmdLine:		Command Line Parameters
+*		int			nCmdShow:		Window Show State
+*  [Output]
+*		None
+* Return Value:
+*	Should return 1
+* History:
+*	Date		Version		Code		PIC				Description
+*	2006/09/26	v0000.00	XXXXXXXX	NguyenPT		First create
+*=======================================================================================*/
 int WINAPI WinMain(
 	_In_		HINSTANCE	hInstance,				// Instance
 	_In_opt_	HINSTANCE	hPrevInstance,			// Previous Instance
