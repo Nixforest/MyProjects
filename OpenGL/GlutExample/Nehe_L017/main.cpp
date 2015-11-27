@@ -49,6 +49,8 @@ GLuint			g_uFilter					= 0;								// Which Filter To Use
 GLuint			g_uFogFilter				= 0;								// Which Fog To Use
 GLuint			g_uFogColor					= GREY;								// Which Fog color to use
 GLuint			g_uBase						= 0;								// Base Display List For The Font
+GLfloat			g_fCnt1						= 0.0f;								// Temp variable
+GLfloat			g_fCnt2						= 0.0f;								// Temp variable
 
 BOOL			g_bLight					= FALSE;							// Lighting ON/OFF
 BOOL			g_bPause					= FALSE;							// Pause?
@@ -435,19 +437,19 @@ int					InitGL(GLvoid)
 	glEnable(GL_TEXTURE_2D);							// Enable Texture Mapping
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);	// Really nice perspective calcutations
 	
-	glLightfv(GL_LIGHT1, GL_AMBIENT, g_LightAmbient);	// Setup the ambient light
-	glLightfv(GL_LIGHT1, GL_DIFFUSE, g_LightDiffuse);	// Setup the diffuse light
-	glLightfv(GL_LIGHT1, GL_POSITION, g_LightPosition);	// Position the light
-	glEnable(GL_LIGHT1);								// Enable light one
+	//glLightfv(GL_LIGHT1, GL_AMBIENT, g_LightAmbient);	// Setup the ambient light
+	//glLightfv(GL_LIGHT1, GL_DIFFUSE, g_LightDiffuse);	// Setup the diffuse light
+	//glLightfv(GL_LIGHT1, GL_POSITION, g_LightPosition);	// Position the light
+	//glEnable(GL_LIGHT1);								// Enable light one
 
 
-	glFogi(GL_FOG_MODE, s_FogMode[g_uFogFilter]);		// Fog mode
-	glFogfv(GL_FOG_COLOR, s_fFogColor[g_uFogColor]);	// Set fog color
-	glFogf(GL_FOG_DENSITY, 0.35f);						// How dense will the fog be
-	glHint(GL_FOG_HINT, GL_DONT_CARE);					// Fog hint value
-	glFogf(GL_FOG_START, 1.0f);							// Fog start depth
-	glFogf(GL_FOG_END, 5.0f);							// Fog end depth
-	glEnable(GL_FOG);									// Enables GL_FOG
+	//glFogi(GL_FOG_MODE, s_FogMode[g_uFogFilter]);		// Fog mode
+	//glFogfv(GL_FOG_COLOR, s_fFogColor[g_uFogColor]);	// Set fog color
+	//glFogf(GL_FOG_DENSITY, 0.35f);						// How dense will the fog be
+	//glHint(GL_FOG_HINT, GL_DONT_CARE);					// Fog hint value
+	//glFogf(GL_FOG_START, 1.0f);							// Fog start depth
+	//glFogf(GL_FOG_END, 5.0f);							// Fog end depth
+	//glEnable(GL_FOG);									// Enables GL_FOG
 
 	/* Handle keyboard */
 	ProcessKeyboard();
@@ -473,13 +475,12 @@ int					InitGL(GLvoid)
 int					DrawGLScene(GLvoid)
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear screen and depth buffer
-	/* Start draw cube */
-	glLoadIdentity();
-	glTranslatef(g_MoveX, g_MoveY, g_MoveZ);			// Move Left 1.5 Units And Into The Screen 6.0
-	glRotatef(g_RotateX, 1.0f, 0.0f, 0.0f);				// Rotate The Triangle On The X axis
-	glRotatef(g_RotateY, 0.0f, 1.0f, 0.0f);             // Rotate The Triangle On The Y axis
-	glRotatef(g_RotateZ, 0.0f, 0.0f, 1.0f);             // Rotate The Triangle On The Z axis
-	glBindTexture(GL_TEXTURE_2D, g_Texture[g_uFilter]);
+	glLoadIdentity();									// Reset The Modelview Matrix
+	glBindTexture(GL_TEXTURE_2D, g_Texture[1]);
+	glTranslatef(0.0f, 0.0f, -0.5f);					// Move Into The Screen 5 Units
+	glRotatef(45.0f, 0.0f, 0.0f, 1.0f);					// Rotate The Triangle On The Z axis
+	glRotatef(g_fCnt1 * 30.0f, 1.0f, 1.0f, 0.0f);		// Rotate On The X & Y Axis By cnt1 (Left To Right)
+
 	// Front
 	glNormal3fv(s_fCubeNormal[CUBE_NORMAL_FRONT]);
 	DrawQuads(s_fG, s_fH, s_fD, s_fC, s_GreenColor);
