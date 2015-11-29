@@ -13,6 +13,7 @@
 *=======================================================================================*/
 #include <windows.h>
 #include <stdio.h>
+#include <math.h>
 #include <gl\GLU.h>
 #include <gl\GL.h>
 #include <gl\GLAUX.H>
@@ -474,35 +475,55 @@ int					InitGL(GLvoid)
 *=======================================================================================*/
 int					DrawGLScene(GLvoid)
 {
+	GLfloat	pFirstVertext[2]	= {-1.0f, 1.0f };
+	GLfloat	pSecondVertext[2]	= { 1.0f, 1.0f };
+	GLfloat	pThirdVertext[2]	= { 1.0f,-1.0f };
+	GLfloat	pFourthVertext[2]	= {-1.0f,-1.0f };
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	// Clear screen and depth buffer
 	glLoadIdentity();									// Reset The Modelview Matrix
 	glBindTexture(GL_TEXTURE_2D, g_Texture[1]);
-	glTranslatef(0.0f, 0.0f, -0.5f);					// Move Into The Screen 5 Units
+	glTranslatef(0.0f, 0.0f, -5.5f);					// Move Into The Screen 5 Units
 	glRotatef(45.0f, 0.0f, 0.0f, 1.0f);					// Rotate The Triangle On The Z axis
 	glRotatef(g_fCnt1 * 30.0f, 1.0f, 1.0f, 0.0f);		// Rotate On The X & Y Axis By cnt1 (Left To Right)
+	glDisable(GL_BLEND);								// Disable Blending Before We Draw In 3D
+	DrawQuads2fv(pFirstVertext, pSecondVertext,			// Draw Our First Texture Mapped Quad
+		pThirdVertext, pFourthVertext, s_WhiteColor);
+	glRotatef(90.0f, 1.0f, 1.0f, 0.0f);					// Rotate On The X & Y Axis By 90 Degrees (Left To Right)
+	DrawQuads2fv(pFirstVertext, pSecondVertext,			// Draw Our Second Texture Mapped Quad
+		pThirdVertext, pFourthVertext, s_WhiteColor);
 
-	// Front
-	glNormal3fv(s_fCubeNormal[CUBE_NORMAL_FRONT]);
-	DrawQuads(s_fG, s_fH, s_fD, s_fC, s_GreenColor);
-	// Left
-	glNormal3fv(s_fCubeNormal[CUBE_NORMAL_LEFT]);
-	DrawQuads(s_fF, s_fG, s_fC, s_fB, s_OrangeColor);
-	// Behind
-	glNormal3fv(s_fCubeNormal[CUBE_NORMAL_BEHIND]);
-	DrawQuads(s_fE, s_fF, s_fB, s_fA, s_RedColor);
-	// Right
-	glNormal3fv(s_fCubeNormal[CUBE_NORMAL_RIGHT]);
-	DrawQuads(s_fH, s_fE, s_fA, s_fD, s_YellowColor);
-	// Top
-	glNormal3fv(s_fCubeNormal[CUBE_NORMAL_TOP]);
-	DrawQuads(s_fC, s_fD, s_fA, s_fB, s_BlueColor);
-	// Bottom
-	glNormal3fv(s_fCubeNormal[CUBE_NORMAL_BOTTOM]);
-	DrawQuads(s_fF, s_fE, s_fH, s_fG, s_WhiteColor);
+	glEnable(GL_BLEND);									// Enable Blending
+	glLoadIdentity();									// Reset The View
 
-	g_RotateX += g_RDeltaX;
-	g_RotateY -= g_RDeltaY;
-	g_RotateZ += g_RDeltaZ;
+	glColor3f(1.0f * float(cos(g_fCnt1)),				// Pulsing Colors Based On Text Position
+		1.0f * float(sin(g_fCnt2)),
+		1.0f - 0.5f * float(cos(g_fCnt1 + g_fCnt2)));
+	glPrint(int((280 + 250 * cos(g_fCnt1))),			// Print GL Text To The Screen
+		int(235 + 200 * sin(g_fCnt2)), "glPrint1", 0);
+	glColor3f(1.0f * float(sin(g_fCnt2)),				// Pulsing Colors Based On Text Position
+		1.0f - 0.5f * float(cos(g_fCnt1 + g_fCnt2)),
+		1.0f * float(cos(g_fCnt1)));
+	glPrint(int((280 + 230*cos(g_fCnt2))),				// Print GL Text To The Screen
+		int(235 + 200 * sin(g_fCnt1)), "glPrint2", 1);
+	glColor3fv(s_BlueColor);							// Set Color To Blue
+	glPrint(											// Draw Text To The Screen
+		int(240 + 200 * cos((g_fCnt2 + g_fCnt1) / 5)),
+		2,
+		"glPrint3",
+		0);
+	glColor3fv(s_WhiteColor);							// Set color to white
+	glPrint(											// Draw Offset Text To The Screen
+		int(242 + 200 * cos((g_fCnt2 + g_fCnt1) / 5)),
+		2,
+		"glPrint4",
+		0);
+	
+	g_fCnt1 += 0.005f;
+	g_fCnt2 += 0.0040f;
+
+	//g_RotateX += g_RDeltaX;
+	//g_RotateY -= g_RDeltaY;
+	//g_RotateZ += g_RDeltaZ;
 	return TRUE;										// Everything went OK
 }
 
@@ -981,7 +1002,7 @@ int					LoadGLTextures()
 	AUX_RGBImageRec *pTextureImage[NUMBER_TEXTURE];				// Create Storage Space For The Texture
 	memset(pTextureImage, 0, sizeof(void*)* NUMBER_TEXTURE);	// Set The Pointer To NULL
 	if ((pTextureImage[0] = LoadBMP("Data/Font.bmp"))			// Load The Font Bitmap
-		&& (pTextureImage[1] = LoadBMP("data\\Crate.bmp")))		// Load The Texture Bitmap
+		&& (pTextureImage[1] = LoadBMP("data\\Bumps.bmp")))		// Load The Texture Bitmap
 	{
 		nStatus = TRUE;											// Set The Status To TRUE
 		glGenTextures(NUMBER_TEXTURE, &g_Texture[0]);			// Create Textures
@@ -1175,10 +1196,10 @@ void				DrawTriAngles(const GLfloat* d1, const GLfloat* d2, const GLfloat* d3,
 *	Date		Version		Code		PIC				Description
 *	2006/09/26	v0000.00	XXXXXXXX	NguyenPT		First create
 *=======================================================================================*/
-void				DrawQuads(const GLfloat* d1, const GLfloat* d2,
+void				DrawQuads3fv(const GLfloat* d1, const GLfloat* d2,
 	const GLfloat* d3, const GLfloat* d4, const GLfloat* color)
 {
-	//glColor3fv(color);
+	glColor3fv(color);
 	glBegin(GL_QUADS);									// Draw A Quad
 	{
 		glTexCoord2f(0.0f, 0.0f);
@@ -1189,6 +1210,44 @@ void				DrawQuads(const GLfloat* d1, const GLfloat* d2,
 		glVertex3fv(d3);								// Bottom Right
 		glTexCoord2f(0.0f, 1.0f);
 		glVertex3fv(d4);								// Bottom Left
+	}
+	glEnd();											// Done Drawing The Quad
+}
+
+/*=======================================================================================
+* Module Name:
+*	Main module
+* Function description:
+*	Draw a QUADS
+* Parameter:
+*	[Inputs]
+*		GLfloat* 	d1:			Vertex 1
+*		GLfloat* 	d2:			Vertex 2
+*		GLfloat* 	d3:			Vertex 3
+*		GLfloat* 	d4:			Vertex 4
+*		GLfloat* 	color:		Color
+*  [Output]
+*		None
+* Return Value:
+*	None
+* History:
+*	Date		Version		Code		PIC				Description
+*	2006/09/26	v0000.00	XXXXXXXX	NguyenPT		First create
+*=======================================================================================*/
+void				DrawQuads2fv(const GLfloat* d1, const GLfloat* d2,
+	const GLfloat* d3, const GLfloat* d4, const GLfloat* color)
+{
+	glColor3fv(color);
+	glBegin(GL_QUADS);									// Draw A Quad
+	{
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex2fv(d1);								// Top Left
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex2fv(d2);								// Top Right
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex2fv(d3);								// Bottom Right
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex2fv(d4);								// Bottom Left
 	}
 	glEnd();											// Done Drawing The Quad
 }
