@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Contact Picker</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="pick_contact_btn_text">Pick Contact</string>
+    <string name="title_activity_content_picker_test">Content Picker Test</string>
+</resources>
