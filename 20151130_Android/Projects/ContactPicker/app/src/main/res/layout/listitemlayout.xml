@@ -9,6 +9,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/itemTextView"
         android:padding="10px"
-        android:textSize="16px"
-        android:textColor="#FFF"/>
+        android:textSize="20dp"
+        android:textColor="@color/material_blue_grey_950"/>
 </LinearLayout>

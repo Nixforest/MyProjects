@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.Contacts;
+import android.provider.ContactsContract;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -24,12 +25,13 @@ public class ContactPicker extends ActionBarActivity {
         Intent intent = getIntent();
         String dataPath = intent.getData().toString();
         final Uri data = Uri.parse(dataPath + "people/");
-        final Cursor cursor = managedQuery(data, null, null, null, null);
-        String[] from = new String[] {Contacts.People.NAME};
+        final Cursor cursor = getContentResolver().query(data, null, null, null, null);
+        //String[] from = new String[] {Contacts.People.NAME};
+        String[] from = new String[] {ContactsContract.Contacts.DISPLAY_NAME};
         int[] to = new int[] {R.id.itemTextView};
         SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
                 R.layout.listitemlayout,
-                cursor, from, to);
+                cursor, from, to, 1);
         ListView lv = (ListView)findViewById(R.id.contactListView);
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
