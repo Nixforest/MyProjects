@@ -20,8 +20,8 @@ public class ToDoList extends Activity {
 	private boolean addingNew = false;
 	private ListView myListView;
 	private EditText myEditText;
-	private ArrayList<String> todoItems;
-	private ArrayAdapter<String> aa;
+	private ArrayList<ToDoItem> todoItems;
+	private ToDoItemAdapter aa;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -30,9 +30,9 @@ public class ToDoList extends Activity {
 		myListView = (ListView)findViewById(R.id.myListView);
 		myEditText = (EditText)findViewById(R.id.myEditText);
 		// Create the array list of to do items
-		todoItems = new ArrayList<String>();
+		todoItems = new ArrayList<ToDoItem>();
 		// Create the array adapter to bind the array to the listview
-		aa = new ArrayAdapter<>(this,
+		aa = new ToDoItemAdapter(this,
 				//android.R.layout.simple_list_item_1,
 				R.layout.todolist_item,
 				todoItems);
@@ -45,9 +45,11 @@ public class ToDoList extends Activity {
 				if (arg2.getAction() == KeyEvent.ACTION_DOWN) {
 					if (arg1 == KeyEvent.KEYCODE_ENTER) {
 						if (!myEditText.getText().toString().isEmpty()) {
-							todoItems.add(0, myEditText.getText().toString());
-							aa.notifyDataSetChanged();
-							//myEditText.setText("");
+							ToDoItem newItem;
+							newItem = new ToDoItem(myEditText.getText().toString());
+							todoItems.add(0, newItem);
+							myEditText.setText("");
+							aa.notifyDataSetChanged();							
 							cancelAdd();
 							return true;
 						}
