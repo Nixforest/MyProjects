@@ -1,5 +1,5 @@
 /**
- * 
+ * Item list view.
  */
 package com.nixforest.todo_list;
 
@@ -11,27 +11,61 @@ import android.util.AttributeSet;
 import android.widget.TextView;
 
 /**
+ * Item list view.
  * @author NguyenPT
  *
  */
 public class TodoListItemView extends TextView {
+	/**
+	 * Margin painter.
+	 */
 	private Paint marginPaint;
+	/**
+	 * Line painter.
+	 */
 	private Paint linePaint;
+	/**
+	 * Paper color.
+	 */
 	private int paperColor;
+	/**
+	 * Margin size.
+	 */
 	private float margin;
-	
+
+	/**
+	 * Constructor.
+	 * @param context The current context.
+	 * @param ats AttributeSet
+	 * @param ds defStyleAttr
+	 */
 	public TodoListItemView(Context context, AttributeSet ats, int ds) {
 		super(context, ats, ds);
 		init();
 	}
+
+	/**
+	 * Constructor.
+	 * @param context The current context.
+	 */
 	public TodoListItemView(Context context) {
 		super(context);
 		init();
 	}
+
+	/**
+	 * Constructor.
+	 * @param context The current context.
+	 * @param attrs AttributeSet
+	 */
 	public TodoListItemView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		init();
 	}
+
+	/**
+	 * Initialize.
+	 */
 	private void init() {
 		// Get a reference to our resource table.
 		Resources myResource = getResources();
@@ -45,6 +79,11 @@ public class TodoListItemView extends TextView {
 		paperColor = myResource.getColor(R.color.notepad_paper);
 		margin = myResource.getDimension(R.dimen.notepad_margin);
 	}
+
+	/**
+	 * Implement this to do your drawing.
+	 * @param canvas the canvas on which the background will be drawn.
+	 */
 	@Override
 	public void onDraw(Canvas canvas) {
 		// Use the base TextView to render the text

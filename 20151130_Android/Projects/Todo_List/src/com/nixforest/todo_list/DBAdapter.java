@@ -1,5 +1,5 @@
 /**
- * 
+ * Database adapter.
  */
 package com.nixforest.todo_list;
 
@@ -16,38 +16,72 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 /**
+ * Database adapter class.
  * @author NguyenPT
- * @param <MyObject>
  *
  */
 public class DBAdapter {
-	private static final String DATABASE_NAME = "todoList.db";
-	private static final String DATABASE_TABLE = "todoItems";
-	private static final int DATABASE_VERSION = 1;
-	// The index (key) column name for use in where clauses
-	public static final String KEY_ID = "_id";
-	// The name and column index of each column in your database
-	public static final String KEY_TASK = "task";
-	public static final int TASK_COLUMN = 1;
-	public static final String KEY_CREATION_DATE = "create_date";
-	public static final int CREATION_DATE_COLUMN = 2;
-	// TODO: Create public field for each column in your table
-	// SQL statement to create a new database
-	private static final String DATABASE_CREATE = "create table "
-			+ DATABASE_TABLE + " ("
-			+ KEY_ID + " integer primary key autoincrement, "
-			+ KEY_TASK + " text not null, "
-			+ KEY_CREATION_DATE +" long);";
-	// Variable to hold the database instance
+	/**
+	 * Database name define.
+	 */
+	private static final String		DATABASE_NAME			= "todoList.db";
+	/**
+	 * Database table name define.
+	 */
+	private static final String		DATABASE_TABLE			= "todoItems";
+	/**
+	 * Database version number define.
+	 */
+	private static final int		DATABASE_VERSION		= 1;
+	/**
+	 * The index (key) column name for use in where clauses.
+	 */
+	public static final String		KEY_ID					= "_id";
+	/**
+	 * The name and column index of each column in your database.
+	 */
+	public static final String		KEY_TASK				= "task";
+	/**
+	 * The name of create date column in database.
+	 */
+	public static final String		KEY_CREATION_DATE		= "create_date";
+	/**
+	 * Task column number.
+	 */
+	public static final int 		TASK_COLUMN 			= 1;
+	/**
+	 * Created date column number.
+	 */
+	public static final int 		CREATION_DATE_COLUMN	= 2;
+	/**
+	 * SQL statement to create a new database.
+	 */
+	private static final String 	DATABASE_CREATE 		= "create table "
+															+ DATABASE_TABLE + " ("
+															+ KEY_ID + " integer primary key autoincrement, "
+															+ KEY_TASK + " text not null, "
+															+ KEY_CREATION_DATE +" long);";
+	/**
+	 * Variable to hold the database instance.
+	 */
 	private SQLiteDatabase db;
-	// Context of the application using the database
-	private final Context context;
-	// Database open/upgrade helper
+	/**
+	 * Database open/upgrade helper.
+	 */
 	private DBHelper dbHelper;
+
+	/**
+	 * Constructor.
+	 * @param _context	Context of the application using the database.
+	 */
 	public DBAdapter(Context _context) {
-		this.context = _context;
-		dbHelper = new DBHelper(this.context, DATABASE_NAME, null, DATABASE_VERSION);
+		dbHelper = new DBHelper(_context, DATABASE_NAME, null, DATABASE_VERSION);
 	}
+
+	/**
+	 * Open database connection.
+	 * @throws SQLException Throw when open has failed.
+	 */
 	public void open() throws SQLException {
 		try {
 			this.db = dbHelper.getWritableDatabase();
@@ -55,24 +89,50 @@ public class DBAdapter {
 			db = dbHelper.getReadableDatabase();
 		}
 	}
-	
+
+	/**
+	 * Close database connection.
+	 */
 	public void close() {
 		this.db.close();
 	}
-	
+
+	/**
+	 * Insert an entry into database.
+	 * @param _myObject Object to insert.
+	 * @return The row ID of the newly inserted row, or -1 if an error occurred.
+	 */
 	public long insertEntry(ToDoItem _myObject) {
 		ContentValues contentValues = new ContentValues();
 		contentValues.put(KEY_TASK, _myObject.getTask());
 		 contentValues.put(KEY_CREATION_DATE, _myObject.getDateCreated().getTime());
 		return db.insert(DATABASE_TABLE, null, contentValues);
 	}
+
+	/**
+	 * Remove an entry from database.
+	 * @param _rowIndex The row ID of the entry to remove.
+	 * @return The number of rows affected if a whereClause is passed in, 0 otherwise.
+	 */
 	public boolean removeEntry(long _rowIndex) {
 		return db.delete(DATABASE_TABLE, KEY_ID + "=" + _rowIndex, null) > 0;
 	}
+
+	/**
+	 * Get all entries from database.
+	 * @return A Cursor object, which is positioned before the first entry.
+	 */
 	public Cursor getAllEntries() {
-		return db.query(DATABASE_TABLE, new String[] { KEY_ID, KEY_TASK, KEY_CREATION_DATE},
+		return db.query(DATABASE_TABLE, new String[]{KEY_ID, KEY_TASK, KEY_CREATION_DATE},
 				null, null, null, null, null);
 	}
+
+	/**
+	 * Get an entry from database.
+	 * @param _rowIndex The row ID of the entry to get.
+	 * @return Entry value.
+	 * @throws SQLException Throw exception when entry has no exist.
+	 */
 	public ToDoItem getEntry(long _rowIndex) throws SQLException {
 		Cursor cursor = db.query(true, DATABASE_TABLE,
 				new String[] {KEY_ID, KEY_TASK},
@@ -86,12 +146,26 @@ public class DBAdapter {
 		ToDoItem result = new ToDoItem(task, new Date(created));
 		return result;
 	}
+
+	/**
+	 * Update value of an entry to database.
+	 * @param _rowIndex The row ID of the entry to update.
+	 * @param _myObject Object to update.
+	 * @return True if update success, False otherwise.
+	 */
 	public boolean updateEntry(long _rowIndex, ToDoItem _myObject) {
 		 String where = KEY_ID + "=" + _rowIndex;
-		 ContentValues contentValues = new ContentValues();
-		 contentValues.put(KEY_TASK, _myObject.getTask());
+		ContentValues contentValues = new ContentValues();
+		contentValues.put(KEY_TASK, _myObject.getTask());
 		 return db.update(DATABASE_TABLE, contentValues, where, null) > 0;
 	}
+
+	/**
+	 * Set cursor to a specific row.
+	 * @param _rowIndex The row ID of the entry to set cursor.
+	 * @return A Cursor object, which is positioned before the first entry.
+	 * @throws SQLException Throw exception when entry has no exist.
+	 */
 	public Cursor setCursorToToDoItem(long _rowIndex) throws SQLException {
 		Cursor result = db.query(true, DATABASE_TABLE,
 				new String[] {KEY_ID, KEY_TASK},
@@ -102,9 +176,18 @@ public class DBAdapter {
 		}
 		return result;
 	}
-	
-	private static class DBHelper extends SQLiteOpenHelper {
 
+	/**
+	 * Database helper class.
+	 */
+	private static class DBHelper extends SQLiteOpenHelper {
+		/**
+		 * Constructor.
+		 * @param context to use to open or create the database.
+		 * @param name of the database file, or null for an in-memory database.
+		 * @param factory to use for creating cursor objects, or null for the default.
+		 * @param version number of the database (starting at 1).
+		 */
 		public DBHelper(Context context, String name, CursorFactory factory,
 				int version) {
 			super(context, name, factory, version);
@@ -137,6 +220,5 @@ public class DBAdapter {
 			_db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE);
 			onCreate(_db);
 		}
-		
 	}
 }
