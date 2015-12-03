@@ -1,14 +1,24 @@
 package com.nixforest.todo_list;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
+import android.content.DialogInterface.OnClickListener;
+import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -22,6 +32,11 @@ public class ToDoList extends Activity {
 	private EditText myEditText;
 	private ArrayList<ToDoItem> todoItems;
 	private ToDoItemAdapter aa;
+	private DBAdapter todoDBAdapter;
+	private Cursor todoListCursor;
+	private static final String TEXT_ENTRY_KEY = "TEXT_ENTRY_KEY";
+	private static final String ADDING_ENTRY_KEY = "ADDING_ENTRY_KEY";
+	private static final String SELECTED_ENTRY_KEY = "SELECTED_ENTRY_KEY";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -29,6 +44,7 @@ public class ToDoList extends Activity {
 		// Get references to UI widgets
 		myListView = (ListView)findViewById(R.id.myListView);
 		myEditText = (EditText)findViewById(R.id.myEditText);
+		todoDBAdapter = new DBAdapter(this);
 		// Create the array list of to do items
 		todoItems = new ArrayList<ToDoItem>();
 		// Create the array adapter to bind the array to the listview
@@ -47,11 +63,43 @@ public class ToDoList extends Activity {
 						if (!myEditText.getText().toString().isEmpty()) {
 							ToDoItem newItem;
 							newItem = new ToDoItem(myEditText.getText().toString());
-							todoItems.add(0, newItem);
+							//todoItems.add(0, newItem);
+							todoDBAdapter.insertEntry(newItem);
+							updateArray();
 							myEditText.setText("");
 							aa.notifyDataSetChanged();							
 							cancelAdd();
 							return true;
+						} else {
+							AlertDialog.Builder ad = new AlertDialog.Builder(ToDoList.this);
+							ad.setTitle("Error");
+							ad.setMessage("Content is empty!");
+							ad.setPositiveButton("Retry",
+									new OnClickListener() {
+										
+										@Override
+										public void onClick(DialogInterface arg0, int arg1) {
+											myEditText.requestFocus();
+										}
+									});
+							ad.setNegativeButton("Stop",
+									new OnClickListener() {
+										
+										@Override
+										public void onClick(DialogInterface arg0, int arg1) {
+											cancelAdd();
+										}
+									});
+							ad.setCancelable(true);
+							ad.setOnCancelListener(new OnCancelListener() {
+								
+								@Override
+								public void onCancel(DialogInterface arg0) {
+									// TODO Auto-generated method stub
+									myEditText.requestFocus();
+								}
+							});
+							ad.show();
 						}
 					}
 				}
@@ -59,6 +107,32 @@ public class ToDoList extends Activity {
 			}
 		});
 		registerForContextMenu(myListView);
+		restoreUIState();
+		
+		// Open or create the database
+		todoDBAdapter.open();
+		populateTodoList();
+	}
+	
+	private void updateArray() {
+		todoListCursor.requery();
+		todoItems.clear();
+		if (todoListCursor.moveToFirst()) {
+			do {
+				String task = todoListCursor.getString(DBAdapter.TASK_COLUMN);
+				long created = todoListCursor.getLong(DBAdapter.CREATION_DATE_COLUMN);
+				ToDoItem newItem = new ToDoItem(task, new Date(created));
+				todoItems.add(0, newItem);
+			} while (todoListCursor.moveToNext());
+		}
+		aa.notifyDataSetChanged();
+	}
+	private void populateTodoList() {
+		// Get all to do list items from the database
+		todoListCursor = todoDBAdapter.getAllEntries();
+		startManagingCursor(todoListCursor);
+		// Update the array
+		updateArray();
 	}
 
 	@Override
@@ -117,8 +191,16 @@ public class ToDoList extends Activity {
 		myEditText.requestFocus();
 	}
 	private void removeItem(int _index) {
-		todoItems.remove(_index);
-		aa.notifyDataSetChanged();
+		//todoItems.remove(_index);
+		//aa.notifyDataSetChanged();
+		todoDBAdapter.removeEntry(todoItems.size() - _index);
+		updateArray();
+	}
+	@Override
+	public void onDestroy() {
+		// Close the database
+		todoDBAdapter.close();
+		super.onDestroy();
 	}
 	@Override
 	public void onCreateContextMenu(ContextMenu menu,
@@ -156,5 +238,45 @@ public class ToDoList extends Activity {
 		default: break;
 	}
 		return false;
+	}
+	@Override
+	protected void onPause() {
+		super.onPause();
+		// Get the activity preferences object
+		SharedPreferences uiState = getPreferences(Activity.MODE_PRIVATE);
+		// Get the preferences editor
+		SharedPreferences.Editor edt = uiState.edit();
+		// Add the UI state preferences values
+		edt.putString(TEXT_ENTRY_KEY, myEditText.getText().toString());
+		edt.putBoolean(ADDING_ENTRY_KEY, addingNew);
+		// Commit the preferences
+		edt.commit();
+	}
+	private void restoreUIState() {
+		// Get the activity preferences object
+		SharedPreferences settings = getPreferences(Activity.MODE_PRIVATE);
+		// Read the UI state values, specifying default values
+		String text = settings.getString(TEXT_ENTRY_KEY, "");
+		Boolean adding = settings.getBoolean(ADDING_ENTRY_KEY, false);
+		// Restore the UI to the previous state
+		if (adding) {
+			addNewItem();
+			myEditText.setText(text);
+		}
+	}
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		outState.putInt(SELECTED_ENTRY_KEY, myListView.getSelectedItemPosition());
+		super.onSaveInstanceState(outState);
+	}
+	@Override
+	public void onRestoreInstanceState(Bundle savedInstanceState) {
+		int pos = -1;
+		if (savedInstanceState != null) {
+			if (savedInstanceState.containsKey(SELECTED_ENTRY_KEY)) {
+				pos = savedInstanceState.getInt(SELECTED_ENTRY_KEY);
+			}
+		}
+		myListView.setSelection(pos);
 	}
 }
