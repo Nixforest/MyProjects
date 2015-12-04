@@ -78,7 +78,7 @@ public class ToDoList extends Activity {
 	private Cursor				todoListCursor;
 
 	/**
-	 *Called when the activity is starting
+	 * Called when the activity is starting
 	 * @param savedInstanceState If the activity is being re-initialized after
 	 *                              previously being shut down then this Bundle
 	 *                              contains the data it most recently supplied
